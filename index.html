@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>テトリス</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <h1>テトリス</h1>
+    <div id="game-container">
+      <canvas id="board" width="300" height="600"></canvas>
+      <div id="side-panel">
+        <div class="panel-section">
+          <div class="label">NEXT</div>
+          <canvas id="next" width="120" height="120"></canvas>
+        </div>
+        <div class="panel-section">
+          <div class="label">スコア</div>
+          <div id="score">0</div>
+        </div>
+        <div class="panel-section">
+          <div class="label">レベル</div>
+          <div id="level">1</div>
+        </div>
+        <div class="panel-section">
+          <div class="label">ライン</div>
+          <div id="lines">0</div>
+        </div>
+        <div class="panel-section" id="controls-section">
+          <div class="label">操作方法</div>
+          <div class="controls">
+            <div>← → : 移動</div>
+            <div>↑ : 回転</div>
+            <div>↓ : ソフトドロップ</div>
+            <div>Space : ハードドロップ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="overlay" class="hidden">
+      <div id="overlay-content">
+        <div id="overlay-title">ゲームオーバー</div>
+        <div id="final-score"></div>
+        <button id="restart-btn">もう一度プレイ</button>
+      </div>
+    </div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
