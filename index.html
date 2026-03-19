@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>テトリス 2P対戦 AI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden}
+body{display:flex;justify-content:center;align-items:center;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;color:#eee;transition:background .5s}
+body.bg-midnight{background:#1e1e3a}
+body.bg-ocean{background:linear-gradient(135deg,#1a4a5e,#0e3448);background-attachment:fixed}
+body.bg-deepspace{background:linear-gradient(135deg,#0a0a28,#181838);background-attachment:fixed}
+body.bg-cream{background:#f5f0e8}
+body.bg-lavender{background:linear-gradient(135deg,#e8e0f0,#f0e8f8);background-attachment:fixed}
+body.bg-skyblue{background:linear-gradient(135deg,#d8eaf8,#e0f0ff);background-attachment:fixed}
+body.cs-neon{--field:#10102a;--grid:rgba(255,255,255,.04);--acc:#ffd369;--p1:#5ef0ff;--p2:#ff7eb3;--pb-bg:rgba(30,30,60,.88);--pb-bc:#3a3a6e;--pb-fg:#fff;--ct-fg:#aaa;--nl-fg:#888}
+body.cs-candy{--field:#fef6ff;--grid:rgba(180,100,200,.08);--acc:#e060a0;--p1:#40b8e0;--p2:#e06880;--pb-bg:rgba(255,240,250,.94);--pb-bc:#e0b0d0;--pb-fg:#444;--ct-fg:#888;--nl-fg:#aaa}
+body.cs-mint{--field:#f0faf6;--grid:rgba(0,150,100,.06);--acc:#20a070;--p1:#2090c0;--p2:#d06070;--pb-bg:rgba(235,252,245,.94);--pb-bc:#a0d8c0;--pb-fg:#333;--ct-fg:#777;--nl-fg:#999}
+body.cs-sky{--field:#f0f6ff;--grid:rgba(60,120,200,.06);--acc:#4080d0;--p1:#30a0d0;--p2:#d06090;--pb-bg:rgba(240,248,255,.94);--pb-bc:#a0c0e8;--pb-fg:#333;--ct-fg:#777;--nl-fg:#999}
+body.cs-retro{--field:#0a0a0a;--grid:rgba(0,255,0,.06);--acc:#0f0;--p1:#0ff;--p2:#f0f;--pb-bg:rgba(20,20,20,.92);--pb-bc:#555;--pb-fg:#0f0;--ct-fg:#0a0;--nl-fg:#080}
+.pb{background:var(--pb-bg);border:2px solid var(--pb-bc);border-radius:6px;padding:4px 6px;text-align:center}
+.pb h3{font-size:9px;color:var(--acc);margin-bottom:2px;text-transform:uppercase;letter-spacing:1px}
+.pb .v{font-size:14px;font-weight:bold;color:var(--pb-fg)}
+.gc{border:2px solid var(--pb-bc);border-radius:3px;display:block}
+.nc{display:block;margin:2px auto;border:1px solid var(--pb-bc);border-radius:2px;opacity:.7}
+.nl{font-size:7px;color:var(--nl-fg);text-align:center;margin-bottom:1px}
+.ct{font-size:8px;line-height:1.3;color:var(--ct-fg)}.ct b{color:var(--acc)}
+#wrap{transform-origin:center center;display:flex;flex-direction:column;align-items:center;gap:4px}
+.top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
+.top h1{font-size:16px;color:var(--acc);letter-spacing:2px}
+.optrow{display:flex;gap:3px;align-items:center;flex-wrap:wrap}
+.optlbl{font-size:8px;color:var(--ct-fg);margin-right:2px}
+.td{width:18px;height:18px;border-radius:50%;border:2px solid rgba(128,128,128,.4);cursor:pointer;transition:all .2s}
+.td:hover{transform:scale(1.15)}
+.td.act{border-color:var(--acc);box-shadow:0 0 5px rgba(255,211,105,.4)}
+.td.t0{background:#1e1e3a}.td.t1{background:linear-gradient(135deg,#1a4a5e,#0a2838)}.td.t2{background:linear-gradient(135deg,#0a0a28,#181838)}.td.t3{background:#f5f0e8}.td.t4{background:linear-gradient(135deg,#e8e0f0,#f0e8f8)}.td.t5{background:linear-gradient(135deg,#d8eaf8,#e0f0ff)}
+.csb{padding:1px 6px;font-size:8px;border-radius:8px;cursor:pointer;border:1px solid rgba(128,128,128,.4);transition:all .2s;white-space:nowrap}
+.csb:hover{transform:scale(1.05)}
+.csb.act{border-color:var(--acc);color:var(--acc);background:rgba(255,211,105,.12)}
+.arena{display:flex;gap:6px;align-items:flex-start}
+.pa{display:flex;gap:4px;align-items:flex-start}
+.sp{display:flex;flex-direction:column;gap:3px;min-width:80px}
+.pl{font-size:11px;font-weight:bold;letter-spacing:2px;text-align:center;padding:3px;border-radius:4px}
+.p1c{color:var(--p1);border:2px solid var(--p1);background:rgba(94,240,255,.08)}
+.p2c{color:var(--p2);border:2px solid var(--p2);background:rgba(255,126,179,.08)}
+.ab{padding:3px 5px;font-size:9px;font-weight:bold;border:2px solid var(--pb-bc);border-radius:4px;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:1px;width:100%}
+.ab.off{background:var(--pb-bg);color:var(--acc);border-color:var(--pb-bc)}
+.ab.on{background:var(--acc);color:var(--pb-bg);border-color:var(--acc)}
+.ab:hover{transform:scale(1.03)}
+.sc{display:flex;align-items:center;gap:2px;font-size:8px;color:var(--ct-fg)}
+.sc label{white-space:nowrap}.sc input{flex:1;accent-color:var(--acc);width:50px}
+.sc .sv{min-width:28px;text-align:right;font-weight:bold;color:var(--acc);font-size:8px}
+.as{font-size:8px;color:var(--ct-fg);text-align:center;min-height:10px}.as.act{color:#5ef0a0;font-weight:bold}
+.garb-box{position:relative}
+.garb-gauge{width:100%;height:10px;background:rgba(0,0,0,.3);border-radius:3px;overflow:hidden;margin-top:2px}
+.garb-fill{height:100%;background:linear-gradient(90deg,#fa5,#f55);border-radius:3px;transition:width .15s}
+.garb-txt{font-size:10px;font-weight:bold;text-align:center;color:#fa5;margin-top:1px}
+.vs{display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold;color:var(--acc);text-shadow:0 0 8px rgba(255,211,105,.4);padding:0 2px;align-self:center}
+.ov{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);display:flex;justify-content:center;align-items:center;flex-direction:column;gap:10px;z-index:10}
+.ov.hid{display:none}
+.ov h1{font-size:32px;color:var(--acc)}.ov p{font-size:14px;color:#ccc}
+.ov .wn{font-size:22px;font-weight:bold}
+.ov button,.start-btn{padding:8px 24px;font-size:14px;background:var(--acc);color:#1e1e3a;border:none;border-radius:6px;cursor:pointer;font-weight:bold;transition:transform .1s}
+.ov button:hover,.start-btn:hover{transform:scale(1.05)}
+.bb{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}
+.shared-lv{display:flex;align-items:center;gap:5px;justify-content:center}
+.shared-lv .lbl{font-size:9px;color:var(--ct-fg)}
+.shared-lv .val{font-size:16px;font-weight:bold;color:var(--acc)}
+.start-ov{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,10,30,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;justify-content:center;align-items:center;flex-direction:column;gap:12px;z-index:20}
+.start-ov.hid{display:none}
+.start-ov h1{font-size:38px;color:var(--acc);text-shadow:0 0 20px rgba(255,211,105,.3);letter-spacing:4px}
+.start-ov .sub{font-size:13px;color:#ccc;letter-spacing:1px}
+.sbox{background:rgba(30,30,60,.85);border:2px solid var(--pb-bc);border-radius:10px;padding:14px 22px;display:flex;flex-direction:column;gap:8px;align-items:center;min-width:280px}
+.sbox .row{display:flex;align-items:center;gap:6px;width:100%;justify-content:space-between}
+.sbox .row label{font-size:11px;color:#ccc;white-space:nowrap}
+.sbox .row .rv{font-size:14px;font-weight:bold;color:var(--acc);min-width:36px;text-align:center}
+.sbox input[type="range"]{flex:1;accent-color:var(--acc);max-width:110px}
+.esc-hint{font-size:10px;color:#888;margin-top:2px}
+</style>
+</head>
+<body class="bg-midnight cs-neon">
+<div id="startov" class="start-ov">
+<h1>TETRIS VS</h1>
+<p class="sub">2P AI 対戦テトリス</p>
+<div class="sbox">
+<div class="row"><label>フィールド幅:</label><input type="range" id="wset" min="10" max="40" value="10"><span class="rv" id="wval">10</span></div>
+<div class="row"><label>フィールド高さ:</label><input type="range" id="hset" min="20" max="40" value="20"><span class="rv" id="hval">20</span></div>
+<div class="row"><label>お邪魔遅延:</label><input type="range" id="gdel0" min="0" max="20" value="10"><span class="rv" id="gdv0">1.0s</span></div>
+<div class="row"><label>お邪魔最大:</label><input type="range" id="gmax0" min="4" max="12" value="8"><span class="rv" id="gmv0">8</span></div>
+</div>
+<button class="start-btn" id="startbtn">▶ START</button>
+<p class="esc-hint">ゲーム中 ESC で開始画面に戻れます</p>
+</div>
+<div id="gov" class="ov hid"><h1>GAME OVER</h1><p id="wt" class="wn"></p>
+<p>1P: <span id="fs1">0</span>　2P: <span id="fs2">0</span></p>
+<button id="rbtn">もう一度プレイ</button></div>
+<div id="pov" class="ov hid"><h1>PAUSE</h1><p>Pキーで再開</p></div>
+<div id="wrap">
+<div class="top">
+<h1>⬛ TETRIS VS ⬛</h1>
+<div class="optrow"><span class="optlbl">BG</span>
+<div class="td t0 act" data-t="0"></div><div class="td t1" data-t="1"></div><div class="td t2" data-t="2"></div>
+<div class="td t3" data-t="3"></div><div class="td t4" data-t="4"></div><div class="td t5" data-t="5"></div></div>
+<div class="optrow"><span class="optlbl">配色</span>
+<span class="csb act" data-cs="0">Neon</span><span class="csb" data-cs="1">Candy</span><span class="csb" data-cs="2">Mint</span><span class="csb" data-cs="3">Sky</span><span class="csb" data-cs="4">Retro</span></div>
+</div>
+<div class="shared-lv"><span class="lbl">LEVEL</span><span class="val" id="slv">1</span><span class="lbl">LINES</span><span class="val" id="sln">0</span></div>
+<div class="arena">
+<div class="pa">
+<div class="sp">
+<div class="pb pl p1c">1P</div>
+<div class="pb"><h3>スコア</h3><div class="v" id="s1">0</div></div>
+<div class="pb"><h3>🤖 AI</h3><button id="ab1" class="ab on">AI ON</button><div class="sc"><label>速度:</label><input type="range" id="asp1" min="1" max="20" value="12"></div><div id="ast1" class="as act">稼働中</div></div>
+<div class="pb garb-box"><h3>⚠ お邪魔</h3><div class="garb-gauge"><div class="garb-fill" id="gf1" style="width:0%"></div></div><div class="garb-txt" id="g1">0</div></div>
+</div>
+<canvas id="c1" class="gc"></canvas>
+<div class="sp"><div class="pb"><h3>NEXT</h3><canvas id="n1a" class="nc"></canvas><div class="nl">1st</div><canvas id="n1b" class="nc"></canvas><div class="nl">2nd</div></div></div>
+</div>
+<div class="vs">VS</div>
+<div class="pa">
+<div class="sp"><div class="pb"><h3>NEXT</h3><canvas id="n2a" class="nc"></canvas><div class="nl">1st</div><canvas id="n2b" class="nc"></canvas><div class="nl">2nd</div></div></div>
+<canvas id="c2" class="gc"></canvas>
+<div class="sp">
+<div class="pb pl p2c">2P</div>
+<div class="pb"><h3>スコア</h3><div class="v" id="s2">0</div></div>
+<div class="pb"><h3>🤖 AI</h3><button id="ab2" class="ab on">AI ON</button><div class="sc"><label>速度:</label><input type="range" id="asp2" min="1" max="20" value="12"></div><div id="ast2" class="as act">稼働���</div></div>
+<div class="pb garb-box"><h3>⚠ お邪魔</h3><div class="garb-gauge"><div class="garb-fill" id="gf2" style="width:0%"></div></div><div class="garb-txt" id="g2">0</div></div>
+</div>
+</div>
+</div>
+<div class="bb">
+<div class="ct"><b>P</b> ポーズ　<b>B</b> 背景　<b>C</b> 配色　<b>1</b> 1P-AI　<b>2</b> 2P-AI　<b>ESC</b> 中断</div>
+<div class="sc" style="min-width:140px"><label>お邪魔遅延:</label><input type="range" id="gdel" min="0" max="20" value="10"><span class="sv" id="gdv">1.0s</span></div>
+</div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
