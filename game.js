@@ -36,8 +36,7 @@ function cpB(b){var n=[];for(var i=0;i<b.length;i++)n.push(b[i].slice());return 
 function rnd(){return PT[Math.floor(Math.random()*PT.length)];}
 function ok(t,r,x,y,b){var s=SH[t][r];for(var i=0;i<s.length;i++){var bx=x+s[i][0],by=y+s[i][1];if(bx<0||bx>=FW||by>=FH)return false;if(by>=0&&b[by][bx]!==null)return false;}return true;}
 var shLv=1,shLn=0;
-function calcDI(){return Math.max(80,1000-(shLv-1)*80);}
-function addLn(n){shLn+=n;shLv=Math.floor(shLn/10)+1;var di=calcDI();p1.di=di;p2.di=di;$('slv').textContent=shLv;$('sln').textContent=shLn;}
+function calcDI(){return Math.max(80,1000-(shLv-1)*80);}function addLn(n){shLn+=n;shLv=Math.floor(shLn/10)+1;var di=calcDI();p1.di=di;p2.di=di;$('slv').textContent=shLv;$('sln').textContent=shLn;}
 function getGD(){return parseInt($('gdel').value)*100;}
 $('wset').addEventListener('input',function(){$('wval').textContent=this.value;});
 $('hset').addEventListener('input',function(){$('hval').textContent=this.value;});
@@ -49,7 +48,8 @@ var p1,p2,gover,pau,aid,started=false;
 function enemy(p){return p===p1?p2:p1;}
 function spawn(p){p.t=p.np[0];p.r=0;p.px=Math.floor(FW/2)-1;p.py=0;p.np.shift();p.np.push(rnd());if(!ok(p.t,p.r,p.px,p.py,p.b)){p.go=true;chkEnd();return;}if(p.ai)aiCalc(p);}
 function mv(p,dx,dy){if(ok(p.t,p.r,p.px+dx,p.py+dy,p.b)){p.px+=dx;p.py+=dy;return true;}return false;}
-function rot2(p){var nr=(p.r+1)%4,ks=[0,-1,1,-2,2];for(var i=0;i<ks.length;i++){if(ok(p.t,nr,p.px+ks[i],p.py,p.b)){p.r=nr;p.px+=ks[i];return;}}}
+function rot2(p){var nr=(p.r+1)%4,ks=[0,-1,1,-2,2];for(var i=0;i<ks.length;i++){if(ok(p.t,nr,p.px+ks[i],p.py,p.b)){p.r=nr;p.px+=ks[i];return;}}
+}
 function hardDrop(p){while(mv(p,0,1)){}lock(p);}
 function lock(p){
   var s=SH[p.t][p.r];for(var i=0;i<s.length;i++){var bx=p.px+s[i][0],by=p.py+s[i][1];if(by<0){p.go=true;chkEnd();return;}p.b[by][bx]=p.t;}
@@ -68,7 +68,7 @@ function finCl(p,ts){
 function doGarb(p){var cnt=p.gP;p.gP=0;p.gT=-1;uG(p);pushG(p,cnt);}
 function pushG(p,cnt){
   if(cnt<=0||p.go)return;
-  for(var i=0;i<cnt;i++){p.b.shift();var row=[];var hole=Math.floor(Math.random()*FW);for(var c=0;c<FW;c++)row.push(c===hole?null:'G');p.b.push(row);}
+  for(var i=0;i<cnt;i++){p.b.shift();var row=[];var numHoles=2+Math.floor(Math.random()*2);var holes={};while(Object.keys(holes).length<numHoles){holes[Math.floor(Math.random()*FW)]=true;}for(var c=0;c<FW;c++)row.push(holes[c]?null:'G');p.b.push(row);}
   if(p.t!==null&&!ok(p.t,p.r,p.px,p.py,p.b)){var esc=false;for(var dy=1;dy<=cnt+2;dy++){if(ok(p.t,p.r,p.px,p.py-dy,p.b)){p.py-=dy;esc=true;break;}}if(!esc){p.go=true;chkEnd();}}
   if(p.ai&&p.t!==null&&!p.go)aiCalc(p);
 }
@@ -91,8 +91,8 @@ function evB(b){
   var mH=0;for(var k=0;k<FW;k++){if(h[k]>mH)mH=h[k];}
   var bah=0;for(var c2=0;c2<FW;c2++){var ab=0;for(var r2=0;r2<FH;r2++){if(b[r2][c2]!==null)ab++;else if(ab>0)bah+=ab;}}
   var af=0;for(var r3=0;r3<FH;r3++){var fl=0;for(var c3=0;c3<FW;c3++){if(b[r3][c3]!==null)fl++;}if(fl>=FW-1)af+=2.0;else if(fl>=FW-2)af+=0.8;}
-  var sc=-0.55*aH-6.0*ho-0.18*bu-0.20*mH-3.0*bah+af;
-  if(mH>FH*0.75)sc-=(mH-FH*0.75)*3;if(mH>FH*0.85)sc-=(mH-FH*0.85)*15;
+  var sc=-0.75*aH-10.0*ho-0.35*bu-0.5*mH-5.0*bah+af*1.5;
+  if(mH>FH*0.6)sc-=(mH-FH*0.6)*5;if(mH>FH*0.75)sc-=(mH-FH*0.75)*20;
   return sc;
 }
 function simP(b,type,rot,tx){
@@ -105,12 +105,12 @@ function allP(b,type){
   var pl=[],seen={};for(var rot=0;rot<4;rot++){var s=SH[type][rot];var mn=s[0][0],mx=s[0][0];for(var i=1;i<s.length;i++){if(s[i][0]<mn)mn=s[i][0];if(s[i][0]>mx)mx=s[i][0];}
   for(var x=-mn;x<=FW-1-mx;x++){var key=rot+','+x;if(seen[key])continue;seen[key]=true;var res=simP(b,type,rot,x);if(res)pl.push({x:x,r:rot,b:res.b,cl:res.cl});}}return pl;
 }
-function clB(cl){return cl>=4?20:cl===3?10:cl===2?5:cl===1?2:0;}
+function clB(cl){return cl>=4?100:cl===3?60:cl===2?30:cl===1?15:0;}
 function findBest(b,curT,nextT){
   var best=-Infinity,bestM=null;var cpl=allP(b,curT);
   for(var i=0;i<cpl.length;i++){var cp=cpl[i];var cpS=evB(cp.b)+clB(cp.cl);var npl=allP(cp.b,nextT);var bestN=-100000;
   for(var j=0;j<npl.length;j++){var ns=evB(npl[j].b)+clB(npl[j].cl);if(ns>bestN)bestN=ns;}
-  var combined=0.25*cpS+0.75*bestN;if(combined>best){best=combined;bestM={x:cp.x,r:cp.r};}}
+  var combined=0.4*cpS+0.6*bestN;if(combined>best){best=combined;bestM={x:cp.x,r:cp.r};}}
   return bestM;
 }
 function aiCalc(p){
@@ -229,7 +229,7 @@ document.addEventListener('keydown',function(e){
   if(e.key==='2'){togAI(p2);return;}
 });
 $('startbtn').addEventListener('click',startGame);
-$('rbtn').addEventListener('click',function(){initC();init();started=true;aid=requestAnimationFrame(loop);});
+$('rbtn').addEventListener('click',function(){goToStart();});
 $('ab1').addEventListener('click',function(){togAI(p1);});
 $('ab2').addEventListener('click',function(){togAI(p2);});
 /* 初期描画 */
