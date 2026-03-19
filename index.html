@@ -28,7 +28,7 @@ body.cs-retro{--field:#0a0a0a;--grid:rgba(0,255,0,.06);--acc:#0f0;--p1:#0ff;--p2
 .ct{font-size:8px;line-height:1.3;color:var(--ct-fg)}.ct b{color:var(--acc)}
 #wrap{transform-origin:center center;display:flex;flex-direction:column;align-items:center;gap:4px}
 .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
-.top h1{font-size:16px;color:var(--acc);letter-spacing:2px}
+.top h1{font-size:32px;color:var(--acc);letter-spacing:6px;text-shadow:0 0 20px rgba(255,211,105,.5),0 0 40px rgba(255,211,105,.3),0 2px 4px rgba(0,0,0,.5);font-weight:900;text-transform:uppercase}
 .optrow{display:flex;gap:3px;align-items:center;flex-wrap:wrap}
 .optlbl{font-size:8px;color:var(--ct-fg);margin-right:2px}
 .td{width:18px;height:18px;border-radius:50%;border:2px solid rgba(128,128,128,.4);cursor:pointer;transition:all .2s}
@@ -69,7 +69,7 @@ body.cs-retro{--field:#0a0a0a;--grid:rgba(0,255,0,.06);--acc:#0f0;--p1:#0ff;--p2
 .shared-lv .val{font-size:16px;font-weight:bold;color:var(--acc)}
 .start-ov{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,10,30,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;justify-content:center;align-items:center;flex-direction:column;gap:12px;z-index:20}
 .start-ov.hid{display:none}
-.start-ov h1{font-size:38px;color:var(--acc);text-shadow:0 0 20px rgba(255,211,105,.3);letter-spacing:4px}
+.start-ov h1{font-size:48px;color:var(--acc);text-shadow:0 0 30px rgba(255,211,105,.5),0 0 60px rgba(255,211,105,.3),0 4px 8px rgba(0,0,0,.6);letter-spacing:8px;font-weight:900}
 .start-ov .sub{font-size:13px;color:#ccc;letter-spacing:1px}
 .sbox{background:rgba(30,30,60,.85);border:2px solid var(--pb-bc);border-radius:10px;padding:14px 22px;display:flex;flex-direction:column;gap:8px;align-items:center;min-width:280px}
 .sbox .row{display:flex;align-items:center;gap:6px;width:100%;justify-content:space-between}
@@ -81,7 +81,7 @@ body.cs-retro{--field:#0a0a0a;--grid:rgba(0,255,0,.06);--acc:#0f0;--p1:#0ff;--p2
 </head>
 <body class="bg-midnight cs-neon">
 <div id="startov" class="start-ov">
-<h1>TETRIS VS</h1>
+<h1>🎮 TETRIS VS 🎮</h1>
 <p class="sub">2P AI 対戦テトリス</p>
 <div class="sbox">
 <div class="row"><label>フィールド幅:</label><input type="range" id="wset" min="10" max="40" value="10"><span class="rv" id="wval">10</span></div>
@@ -98,7 +98,7 @@ body.cs-retro{--field:#0a0a0a;--grid:rgba(0,255,0,.06);--acc:#0f0;--p1:#0ff;--p2
 <div id="pov" class="ov hid"><h1>PAUSE</h1><p>Pキーで再開</p></div>
 <div id="wrap">
 <div class="top">
-<h1>⬛ TETRIS VS ⬛</h1>
+<h1>🎮 TETRIS VS 🎮</h1>
 <div class="optrow"><span class="optlbl">BG</span>
 <div class="td t0 act" data-t="0"></div><div class="td t1" data-t="1"></div><div class="td t2" data-t="2"></div>
 <div class="td t3" data-t="3"></div><div class="td t4" data-t="4"></div><div class="td t5" data-t="5"></div></div>
@@ -111,6 +111,7 @@ body.cs-retro{--field:#0a0a0a;--grid:rgba(0,255,0,.06);--acc:#0f0;--p1:#0ff;--p2
 <div class="sp">
 <div class="pb pl p1c">1P</div>
 <div class="pb"><h3>スコア</h3><div class="v" id="s1">0</div></div>
+<div class="pb"><h3>ライン</h3><div class="v" id="ln1">0</div></div>
 <div class="pb"><h3>🤖 AI</h3><button id="ab1" class="ab on">AI ON</button><div class="sc"><label>速度:</label><input type="range" id="asp1" min="1" max="20" value="12"></div><div id="ast1" class="as act">稼働中</div></div>
 <div class="pb garb-box"><h3>⚠ お邪魔</h3><div class="garb-gauge"><div class="garb-fill" id="gf1" style="width:0%"></div></div><div class="garb-txt" id="g1">0</div></div>
 </div>
@@ -124,7 +125,8 @@ body.cs-retro{--field:#0a0a0a;--grid:rgba(0,255,0,.06);--acc:#0f0;--p1:#0ff;--p2
 <div class="sp">
 <div class="pb pl p2c">2P</div>
 <div class="pb"><h3>スコア</h3><div class="v" id="s2">0</div></div>
-<div class="pb"><h3>🤖 AI</h3><button id="ab2" class="ab on">AI ON</button><div class="sc"><label>速度:</label><input type="range" id="asp2" min="1" max="20" value="12"></div><div id="ast2" class="as act">稼働���</div></div>
+<div class="pb"><h3>ライン</h3><div class="v" id="ln2">0</div></div>
+<div class="pb"><h3>🤖 AI</h3><button id="ab2" class="ab on">AI ON</button><div class="sc"><label>速度:</label><input type="range" id="asp2" min="1" max="20" value="12"></div><div id="ast2" class="as act">稼働中</div></div>
 <div class="pb garb-box"><h3>⚠ お邪魔</h3><div class="garb-gauge"><div class="garb-fill" id="gf2" style="width:0%"></div></div><div class="garb-txt" id="g2">0</div></div>
 </div>
 </div>
