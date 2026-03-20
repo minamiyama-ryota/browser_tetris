@@ -150,7 +150,7 @@ function chkEnd(){
   if(p1.go&&p2.go){w.textContent=p1.sc>p2.sc?'🏆 1P WIN!':p2.sc>p1.sc?'🏆 2P WIN!':'🤝 DRAW!';w.style.color=p1.sc>=p2.sc?'#5ef0ff':'#ff7eb3';}
   else if(p1.go){w.textContent='🏆 2P WIN!';w.style.color='#ff7eb3';}
   else{w.textContent='🏆 1P WIN!';w.style.color='#5ef0ff';}
-  $('gov').classList.remove('hid');
+  goToStart();
 }
 
 /* ===== AI ===== */
@@ -163,10 +163,9 @@ function evB(b){
   var bah=0;for(var c2=0;c2<FW;c2++){var ab=0;for(var r2=0;r2<FH;r2++){if(b[r2][c2]!==null)ab++;else if(ab>0)bah+=ab;}}
   var af=0;for(var r3=0;r3<FH;r3++){var fl=0;for(var c3=0;c3<FW;c3++){if(b[r3][c3]!==null)fl++;}if(fl>=FW-1)af+=2.0;else if(fl>=FW-2)af+=0.8;}
   /* 行消し優先・積み上げ回避の重み付け */
-  var sc=-0.75*aH-8.0*ho-0.25*bu-0.40*mH-4.0*bah+af;
-  if(mH>FH*0.6)sc-=(mH-FH*0.6)*5;
-  if(mH>FH*0.75)sc-=(mH-FH*0.75)*10;
-  if(mH>FH*0.85)sc-=(mH-FH*0.85)*25;
+  var sc=-0.50*aH-10.0*ho-0.35*bu-0.50*mH-5.0*bah+af;
+  if(mH>FH*0.75)sc-=(mH-FH*0.75)*3;
+  if(mH>FH*0.85)sc-=(mH-FH*0.85)*15;
   return sc;
 }
 function simP(b,type,rot,tx){
@@ -179,7 +178,7 @@ function allP(b,type){
   var pl=[],seen={};for(var rot=0;rot<4;rot++){var s=SH[type][rot];var mn=s[0][0],mx=s[0][0];for(var i=1;i<s.length;i++){if(s[i][0]<mn)mn=s[i][0];if(s[i][0]>mx)mx=s[i][0];}
   for(var x=-mn;x<=FW-1-mx;x++){var key=rot+','+x;if(seen[key])continue;seen[key]=true;var res=simP(b,type,rot,x);if(res)pl.push({x:x,r:rot,b:res.b,cl:res.cl});}}return pl;
 }
-function clB(cl){return cl>=4?30:cl===3?15:cl===2?7:cl===1?3:0;}
+function clB(cl){return cl>=4?200:cl===3?80:cl===2?30:cl===1?8:0;}
 
 /* 多段先読みAI (ビームサーチ風) */
 function findBestDeep(b,curT,npArr){
@@ -216,7 +215,7 @@ function findBestDeep(b,curT,npArr){
         var ns=evB(npl[ni].b)+clB(npl[ni].cl);
         if(ns>bestNs){bestNs=ns;bestNb=npl[ni].b;}
       }
-      newBeam.push({move:beam[bi].move,b:bestNb,score:beam[bi].score*0.3+bestNs*0.7});
+      newBeam.push({move:beam[bi].move,b:bestNb,score:beam[bi].score*0.6+bestNs*0.4});
     }
     newBeam.sort(function(a,b2){return b2.score-a.score;});
     if(newBeam.length>BEAM_W)newBeam=newBeam.slice(0,BEAM_W);
