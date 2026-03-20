@@ -145,28 +145,80 @@ function uG(p){
 }
 function uUI(p){$('s'+p.id).textContent=p.sc;$('ln'+p.id).textContent=p.lc;}
 function chkEnd(){
-  if(!p1.go&&!p2.go)return;gover=true;if(aid)cancelAnimationFrame(aid);
-  $('fs1').textContent=p1.sc;$('fs2').textContent=p2.sc;var w=$('wt');
-  if(p1.go&&p2.go){w.textContent=p1.sc>p2.sc?'🏆 1P WIN!':p2.sc>p1.sc?'🏆 2P WIN!':'🤝 DRAW!';w.style.color=p1.sc>=p2.sc?'#5ef0ff':'#ff7eb3';}
-  else if(p1.go){w.textContent='🏆 2P WIN!';w.style.color='#ff7eb3';}
-  else{w.textContent='🏆 1P WIN!';w.style.color='#5ef0ff';}
-  $('gov').classList.remove('hid');
+  if(!p1.go && !p2.go) return;
+  gover=true; if(aid) cancelAnimationFrame(aid);
+  $('fs1').textContent = p1.sc; $('fs2').textContent = p2.sc; var w=$('wt');
+  if(p1.go && p2.go){ w.textContent = p1.sc>p2.sc ? '🏆 1P WIN!' : p2.sc>p1.sc ? '🏆 2P WIN!' : '🤝 DRAW!'; w.style.color = p1.sc>=p2.sc ? '#5ef0ff' : '#ff7eb3'; }
+  else if(p1.go){ w.textContent='🏆 2P WIN!'; w.style.color='#ff7eb3'; }
+  else { w.textContent='🏆 1P WIN!'; w.style.color='#5ef0ff'; }
+  // auto-return to start
+  goToStart();
 }
 
 /* ===== AI ===== */
+// ===== AI params + presets =====
+var aiParams = {
+  aH: -0.55,    // aggregate height
+  ho: -6.0,     // holes
+  bu: -0.18,    // bumpiness
+  mH: -0.20,    // max height
+  bah: -3.0,    // blocks above holes
+  afNear: 2.0,  // row with FW-1 filled
+  afNear2: 0.8, // row with FW-2 filled
+  cl1: 2,       // 1-line clear bonus
+  cl2: 5,
+  cl3: 10,
+  cl4: 20,
+  immediateWeight: 0.25,
+  aiSpeedBase: 155
+};
+
+var aiPresets = {
+  Conservative: {
+    aH: -0.4, ho: -4.0, bu: -0.12, mH: -0.15, bah: -1.5,
+    afNear: 1.5, afNear2: 0.6,
+    cl1: 2, cl2: 5, cl3: 10, cl4: 20,
+    immediateWeight: 0.6, aiSpeedBase: 160
+  },
+  Balanced: {
+    aH: -0.55, ho: -6.0, bu: -0.18, mH: -0.20, bah: -3.0,
+    afNear: 2.0, afNear2: 0.8,
+    cl1: 2, cl2: 5, cl3: 10, cl4: 20,
+    immediateWeight: 0.25, aiSpeedBase: 155
+  },
+  Aggressive: {
+    aH: -0.65, ho: -8.0, bu: -0.25, mH: -0.30, bah: -6.0,
+    afNear: 3.0, afNear2: 1.2,
+    cl1: 8, cl2: 30, cl3: 80, cl4: 200,
+    immediateWeight: 0.0, aiSpeedBase: 140
+  }
+};
+
+function applyPreset(name){
+  var p = aiPresets[name];
+  if(!p) return;
+  for(var k in p) aiParams[k]=p[k];
+}
+
 function colH(b){var h=[];for(var c=0;c<FW;c++){h[c]=0;for(var r=0;r<FH;r++){if(b[r][c]!==null){h[c]=FH-r;break;}}}return h;}
 function evB(b){
-  var h=colH(b),aH=0;for(var i=0;i<FW;i++)aH+=h[i];
-  var ho=0;for(var c=0;c<FW;c++){var f=false;for(var r=0;r<FH;r++){if(b[r][c]!==null)f=true;else if(f)ho++;}}
-  var bu=0;for(var j=0;j<FW-1;j++)bu+=Math.abs(h[j]-h[j+1]);
-  var mH=0;for(var k=0;k<FW;k++){if(h[k]>mH)mH=h[k];}
-  var bah=0;for(var c2=0;c2<FW;c2++){var ab=0;for(var r2=0;r2<FH;r2++){if(b[r2][c2]!==null)ab++;else if(ab>0)bah+=ab;}}
-  var af=0;for(var r3=0;r3<FH;r3++){var fl=0;for(var c3=0;c3<FW;c3++){if(b[r3][c3]!==null)fl++;}if(fl>=FW-1)af+=2.0;else if(fl>=FW-2)af+=0.8;}
-  /* 行消し優先・積み上げ回避の重み付け */
-  var sc=-0.75*aH-8.0*ho-0.25*bu-0.40*mH-4.0*bah+af;
-  if(mH>FH*0.6)sc-=(mH-FH*0.6)*5;
-  if(mH>FH*0.75)sc-=(mH-FH*0.75)*10;
-  if(mH>FH*0.85)sc-=(mH-FH*0.85)*25;
+  var h = colH(b), aH = 0;
+  for(var i=0;i<FW;i++) aH += h[i];
+  var ho = 0;
+  for(var c=0;c<FW;c++){
+    var f=false;
+    for(var r=0;r<FH;r++){
+      if(b[r][c]!==null) f=true;
+      else if(f) ho++;
+    }
+  }
+  var bu=0; for(var j=0;j<FW-1;j++) bu += Math.abs(h[j]-h[j+1]);
+  var mH=0; for(var k=0;k<FW;k++) if(h[k]>mH) mH=h[k];
+  var bah=0; for(var c2=0;c2<FW;c2++){ var ab=0; for(var r2=0;r2<FH;r2++){ if(b[r2][c2]!==null) ab++; else if(ab>0) bah+=ab; }}
+  var af=0; for(var r3=0;r3<FH;r3++){ var fl=0; for(var c3=0;c3<FW;c3++){ if(b[r3][c3]!==null) fl++; } if(fl>=FW-1) af += aiParams.afNear; else if(fl>=FW-2) af += aiParams.afNear2; }
+  var sc = aiParams.aH * aH + aiParams.ho * ho + aiParams.bu * bu + aiParams.mH * mH + aiParams.bah * bah + af;
+  if(mH > FH*0.75) sc -= (mH - FH*0.75)*3;
+  if(mH > FH*0.85) sc -= (mH - FH*0.85)*15;
   return sc;
 }
 function simP(b,type,rot,tx){
@@ -179,7 +231,25 @@ function allP(b,type){
   var pl=[],seen={};for(var rot=0;rot<4;rot++){var s=SH[type][rot];var mn=s[0][0],mx=s[0][0];for(var i=1;i<s.length;i++){if(s[i][0]<mn)mn=s[i][0];if(s[i][0]>mx)mx=s[i][0];}
   for(var x=-mn;x<=FW-1-mx;x++){var key=rot+','+x;if(seen[key])continue;seen[key]=true;var res=simP(b,type,rot,x);if(res)pl.push({x:x,r:rot,b:res.b,cl:res.cl});}}return pl;
 }
-function clB(cl){return cl>=4?30:cl===3?15:cl===2?7:cl===1?3:0;}
+function clB(cl){
+  if(cl>=4) return aiParams.cl4;
+  if(cl===3) return aiParams.cl3;
+  if(cl===2) return aiParams.cl2;
+  if(cl===1) return aiParams.cl1;
+  return 0;
+}
+
+function findBest(b,curT,nextT){
+  var best=-Infinity,bestM=null; var cpl=allP(b,curT);
+  for(var i=0;i<cpl.length;i++){
+    var cp=cpl[i]; var cpS = evB(cp.b) + clB(cp.cl);
+    var npl = allP(cp.b,nextT); var bestN = -Infinity;
+    for(var j=0;j<npl.length;j++){ var ns = evB(npl[j].b) + clB(npl[j].cl); if(ns>bestN) bestN = ns; }
+    var iw = aiParams.immediateWeight; var combined = iw * cpS + (1 - iw) * bestN;
+    if(combined > best){ best = combined; bestM = {x:cp.x, r:cp.r}; }
+  }
+  return bestM;
+}
 
 /* 多段先読みAI (ビームサーチ風) */
 function findBestDeep(b,curT,npArr){
@@ -230,7 +300,7 @@ function findBestDeep(b,curT,npArr){
 
 function aiCalc(p){
   if(!p.t||p.go)return;
-  var best=findBestDeep(p.b,p.t,p.np);
+  var best=findBest(p.b,p.t,p.np[0]||p.t);
   if(!best){p.at=null;p.aq=[];return;}p.at=best;p.aq=[];
   var rotN=(best.r-p.r+4)%4;for(var i=0;i<rotN;i++)p.aq.push('r');
   var sr=p.r,sx=p.px;
@@ -239,7 +309,81 @@ function aiCalc(p){
   p.aq.push('d');$('ast'+p.id).textContent='x='+best.x;$('ast'+p.id).className='as act';
 }
 function aiExec(p){if(!p.ai||p.go||pau||p.aq.length===0||p.cr)return;var a=p.aq.shift();switch(a){case'r':rot2(p);break;case'l':mv(p,-1,0);break;case'R':mv(p,1,0);break;case'd':hardDrop(p);uUI(p);break;}}
-function aiInt(p){var v=parseInt($('asp'+p.id).value);return Math.max(3,120-v*6);} /* 高速化 */
+function aiInt(p){ var v = parseInt($('asp'+p.id).value); return Math.max(5, aiParams.aiSpeedBase - v*8); }
+
+// ===== UI: movable, minimizable AI Settings panel with presets =====
+function createAISettingsUI(){
+  if($('ai-settings')) return;
+  // styles
+  var style = document.createElement('style'); style.id='ai-settings-style'; style.innerHTML =
+    '#ai-settings{position:fixed;right:12px;top:12px;background:rgba(10,10,20,0.8);color:#fff;padding:10px;border-radius:8px;z-index:9999;min-width:280px;max-width:420px;box-shadow:0 6px 20px rgba(0,0,0,0.6);}'+
+    '#ai-settings .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;cursor:move;}'+
+    '#ai-settings .hdr .title{font-weight:700;font-size:13px;}'+
+    '#ai-settings .hdr .ctrls button{background:transparent;border:none;color:#ddd;margin-left:6px;cursor:pointer;}'+
+    '#ai-settings .body{max-height:44vh;overflow:auto;padding-right:6px;}'+
+    '#ai-settings .row{margin-bottom:8px;font-size:12px;}'+
+    '#ai-settings input[type=range]{width:100%;}'+
+    '#ai-settings .presets{display:flex;gap:6px;margin-bottom:8px;}'+
+    '#ai-open-btn{position:fixed;right:12px;bottom:12px;z-index:9998;background:rgba(10,10,20,0.8);color:#fff;padding:6px 10px;border-radius:8px;border:none;cursor:pointer;}';
+  document.head.appendChild(style);
+
+  var el=document.createElement('div'); el.id='ai-settings';
+  el.innerHTML = '<div class="hdr"><div class="title">AI Settings</div><div class="ctrls"><button id="ai-min">—</button><button id="ai-close">×</button></div></div><div class="body"></div>';
+  document.body.appendChild(el);
+  var body = el.querySelector('.body');
+
+  function addSlider(label,key,min,max,step){
+    var r=document.createElement('div'); r.className='row';
+    var lab=document.createElement('div'); lab.style.marginBottom='4px'; lab.innerHTML = label + ' <small style="color:#bbb">(' + aiParams[key] + ')</small>';
+    var input=document.createElement('input'); input.type='range'; input.min=min; input.max=max; input.step=step||1; input.value=aiParams[key];
+    input.addEventListener('input', function(){ aiParams[key]=parseFloat(this.value); lab.querySelector('small').textContent = '(' + this.value + ')'; if(p1&&p1.t&&p1.ai)aiCalc(p1); if(p2&&p2.t&&p2.ai)aiCalc(p2); });
+    r.appendChild(lab); r.appendChild(input); body.appendChild(r);
+    return input;
+  }
+
+  // presets
+  var presetRow = document.createElement('div'); presetRow.className='row';
+  presetRow.innerHTML = '<div style="margin-bottom:6px;"><strong>Presets</strong></div><div class="presets"></div>';
+  body.appendChild(presetRow);
+  var presetsContainer = presetRow.querySelector('.presets');
+  ['Conservative','Balanced','Aggressive'].forEach(function(name){
+    var b=document.createElement('button'); b.textContent=name; b.style.cursor='pointer'; b.style.flex='1'; b.addEventListener('click', function(){ applyPreset(name); refreshSliders(); if(p1&&p1.t&&p1.ai)aiCalc(p1); if(p2&&p2.t&&p2.ai)aiCalc(p2); }); presetsContainer.appendChild(b);
+  });
+
+  // sliders
+  var sliders = {};
+  sliders.aH = addSlider('総高さ aH','aH',-2.0,0,0.01);
+  sliders.ho = addSlider('穴 ho','ho',-30,0,0.1);
+  sliders.bu = addSlider('凸凹 bu','bu',-2.0,0,0.01);
+  sliders.mH = addSlider('最大高さ mH','mH',-3.0,0,0.01);
+  sliders.bah = addSlider('穴上 bah','bah',-20,0,0.1);
+  sliders.afNear = addSlider('near-row afNear','afNear',0,10,0.1);
+  sliders.afNear2 = addSlider('near2 afNear2','afNear2',0,10,0.1);
+  sliders.cl1 = addSlider('cl1 (1行)','cl1',0,200,1);
+  sliders.cl2 = addSlider('cl2 (2行)','cl2',0,300,1);
+  sliders.cl3 = addSlider('cl3 (3行)','cl3',0,500,1);
+  sliders.cl4 = addSlider('cl4 (4行)','cl4',0,1000,5);
+  sliders.immediateWeight = addSlider('immediateWeight','immediateWeight',0,1,0.01);
+  sliders.aiSpeedBase = addSlider('aiSpeedBase','aiSpeedBase',50,300,1);
+
+  function refreshSliders(){
+    for(var k in sliders){ sliders[k].value = aiParams[k]; var lab = sliders[k].previousSibling||sliders[k].parentNode.querySelector('div'); if(lab){ var small = lab.querySelector('small'); if(small) small.textContent = '(' + aiParams[k] + ')'; }}
+  }
+
+  // minimize/close
+  var btnMin = $('ai-min'); var btnClose = $('ai-close');
+  btnMin.addEventListener('click', function(){ if(body.style.display==='none'){ body.style.display='block'; btnMin.textContent='—'; } else { body.style.display='none'; btnMin.textContent='▢'; } });
+  btnClose.addEventListener('click', function(){ el.style.display='none'; var ob = document.getElementById('ai-open-btn'); if(!ob){ var b=document.createElement('button'); b.id='ai-open-btn'; b.textContent='AI Settings'; b.addEventListener('click', function(){ el.style.display='block'; b.parentNode.removeChild(b); }); document.body.appendChild(b);} });
+
+  // draggable
+  var header = el.querySelector('.hdr'); var dragging=false, startX=0, startY=0, startLeft=0, startTop=0;
+  header.addEventListener('mousedown', function(e){ dragging=true; startX=e.clientX; startY=e.clientY; var rect = el.getBoundingClientRect(); startLeft = rect.left; startTop = rect.top; document.body.style.userSelect='none'; });
+  window.addEventListener('mousemove', function(e){ if(!dragging) return; var dx=e.clientX-startX, dy=e.clientY-startY; el.style.left = (startLeft + dx) + 'px'; el.style.top = (startTop + dy) + 'px'; el.style.right='auto'; el.style.position='fixed'; });
+  window.addEventListener('mouseup', function(){ dragging=false; document.body.style.userSelect='auto'; });
+
+  // initial preset Balanced
+  applyPreset('Balanced'); refreshSliders();
+}
 
 /* ===== 描画 ===== */
 function fBg(){return getComputedStyle(document.body).getPropertyValue('--field').trim()||'#10102a';}
@@ -326,6 +470,7 @@ function init(){
   uUI(p1);uUI(p2);uG(p1);uG(p2);
   $('slv').textContent='1';$('sln').textContent='0';
   $('gov').classList.add('hid');$('pov').classList.add('hid');
+  createAISettingsUI();
 }
 function syncAI(p){var btn=$('ab'+p.id),st=$('ast'+p.id);if(p.ai){btn.textContent='AI ON';btn.className='ab on';st.textContent='稼働中';st.className='as act';}else{btn.textContent='AI OFF';btn.className='ab off';st.textContent='待機中';st.className='as';p.at=null;p.aq=[];}}
 function togAI(p){p.ai=!p.ai;syncAI(p);if(p.ai&&p.t&&!p.go)aiCalc(p);}
@@ -356,6 +501,7 @@ function startGame(){
   GARB_MAX=parseInt($('gmax0').value);
   $('gdel').value=$('gdel0').value;$('gdv').textContent=$('gdv0').textContent;
   initC();init();fitWrap();
+  createAISettingsUI();
   $('startov').classList.add('hid');started=true;aid=requestAnimationFrame(loop);
 }
 document.addEventListener('keydown',function(e){
