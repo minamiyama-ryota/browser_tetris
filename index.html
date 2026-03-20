@@ -53,8 +53,9 @@ body.cs-retro{--field:#0a0a0a;--grid:rgba(0,255,0,.06);--acc:#0f0;--p1:#0ff;--p2
 .sc .sv{min-width:28px;text-align:right;font-weight:bold;color:var(--acc);font-size:8px}
 .as{font-size:8px;color:var(--ct-fg);text-align:center;min-height:10px}.as.act{color:#5ef0a0;font-weight:bold}
 .garb-box{position:relative}
-.garb-gauge{width:100%;height:10px;background:rgba(0,0,0,.3);border-radius:3px;overflow:hidden;margin-top:2px}
-.garb-fill{height:100%;background:linear-gradient(90deg,#fa5,#f55);border-radius:3px;transition:width .15s}
+.garb-gauge{width:100%;height:14px;background:rgba(0,0,0,.3);border-radius:3px;overflow:hidden;margin-top:2px;position:relative}
+.garb-fill{height:100%;background:linear-gradient(90deg,#fa5,#f55);border-radius:3px;transition:width .15s;position:absolute;top:0;left:0;z-index:1}
+.garb-delay{height:100%;background:rgba(100,180,255,.35);border-radius:3px;transition:width .15s;position:absolute;top:0;right:0;z-index:2}
 .garb-txt{font-size:10px;font-weight:bold;text-align:center;color:#fa5;margin-top:1px}
 .vs{display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold;color:var(--acc);text-shadow:0 0 8px rgba(255,211,105,.4);padding:0 2px;align-self:center}
 .ov{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);display:flex;justify-content:center;align-items:center;flex-direction:column;gap:10px;z-index:10}
@@ -77,6 +78,7 @@ body.cs-retro{--field:#0a0a0a;--grid:rgba(0,255,0,.06);--acc:#0f0;--p1:#0ff;--p2
 .sbox .row .rv{font-size:14px;font-weight:bold;color:var(--acc);min-width:36px;text-align:center}
 .sbox input[type="range"]{flex:1;accent-color:var(--acc);max-width:110px}
 .esc-hint{font-size:10px;color:#888;margin-top:2px}
+.next-wrap{display:flex;flex-direction:column;gap:1px}
 </style>
 </head>
 <body class="bg-midnight cs-neon">
@@ -86,6 +88,7 @@ body.cs-retro{--field:#0a0a0a;--grid:rgba(0,255,0,.06);--acc:#0f0;--p1:#0ff;--p2
 <div class="sbox">
 <div class="row"><label>フィールド幅:</label><input type="range" id="wset" min="10" max="40" value="10"><span class="rv" id="wval">10</span></div>
 <div class="row"><label>フィールド高さ:</label><input type="range" id="hset" min="20" max="40" value="20"><span class="rv" id="hval">20</span></div>
+<div class="row"><label>NEXT表示数:</label><input type="range" id="nset" min="1" max="6" value="3"><span class="rv" id="nval">3</span></div>
 <div class="row"><label>お邪魔遅延:</label><input type="range" id="gdel0" min="0" max="20" value="10"><span class="rv" id="gdv0">1.0s</span></div>
 <div class="row"><label>お邪魔最大:</label><input type="range" id="gmax0" min="4" max="12" value="8"><span class="rv" id="gmv0">8</span></div>
 </div>
@@ -113,21 +116,29 @@ body.cs-retro{--field:#0a0a0a;--grid:rgba(0,255,0,.06);--acc:#0f0;--p1:#0ff;--p2
 <div class="pb"><h3>スコア</h3><div class="v" id="s1">0</div></div>
 <div class="pb"><h3>ライン</h3><div class="v" id="ln1">0</div></div>
 <div class="pb"><h3>🤖 AI</h3><button id="ab1" class="ab on">AI ON</button><div class="sc"><label>速度:</label><input type="range" id="asp1" min="1" max="20" value="12"></div><div id="ast1" class="as act">稼働中</div></div>
-<div class="pb garb-box"><h3>⚠ お邪魔</h3><div class="garb-gauge"><div class="garb-fill" id="gf1" style="width:0%"></div></div><div class="garb-txt" id="g1">0</div></div>
+<div class="pb garb-box"><h3>⚠ お邪魔</h3><div class="garb-gauge"><div class="garb-fill" id="gf1" style="width:0%"></div><div class="garb-delay" id="gd1" style="width:0%"></div></div><div class="garb-txt" id="g1">0/8</div></div>
 </div>
 <canvas id="c1" class="gc"></canvas>
-<div class="sp"><div class="pb"><h3>NEXT</h3><canvas id="n1a" class="nc"></canvas><div class="nl">1st</div><canvas id="n1b" class="nc"></canvas><div class="nl">2nd</div></div></div>
+<div class="sp">
+<div class="pb"><h3>NEXT</h3>
+<div class="next-wrap" id="nw1"></div>
+</div>
+</div>
 </div>
 <div class="vs">VS</div>
 <div class="pa">
-<div class="sp"><div class="pb"><h3>NEXT</h3><canvas id="n2a" class="nc"></canvas><div class="nl">1st</div><canvas id="n2b" class="nc"></canvas><div class="nl">2nd</div></div></div>
+<div class="sp">
+<div class="pb"><h3>NEXT</h3>
+<div class="next-wrap" id="nw2"></div>
+</div>
+</div>
 <canvas id="c2" class="gc"></canvas>
 <div class="sp">
 <div class="pb pl p2c">2P</div>
 <div class="pb"><h3>スコア</h3><div class="v" id="s2">0</div></div>
 <div class="pb"><h3>ライン</h3><div class="v" id="ln2">0</div></div>
 <div class="pb"><h3>🤖 AI</h3><button id="ab2" class="ab on">AI ON</button><div class="sc"><label>速度:</label><input type="range" id="asp2" min="1" max="20" value="12"></div><div id="ast2" class="as act">稼働中</div></div>
-<div class="pb garb-box"><h3>⚠ お邪魔</h3><div class="garb-gauge"><div class="garb-fill" id="gf2" style="width:0%"></div></div><div class="garb-txt" id="g2">0</div></div>
+<div class="pb garb-box"><h3>⚠ お邪魔</h3><div class="garb-gauge"><div class="garb-fill" id="gf2" style="width:0%"></div><div class="garb-delay" id="gd2" style="width:0%"></div></div><div class="garb-txt" id="g2">0/8</div></div>
 </div>
 </div>
 </div>
