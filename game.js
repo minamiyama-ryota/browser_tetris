@@ -151,6 +151,7 @@ function chkEnd(){
   else if(p1.go){w.textContent='🏆 2P WIN!';w.style.color='#ff7eb3';}
   else{w.textContent='🏆 1P WIN!';w.style.color='#5ef0ff';}
   $('gov').classList.remove('hid');
+  setTimeout(goToStart,1500);
 }
 
 /* ===== AI ===== */
@@ -190,6 +191,11 @@ function findBestDeep(b,curT,npArr){
   /* 1手目: 全配置を列挙 */
   var cpl=allP(b,curT);
   if(cpl.length===0)return null;
+
+  /* 即時に消せる行数が最大の配置に絞る（行消し優先） */
+  var maxClear=0;
+  for(var i=0;i<cpl.length;i++){if(cpl[i].cl>maxClear)maxClear=cpl[i].cl;}
+  if(maxClear>0)cpl=cpl.filter(function(cp){return cp.cl===maxClear;});
 
   var beam=[];
   for(var i=0;i<cpl.length;i++){
