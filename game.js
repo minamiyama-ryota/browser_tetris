@@ -73,7 +73,7 @@ $('gdel0').addEventListener('input',function(){$('gdv0').textContent=(parseInt(t
 $('gmax0').addEventListener('input',function(){$('gmv0').textContent=this.value;});
 $('gdel').addEventListener('input',function(){$('gdv').textContent=(parseInt(this.value)*0.1).toFixed(1)+'s';});
 
-function mkP(id){return{id:id,b:mkB(),t:null,r:0,px:0,py:0,np:[],sc:0,lc:0,go:false,di:1000,ldt:0,ai:true,at:null,aq:[],amt:0,cr:null,caS:-1,clC:0,gP:0,gT:-1};}
+function mkP(id){var _s=$('stsel'+id);return{id:id,b:mkB(),t:null,r:0,px:0,py:0,np:[],sc:0,lc:0,go:false,di:1000,ldt:0,ai:true,at:null,aq:[],amt:0,cr:null,caS:-1,clC:0,gP:0,gT:-1,strategy:(_s?_s.value:'balanced')};}
 var p1,p2,gover,pau,aid,started=false;
 function enemy(p){return p===p1?p2:p1;}
 
@@ -151,19 +151,23 @@ function chkEnd(){
   else if(p1.go){w.textContent='🏆 2P WIN!';w.style.color='#ff7eb3';}
   else{w.textContent='🏆 1P WIN!';w.style.color='#5ef0ff';}
   $('gov').classList.remove('hid');
+  setTimeout(function(){if(gover)goToStart();},3000);
 }
 
 /* ===== AI ===== */
 function colH(b){var h=[];for(var c=0;c<FW;c++){h[c]=0;for(var r=0;r<FH;r++){if(b[r][c]!==null){h[c]=FH-r;break;}}}return h;}
-function evB(b){
+function evB(b,strategy){
   var h=colH(b),aH=0;for(var i=0;i<FW;i++)aH+=h[i];
   var ho=0;for(var c=0;c<FW;c++){var f=false;for(var r=0;r<FH;r++){if(b[r][c]!==null)f=true;else if(f)ho++;}}
   var bu=0;for(var j=0;j<FW-1;j++)bu+=Math.abs(h[j]-h[j+1]);
   var mH=0;for(var k=0;k<FW;k++){if(h[k]>mH)mH=h[k];}
   var bah=0;for(var c2=0;c2<FW;c2++){var ab=0;for(var r2=0;r2<FH;r2++){if(b[r2][c2]!==null)ab++;else if(ab>0)bah+=ab;}}
   var af=0;for(var r3=0;r3<FH;r3++){var fl=0;for(var c3=0;c3<FW;c3++){if(b[r3][c3]!==null)fl++;}if(fl>=FW-1)af+=2.0;else if(fl>=FW-2)af+=0.8;}
-  /* 行消し優先・積み上げ回避の重み付け */
-  var sc=-0.75*aH-8.0*ho-0.25*bu-0.40*mH-4.0*bah+af;
+  /* 行消し優先・積み上げ回避の重み付け (strategy別) */
+  var sc;
+  if(strategy==='attack'){sc=-0.5*aH-6.0*ho-0.2*bu-0.3*mH-3.0*bah+af*2.5;}
+  else if(strategy==='defense'){sc=-1.0*aH-10.0*ho-0.4*bu-0.6*mH-6.0*bah+af;}
+  else{sc=-0.75*aH-8.0*ho-0.25*bu-0.40*mH-4.0*bah+af;}
   if(mH>FH*0.6)sc-=(mH-FH*0.6)*5;
   if(mH>FH*0.75)sc-=(mH-FH*0.75)*10;
   if(mH>FH*0.85)sc-=(mH-FH*0.85)*25;
@@ -179,10 +183,14 @@ function allP(b,type){
   var pl=[],seen={};for(var rot=0;rot<4;rot++){var s=SH[type][rot];var mn=s[0][0],mx=s[0][0];for(var i=1;i<s.length;i++){if(s[i][0]<mn)mn=s[i][0];if(s[i][0]>mx)mx=s[i][0];}
   for(var x=-mn;x<=FW-1-mx;x++){var key=rot+','+x;if(seen[key])continue;seen[key]=true;var res=simP(b,type,rot,x);if(res)pl.push({x:x,r:rot,b:res.b,cl:res.cl});}}return pl;
 }
-function clB(cl){return cl>=4?30:cl===3?15:cl===2?7:cl===1?3:0;}
+function clB(cl,strategy){
+  if(strategy==='attack'){return cl>=4?60:cl===3?25:cl===2?8:cl===1?1:0;}
+  if(strategy==='defense'){return cl>=4?20:cl===3?10:cl===2?5:cl===1?3:0;}
+  return cl>=4?30:cl===3?15:cl===2?7:cl===1?3:0;
+}
 
 /* 多段先読みAI (ビームサーチ風) */
-function findBestDeep(b,curT,npArr){
+function findBestDeep(b,curT,npArr,strategy){
   var depth=Math.min(npArr.length,NEXT_SHOW); /* NEXT表示数分先読み */
   if(depth<1)depth=1;
   var BEAM_W=depth<=2?40:depth<=3?20:depth<=4?12:8;
@@ -193,7 +201,7 @@ function findBestDeep(b,curT,npArr){
 
   var beam=[];
   for(var i=0;i<cpl.length;i++){
-    var sc=evB(cpl[i].b)+clB(cpl[i].cl);
+    var sc=evB(cpl[i].b,strategy)+clB(cpl[i].cl,strategy);
     beam.push({move:{x:cpl[i].x,r:cpl[i].r},b:cpl[i].b,score:sc});
   }
   /* ビーム幅で刈り込み */
@@ -213,7 +221,7 @@ function findBestDeep(b,curT,npArr){
       }
       var bestNs=-Infinity,bestNb=null;
       for(var ni=0;ni<npl.length;ni++){
-        var ns=evB(npl[ni].b)+clB(npl[ni].cl);
+        var ns=evB(npl[ni].b,strategy)+clB(npl[ni].cl,strategy);
         if(ns>bestNs){bestNs=ns;bestNb=npl[ni].b;}
       }
       newBeam.push({move:beam[bi].move,b:bestNb,score:beam[bi].score*0.3+bestNs*0.7});
@@ -230,7 +238,7 @@ function findBestDeep(b,curT,npArr){
 
 function aiCalc(p){
   if(!p.t||p.go)return;
-  var best=findBestDeep(p.b,p.t,p.np);
+  var best=findBestDeep(p.b,p.t,p.np,p.strategy||'balanced');
   if(!best){p.at=null;p.aq=[];return;}p.at=best;p.aq=[];
   var rotN=(best.r-p.r+4)%4;for(var i=0;i<rotN;i++)p.aq.push('r');
   var sr=p.r,sx=p.px;
@@ -387,5 +395,20 @@ $('ab1').addEventListener('click',function(){togAI(p1);});
 $('ab2').addEventListener('click',function(){togAI(p2);});
 $('startbtn').addEventListener('click',startGame);
 $('rbtn').addEventListener('click',function(){$('gov').classList.add('hid');startGame();});
+function buildStratSel(id){
+  var pb=$('ab'+id).parentNode;
+  var row=document.createElement('div');row.className='sc';
+  var lbl=document.createElement('label');lbl.textContent='戦略:';
+  var sel=document.createElement('select');sel.id='stsel'+id;
+  sel.style.cssText='flex:1;font-size:8px;background:var(--pb-bg);color:var(--pb-fg);border:1px solid var(--pb-bc);border-radius:3px;padding:1px 2px;max-width:70px;accent-color:var(--acc)';
+  [['balanced','バランス'],['attack','攻撃'],['defense','守備']].forEach(function(op){
+    var opt=document.createElement('option');opt.value=op[0];opt.textContent=op[1];sel.appendChild(opt);
+  });
+  sel.value='balanced';
+  sel.addEventListener('change',function(){var p=id===1?p1:p2;if(p&&p.strategy!==undefined)p.strategy=this.value;});
+  row.appendChild(lbl);row.appendChild(sel);
+  pb.insertBefore(row,$('ast'+id));
+}
+buildStratSel(1);buildStratSel(2);
 applyTheme();fitWrap();
 })();
