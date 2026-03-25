@@ -1,0 +1,73 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install deps
+        run: pip install PyJWT
+
+      - name: Generate JWT
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: |
+          python elm-haskell/gen_jwt_cli.py "$JWT_SECRET" > token.txt
+          echo "Generated token:"
+          cat token.txt
+
+      - name: Verify token (simple HKDF check)
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: |
+          python - "$JWT_SECRET" <<'PY'
+import sys, hmac, hashlib, base64, subprocess
+
+secret = sys.argv[1].encode() if len(sys.argv) > 1 else b''
+
+def hkdf_extract(salt: bytes, ikm: bytes) -> bytes:
+    return hmac.new(salt, ikm, hashlib.sha256).digest()
+
+def hkdf_expand(prk: bytes, info: bytes, out_len: int) -> bytes:
+    okm = b''
+    t = b''
+    i = 1
+    while len(okm) < out_len:
+        t = hmac.new(prk, t + info + bytes([i]), hashlib.sha256).digest()
+        okm += t
+        i += 1
+    return okm[:out_len]
+
+final_secret = hkdf_expand(hkdf_extract(b"", secret), b"hs256-derivation", 32) if len(secret) < 32 else secret
+
+token = subprocess.check_output(["/bin/sh", "-c", "cat token.txt"]).decode().strip()
+h1, h2, h3 = token.split('.')
+msg = (h1 + '.' + h2).encode('utf-8')
+sig = hmac.new(final_secret, msg, hashlib.sha256).digest()
+sig_b64 = base64.urlsafe_b64encode(sig).decode().rstrip('=')
+print('match:', sig_b64 == h3)
+if sig_b64 != h3:
+    print('computed:', sig_b64)
+    print('token sig:', h3)
+    sys.exit(1)
+PY
+
+      - name: Install Stack (for Haskell build)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl
+          curl -sSL https://get.haskellstack.org/ | sh
+
+      - name: Build & test Haskell server
+        working-directory: elm-haskell/haskell-server
+        run: |
+          stack setup
+          stack test --no-terminal
