@@ -1,0 +1,17 @@
+ci: add JWT generation + Haskell build/tests
+
+Changes:
+- Add .github/workflows/ci.yml: generates HS256 JWT (HKDF derivation), verifies token, caches pip/stack, runs Haskell build/tests with coverage, uploads token and coverage artifacts.
+- Add docs: haskell-server/docs/MIGRATION_ANNOUNCEMENT.md and COMMUNICATION_DRAFTS.md
+
+Purpose:
+Ensure issuer/verifier HKDF derivation alignment and prevent HS256 regression via CI.
+
+Notes:
+- CI requires JWT_SECRET in repository Secrets.
+- This PR is a draft; switch to Ready for review after verification.
+
+Checklist:
+- [ ] Add JWT_SECRET to GitHub Secrets
+- [ ] Confirm CI passes
+- [ ] Notify issuers using the communication drafts
