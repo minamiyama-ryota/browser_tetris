@@ -28,14 +28,16 @@ jobs:
         run: pip install PyJWT
 
       - name: Generate JWT
+        working-directory: elm-haskell
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
-          python elm-haskell/gen_jwt_cli.py "$JWT_SECRET" > token.txt
+          python gen_jwt_cli.py "$JWT_SECRET" > token.txt
           echo "Generated token:"
           cat token.txt
 
       - name: Verify token (simple HKDF check)
+        working-directory: elm-haskell
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
