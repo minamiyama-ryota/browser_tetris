@@ -40,36 +40,36 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
           python - "$JWT_SECRET" <<'PY'
-import sys, hmac, hashlib, base64, subprocess
+          import sys, hmac, hashlib, base64, subprocess
 
-secret = sys.argv[1].encode() if len(sys.argv) > 1 else b''
+          secret = sys.argv[1].encode() if len(sys.argv) > 1 else b''
 
-def hkdf_extract(salt: bytes, ikm: bytes) -> bytes:
-    return hmac.new(salt, ikm, hashlib.sha256).digest()
+          def hkdf_extract(salt: bytes, ikm: bytes) -> bytes:
+            return hmac.new(salt, ikm, hashlib.sha256).digest()
 
-def hkdf_expand(prk: bytes, info: bytes, out_len: int) -> bytes:
-    okm = b''
-    t = b''
-    i = 1
-    while len(okm) < out_len:
-        t = hmac.new(prk, t + info + bytes([i]), hashlib.sha256).digest()
-        okm += t
-        i += 1
-    return okm[:out_len]
+          def hkdf_expand(prk: bytes, info: bytes, out_len: int) -> bytes:
+            okm = b''
+            t = b''
+            i = 1
+            while len(okm) < out_len:
+              t = hmac.new(prk, t + info + bytes([i]), hashlib.sha256).digest()
+              okm += t
+              i += 1
+            return okm[:out_len]
 
-final_secret = hkdf_expand(hkdf_extract(b"", secret), b"hs256-derivation", 32) if len(secret) < 32 else secret
+          final_secret = hkdf_expand(hkdf_extract(b"", secret), b"hs256-derivation", 32) if len(secret) < 32 else secret
 
-token = subprocess.check_output(["/bin/sh", "-c", "cat token.txt"]).decode().strip()
-h1, h2, h3 = token.split('.')
-msg = (h1 + '.' + h2).encode('utf-8')
-sig = hmac.new(final_secret, msg, hashlib.sha256).digest()
-sig_b64 = base64.urlsafe_b64encode(sig).decode().rstrip('=')
-print('match:', sig_b64 == h3)
-if sig_b64 != h3:
-    print('computed:', sig_b64)
-    print('token sig:', h3)
-    sys.exit(1)
-PY
+          token = subprocess.check_output(["/bin/sh", "-c", "cat token.txt"]).decode().strip()
+          h1, h2, h3 = token.split('.')
+          msg = (h1 + '.' + h2).encode('utf-8')
+          sig = hmac.new(final_secret, msg, hashlib.sha256).digest()
+          sig_b64 = base64.urlsafe_b64encode(sig).decode().rstrip('=')
+          print('match:', sig_b64 == h3)
+          if sig_b64 != h3:
+            print('computed:', sig_b64)
+            print('token sig:', h3)
+            sys.exit(1)
+          PY
 
       - name: Install Stack (for Haskell build)
         run: |
