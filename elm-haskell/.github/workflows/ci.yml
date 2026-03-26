@@ -56,20 +56,25 @@ jobs:
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
-          # run the repository verification script to avoid fragile inline quoting
+          # Prefer the updated script in elm-haskell; fall back to root if absent
           if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then
             python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
           elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then
             python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
           else
-            echo "verify_token.py not found under workspace"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
+            echo "verify_token.py not found under repository root or elm-haskell"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
           fi
 
       - name: Install Stack (for Haskell build)
         run: |
+          # install curl if missing, then install stack only if absent
           sudo apt-get update
           sudo apt-get install -y curl
-          curl -sSL https://get.haskellstack.org/ | sh
+          if command -v stack >/dev/null 2>&1; then
+            echo "stack already installed at $(command -v stack)"
+          else
+            curl -sSL https://get.haskellstack.org/ | sh || true
+          fi
 
       - name: Cache Stack and system deps
         uses: actions/cache@v4

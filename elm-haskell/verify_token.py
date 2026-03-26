@@ -50,6 +50,14 @@ def main():
 
 	final_secret = compute_final_secret(secret_bytes)
 
+	# Minimal debug info (enabled by setting DEBUG_VERIFY=1)
+	if os.environ.get('DEBUG_VERIFY') == '1':
+		try:
+			ds = hashlib.sha256(final_secret).hexdigest()
+		except Exception:
+			ds = '<error>'
+		print('DEBUG: secret_len=', len(secret_bytes), 'final_secret_sha256=', ds)
+
 	try:
 		h1, h2, h3 = token.split('.')
 	except Exception:
