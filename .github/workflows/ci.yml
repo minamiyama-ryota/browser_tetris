@@ -11,6 +11,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Debug: show workspace
+        run: |
+          echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
+          echo "pwd: $(pwd)"
+          echo "ls workspace:"
+          ls -la "$GITHUB_WORKSPACE" || true
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -28,50 +35,65 @@ jobs:
         run: pip install PyJWT
 
       - name: Generate JWT
-        working-directory: elm-haskell
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
-          python gen_jwt_cli.py "$JWT_SECRET" > token.txt
+          # run from repository workspace to avoid runner path mismatches
+          if [ -d "$GITHUB_WORKSPACE/elm-haskell" ]; then
+            cd "$GITHUB_WORKSPACE/elm-haskell"
+          else
+            echo "elm-haskell not found under $GITHUB_WORKSPACE"
+            ls -la "$GITHUB_WORKSPACE" || true
+            exit 1
+          fi
+          python gen_jwt_cli.py "$JWT_SECRET" > "$GITHUB_WORKSPACE/token.txt"
           echo "Generated token:"
-          cat token.txt
+          cat "$GITHUB_WORKSPACE/token.txt"
 
       - name: Verify token (simple HKDF check)
-        working-directory: elm-haskell
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
-          python - "$JWT_SECRET" <<'PY'
-          import sys, hmac, hashlib, base64, subprocess
+          # run python with args: secret and token path (expanded by shell)
+          python - "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" <<'PY'
+import sys, hmac, hashlib, base64
 
-          secret = sys.argv[1].encode() if len(sys.argv) > 1 else b''
+secret = sys.argv[1].encode() if len(sys.argv) > 1 else b''
 
-          def hkdf_extract(salt: bytes, ikm: bytes) -> bytes:
-            return hmac.new(salt, ikm, hashlib.sha256).digest()
+def hkdf_extract(salt: bytes, ikm: bytes) -> bytes:
+    return hmac.new(salt, ikm, hashlib.sha256).digest()
 
-          def hkdf_expand(prk: bytes, info: bytes, out_len: int) -> bytes:
-            okm = b''
-            t = b''
-            i = 1
-            while len(okm) < out_len:
-              t = hmac.new(prk, t + info + bytes([i]), hashlib.sha256).digest()
-              okm += t
-              i += 1
-            return okm[:out_len]
+def hkdf_expand(prk: bytes, info: bytes, out_len: int) -> bytes:
+    okm = b''
+    t = b''
+    i = 1
+    while len(okm) < out_len:
+        t = hmac.new(prk, t + info + bytes([i]), hashlib.sha256).digest()
+        okm += t
+        i += 1
+    return okm[:out_len]
 
-          final_secret = hkdf_expand(hkdf_extract(b"", secret), b"hs256-derivation", 32) if len(secret) < 32 else secret
+final_secret = hkdf_expand(hkdf_extract(b"", secret), b"hs256-derivation", 32) if len(secret) < 32 else secret
 
-          token = subprocess.check_output(["/bin/sh", "-c", "cat token.txt"]).decode().strip()
-          h1, h2, h3 = token.split('.')
-          msg = (h1 + '.' + h2).encode('utf-8')
-          sig = hmac.new(final_secret, msg, hashlib.sha256).digest()
-          sig_b64 = base64.urlsafe_b64encode(sig).decode().rstrip('=')
-          print('match:', sig_b64 == h3)
-          if sig_b64 != h3:
-            print('computed:', sig_b64)
-            print('token sig:', h3)
-            sys.exit(1)
-          PY
+token_path = sys.argv[2]
+with open(token_path, 'r') as f:
+    token = f.read().strip()
+
+try:
+    h1, h2, h3 = token.split('.')
+except Exception:
+    print('invalid token format')
+    sys.exit(1)
+
+msg = (h1 + '.' + h2).encode('utf-8')
+sig = hmac.new(final_secret, msg, hashlib.sha256).digest()
+sig_b64 = base64.urlsafe_b64encode(sig).decode().rstrip('=')
+print('match:', sig_b64 == h3)
+if sig_b64 != h3:
+    print('computed:', sig_b64)
+    print('token sig:', h3)
+    sys.exit(1)
+PY
 
       - name: Install Stack (for Haskell build)
         run: |
@@ -90,8 +112,15 @@ jobs:
             ${{ runner.os }}-stack-
 
       - name: Build & test Haskell server (with coverage)
-        working-directory: elm-haskell/haskell-server
         run: |
+          # prefer absolute path via GITHUB_WORKSPACE to avoid runner-relative issues
+          if [ -d "$GITHUB_WORKSPACE/elm-haskell/haskell-server" ]; then
+            cd "$GITHUB_WORKSPACE/elm-haskell/haskell-server"
+          else
+            echo "haskell-server directory not found: $GITHUB_WORKSPACE/elm-haskell/haskell-server"
+            ls -la "$GITHUB_WORKSPACE" || true
+            exit 1
+          fi
           stack setup
           stack build --test --no-run-tests --haddock --fast
           stack test --no-terminal --coverage
@@ -100,12 +129,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: generated-token
-          path: token.txt
+          path: ${{ github.workspace }}/token.txt
 
       - name: Generate HPC HTML coverage
-        working-directory: elm-haskell/haskell-server
         run: |
           set -e
+          cd "$GITHUB_WORKSPACE/elm-haskell/haskell-server"
           echo "Looking for .tix files..."
           find .stack-work -name "*.tix" -print
           TIXFILES=$(find .stack-work -name "*.tix" || true)
@@ -125,4 +154,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: hpc-coverage-html
-          path: elm-haskell/haskell-server/coverage
+          path: ${{ github.workspace }}/elm-haskell/haskell-server/coverage
