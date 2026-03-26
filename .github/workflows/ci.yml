@@ -38,11 +38,13 @@ jobs:
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
-          # run from repository workspace to avoid runner path mismatches
-          if [ -d "$GITHUB_WORKSPACE/elm-haskell" ]; then
+          # find where gen_jwt_cli.py lives and cd there
+          if [ -f "$GITHUB_WORKSPACE/gen_jwt_cli.py" ]; then
+            cd "$GITHUB_WORKSPACE"
+          elif [ -f "$GITHUB_WORKSPACE/elm-haskell/gen_jwt_cli.py" ]; then
             cd "$GITHUB_WORKSPACE/elm-haskell"
           else
-            echo "elm-haskell not found under $GITHUB_WORKSPACE"
+            echo "gen_jwt_cli.py not found under $GITHUB_WORKSPACE or elm-haskell"
             ls -la "$GITHUB_WORKSPACE" || true
             exit 1
           fi
@@ -116,8 +118,10 @@ jobs:
           # prefer absolute path via GITHUB_WORKSPACE to avoid runner-relative issues
           if [ -d "$GITHUB_WORKSPACE/elm-haskell/haskell-server" ]; then
             cd "$GITHUB_WORKSPACE/elm-haskell/haskell-server"
+          elif [ -d "$GITHUB_WORKSPACE/haskell-server" ]; then
+            cd "$GITHUB_WORKSPACE/haskell-server"
           else
-            echo "haskell-server directory not found: $GITHUB_WORKSPACE/elm-haskell/haskell-server"
+            echo "haskell-server directory not found under expected locations"
             ls -la "$GITHUB_WORKSPACE" || true
             exit 1
           fi
