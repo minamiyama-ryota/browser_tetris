@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Debug: show workspace
+      - name: "Debug: show workspace"
         run: |
           echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
           echo "pwd: $(pwd)"
