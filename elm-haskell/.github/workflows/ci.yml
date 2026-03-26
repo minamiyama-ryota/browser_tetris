@@ -56,46 +56,14 @@ jobs:
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
-          # run python with args: secret and token path (expanded by shell)
-            python - "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" <<'PY'
-            import sys, hmac, hashlib, base64
-
-            secret = sys.argv[1].encode() if len(sys.argv) > 1 else b''
-
-            def hkdf_extract(salt: bytes, ikm: bytes) -> bytes:
-              return hmac.new(salt, ikm, hashlib.sha256).digest()
-
-            def hkdf_expand(prk: bytes, info: bytes, out_len: int) -> bytes:
-              okm = b''
-              t = b''
-              i = 1
-              while len(okm) < out_len:
-                t = hmac.new(prk, t + info + bytes([i]), hashlib.sha256).digest()
-                okm += t
-                i += 1
-              return okm[:out_len]
-
-            final_secret = hkdf_expand(hkdf_extract(b"", secret), b"hs256-derivation", 32) if len(secret) < 32 else secret
-
-            token_path = sys.argv[2]
-            with open(token_path, 'r') as f:
-              token = f.read().strip()
-
-            try:
-              h1, h2, h3 = token.split('.')
-            except Exception:
-              print('invalid token format')
-              sys.exit(1)
-
-            msg = (h1 + '.' + h2).encode('utf-8')
-            sig = hmac.new(final_secret, msg, hashlib.sha256).digest()
-            sig_b64 = base64.urlsafe_b64encode(sig).decode().rstrip('=')
-            print('match:', sig_b64 == h3)
-            if sig_b64 != h3:
-              print('computed:', sig_b64)
-              print('token sig:', h3)
-              sys.exit(1)
-            PY
+          # run the repository verification script to avoid fragile inline quoting
+          if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then
+            python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
+          elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then
+            python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
+          else
+            echo "verify_token.py not found under workspace"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
+          fi
 
       - name: Install Stack (for Haskell build)
         run: |
