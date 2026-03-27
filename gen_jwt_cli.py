@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import sys, json, time
+import sys, json, time, os
 import jwt, hmac, hashlib
 
 # Usage: gen_jwt_cli.py <secret> [kid]
@@ -34,6 +34,13 @@ def main():
         final_secret = hkdf_expand(hkdf_extract(b"", secret_bytes), b"hs256-derivation", 32)
     else:
         final_secret = secret_bytes
+    # Minimal debug info (enabled by setting DEBUG_VERIFY=1)
+    if os.environ.get('DEBUG_VERIFY') == '1':
+        try:
+            final_sha = hashlib.sha256(final_secret).hexdigest()
+        except Exception:
+            final_sha = '<error>'
+        print(f'DEBUG: provided_secret_len={len(secret_bytes)} hkdf_applied={len(secret_bytes)<32} final_secret_sha256={final_sha}', file=sys.stderr)
 
     token = jwt.encode(payload, final_secret, algorithm='HS256', headers=headers)
     # pyjwt may return str or bytes

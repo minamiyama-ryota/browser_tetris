@@ -52,16 +52,25 @@ jobs:
 
       - name: Verify token (simple HKDF check)
         run: |
+<<<<<<< HEAD
+=======
+          # Prefer the updated script in elm-haskell; fall back to root if absent
+>>>>>>> c8ecdca (ci: derive 32B HS256 secret via HKDF; add DEBUG_VERIFY outputs and CI workflow fixes)
           if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then
             python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
           elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then
             python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
           else
+<<<<<<< HEAD
             echo "verify_token.py not found"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
+=======
+            echo "verify_token.py not found under repository root or elm-haskell"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
+>>>>>>> c8ecdca (ci: derive 32B HS256 secret via HKDF; add DEBUG_VERIFY outputs and CI workflow fixes)
           fi
 
       - name: Install Stack (for Haskell build)
         run: |
+          # install curl if missing, then install stack only if absent
           sudo apt-get update
           sudo apt-get install -y curl
           if command -v stack >/dev/null 2>&1; then
@@ -102,6 +111,10 @@ jobs:
       - name: Generate HPC HTML coverage
         run: |
           set -e
+<<<<<<< HEAD
+=======
+          # detect haskell-server location (root or elm-haskell subdir)
+>>>>>>> c8ecdca (ci: derive 32B HS256 secret via HKDF; add DEBUG_VERIFY outputs and CI workflow fixes)
           if [ -d "$GITHUB_WORKSPACE/elm-haskell/haskell-server" ]; then
             HS_DIR="$GITHUB_WORKSPACE/elm-haskell/haskell-server"
           elif [ -d "$GITHUB_WORKSPACE/haskell-server" ]; then
@@ -111,6 +124,11 @@ jobs:
             exit 0
           fi
           cd "$HS_DIR"
+<<<<<<< HEAD
+=======
+          echo "Looking for .tix files in $HS_DIR..."
+          find .stack-work -name "*.tix" -print
+>>>>>>> c8ecdca (ci: derive 32B HS256 secret via HKDF; add DEBUG_VERIFY outputs and CI workflow fixes)
           TIXFILES=$(find .stack-work -name "*.tix" || true)
           if [ -z "$TIXFILES" ]; then
             echo "No .tix files found; skipping hpc markup"
