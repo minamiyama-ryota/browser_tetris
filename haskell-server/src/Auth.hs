@@ -9,6 +9,7 @@ import qualified Data.ByteString as BS
 import qualified Data.ByteArray as BA
 import Crypto.MAC.HMAC (HMAC, hmac)
 import qualified Crypto.Hash.Algorithms as CHA
+import Crypto.Hash (hash, Digest)
 import Data.ByteArray.Encoding (convertToBase, convertFromBase, Base(Base64URLUnpadded, Base16))
 import Control.Monad.Except (runExceptT, ExceptT)
 import Data.ByteString (ByteString)
@@ -54,7 +55,9 @@ verifyJwt secret token = do
   let kText = TE.decodeUtf8 keyB64
   let keyHex = (convertToBase Base16 finalSecret :: BS.ByteString)
   let keyHexT = TE.decodeUtf8 keyHex
+  let finalSecretSha256 = TE.decodeUtf8 (convertToBase Base16 (BA.convert (hash finalSecret :: Digest CHA.SHA256) :: BS.ByteString))
   putStrLn $ "Auth debug: secret base64url(k)=" ++ T.unpack kText ++ " secret(hex)=" ++ T.unpack keyHexT ++ (if derived then " (derived)" else "")
+  putStrLn $ "Auth debug: final_secret_sha256=" ++ T.unpack finalSecretSha256
   let jwkVal = object ["kty" .= Aeson.String "oct", "k" .= Aeson.String kText, "alg" .= Aeson.String "HS256", "use" .= Aeson.String "sig", "key_ops" .= ([Aeson.String "verify"] :: [Value])]
   -- Prefer explicit JWK constructed from JSON; fall back to fromOctets
   jwk <- case fromJSON jwkVal :: Result JWK of
@@ -95,6 +98,7 @@ verifyJwt secret token = do
       let macBytes = (BA.convert mac :: BS.ByteString)
       let comp = (convertToBase Base64URLUnpadded macBytes :: BS.ByteString)
       let compT = TE.decodeUtf8 comp
+      let compHex = TE.decodeUtf8 (convertToBase Base16 macBytes :: BS.ByteString)
       -- signing input diagnostics: utf8, hex and length
       let msgHex = (convertToBase Base16 msg :: BS.ByteString)
       let msgHexT = TE.decodeUtf8 msgHex
@@ -107,7 +111,7 @@ verifyJwt secret token = do
       putStrLn $ "Auth debug: signing-input (utf8): " ++ T.unpack msgUtf8
       putStrLn $ "Auth debug: signing-input (hex): " ++ T.unpack msgHexT ++ " len=" ++ show (BS.length msg)
       putStrLn $ "Auth debug: token sig (base64url): " ++ T.unpack s ++ " sig(hex): " ++ T.unpack sigHex
-      putStrLn $ "Auth debug: computed sig=" ++ T.unpack compT ++ " match=" ++ show (compT == s)
+      putStrLn $ "Auth debug: computed sig (base64url): " ++ T.unpack compT ++ " sig(hex): " ++ T.unpack compHex ++ " match=" ++ show (compT == s)
     _ -> putStrLn "Auth debug: token does not split into three parts"
     -- Fallbacks removed: always fail on signature verification error.
   let settings = defaultJWTValidationSettings (const True)
@@ -184,7 +188,11 @@ loadSecrets = do
         Nothing -> do
           mSecret <- lookupEnv "JWT_SECRET"
           case mSecret of
-            Just s -> return $ Map.singleton "default" (TE.encodeUtf8 (T.pack s))
+            Just s -> do
+                let sBS = TE.encodeUtf8 (T.pack s)
+                case convertFromBase Base64URLUnpadded sBS of
+                  Right decoded -> return $ Map.singleton "default" decoded
+                  Left _ -> return $ Map.singleton "default" sBS
             Nothing -> return Map.empty
 
 
