@@ -1,0 +1,83 @@
+name: tetris-server
+version: 0.1.0.0
+github: "example/tetris-server"
+license: BSD3
+extra-source-files: []
+
+library:
+  source-dirs: src
+  dependencies:
+  - base >= 4.7 && <5
+  - bytestring
+  - websockets
+  - aeson
+  - cryptonite
+  - memory
+  - jose
+  - text
+  - mtl
+  - stm
+  - unordered-containers
+  - containers
+  - time
+  - http-client
+  - http-client-tls
+
+executables:
+  tetris-server-exe:
+    main: Main.hs
+    source-dirs: app
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N
+    dependencies:
+    - tetris-server
+    - base >= 4.7 && <5
+    - bytestring
+    - websockets
+    - aeson
+    - cryptonite
+    - memory
+    - text
+    - stm
+    - unordered-containers
+    - containers
+    - time
+    - mtl
+    - jose
+    - process
+  debug-verify:
+    main: DebugVerify
+    source-dirs: app
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N
+    dependencies:
+    - tetris-server
+    - base >= 4.7 && <5
+    - process
+    - text
+    - bytestring
+    - memory
+    - aeson
+    - jose
+    - lens
+    - mtl
+    - cryptonite
+    - time
+tests:
+  tetris-server-tests:
+    main: TestMain.hs
+    source-dirs: tests
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N
+    type: exitcode-stdio-1.0
+    dependencies:
+    - tetris-server
+    - tasty
+    - tasty-hunit
+    - base >= 4.7 && <5
+    - bytestring
+    - aeson
+    - jose
+    - cryptonite
+    - memory
+    - process
+    - text
+    - time
+  

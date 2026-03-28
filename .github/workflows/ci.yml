@@ -1,0 +1,136 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DEBUG_VERIFY: '1'
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Debug: show workspace"
+        run: |
+          echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
+          echo "pwd: $(pwd)"
+          echo "ls workspace:"
+          ls -la "$GITHUB_WORKSPACE" || true
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install deps
+        run: pip install PyJWT
+
+      - name: Generate JWT
+        run: |
+          if [ -f "$GITHUB_WORKSPACE/gen_jwt_cli.py" ]; then
+            cd "$GITHUB_WORKSPACE"
+          elif [ -f "$GITHUB_WORKSPACE/elm-haskell/gen_jwt_cli.py" ]; then
+            cd "$GITHUB_WORKSPACE/elm-haskell"
+          else
+            echo "gen_jwt_cli.py not found"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
+          fi
+          python gen_jwt_cli.py "$JWT_SECRET" > "$GITHUB_WORKSPACE/token.txt"
+          echo "Generated token:"
+          cat "$GITHUB_WORKSPACE/token.txt"
+
+      - name: Verify token (simple HKDF check)
+        run: |
+          # Prefer the updated script in elm-haskell; fall back to root if absent
+          if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then
+            python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
+          elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then
+            python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
+          else
+            echo "verify_token.py not found under repository root or elm-haskell"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
+          fi
+
+      - name: Install Stack (for Haskell build)
+        run: |
+          # install curl if missing, then install stack only if absent
+          sudo apt-get update
+          sudo apt-get install -y curl
+          if command -v stack >/dev/null 2>&1; then
+            echo "stack already installed at $(command -v stack)"
+          else
+            curl -sSL https://get.haskellstack.org/ | sh || true
+          fi
+
+      - name: Cache Stack and system deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.stack
+            ~/.local/bin
+          key: ${{ runner.os }}-stack-${{ hashFiles('**/stack.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-stack-
+
+      - name: Build & test Haskell server (with coverage)
+        run: |
+          if [ -d "$GITHUB_WORKSPACE/elm-haskell/haskell-server" ]; then
+            cd "$GITHUB_WORKSPACE/elm-haskell/haskell-server"
+          elif [ -d "$GITHUB_WORKSPACE/haskell-server" ]; then
+            cd "$GITHUB_WORKSPACE/haskell-server"
+          else
+            echo "haskell-server directory not found"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
+          fi
+          stack setup
+          stack build --test --no-run-tests --haddock --fast
+          stack test --no-terminal --coverage
+
+      - name: Upload token artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-token
+          path: ${{ github.workspace }}/token.txt
+
+      - name: Generate HPC HTML coverage
+        run: |
+          set -e
+          # detect haskell-server location (root or elm-haskell subdir)
+          if [ -d "$GITHUB_WORKSPACE/elm-haskell/haskell-server" ]; then
+            HS_DIR="$GITHUB_WORKSPACE/elm-haskell/haskell-server"
+          elif [ -d "$GITHUB_WORKSPACE/haskell-server" ]; then
+            HS_DIR="$GITHUB_WORKSPACE/haskell-server"
+          else
+            echo "haskell-server directory not found; skipping coverage markup"
+            exit 0
+          fi
+          cd "$HS_DIR"
+          echo "Looking for .tix files in $HS_DIR..."
+          find .stack-work -name "*.tix" -print
+          TIXFILES=$(find .stack-work -name "*.tix" || true)
+          if [ -z "$TIXFILES" ]; then
+            echo "No .tix files found; skipping hpc markup"
+            exit 0
+          fi
+          mkdir -p coverage
+          for t in $TIXFILES; do
+            stack exec -- hpc markup "$t" --destdir=coverage || true
+          done
+          ls -la coverage || true
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hpc-coverage-html
+          path: |
+            ${{ github.workspace }}/elm-haskell/haskell-server/coverage
+            ${{ github.workspace }}/haskell-server/coverage
