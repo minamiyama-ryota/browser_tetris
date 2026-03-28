@@ -23,6 +23,7 @@ import System.Environment (lookupEnv)
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad (when)
 import Data.Char (toLower)
+import qualified Data.List as DL
 import Data.Aeson.Types (withObject, (.:?), parseMaybe)
 import Data.Maybe (fromMaybe, isJust)
 import qualified Data.Map.Strict as Map
@@ -174,9 +175,9 @@ loadSecrets = do
         Just j -> case Aeson.decodeStrict' (TE.encodeUtf8 (T.pack j)) :: Maybe (Map T.Text T.Text) of
           Just m -> do
             -- decode base64url values to ByteString where possible
-            let decodeEntry t = case convertFromBase Base64URLUnpadded (TE.encodeUtf8 t) of
-                  Right bs -> Just bs
-                  Left _ -> Nothing
+            let decodeEntry t = case tryB64urlDecode t of
+              Just bs -> Just bs
+              Nothing -> Nothing
             let pairs = Map.toList m
             let decoded = Map.fromList $ foldr (\t acc -> case decodeEntry (snd t) of
                                                           Just bs -> (fst t, bs):acc
@@ -189,10 +190,9 @@ loadSecrets = do
           mSecret <- lookupEnv "JWT_SECRET"
           case mSecret of
             Just s -> do
-                let sBS = TE.encodeUtf8 (T.pack s)
-                case convertFromBase Base64URLUnpadded sBS of
-                  Right decoded -> return $ Map.singleton "default" decoded
-                  Left _ -> return $ Map.singleton "default" sBS
+                case tryB64urlDecode (T.pack s) of
+                  Just decoded -> return $ Map.singleton "default" decoded
+                  Nothing -> return $ Map.singleton "default" (TE.encodeUtf8 (T.pack s))
             Nothing -> return Map.empty
 
 
@@ -224,9 +224,9 @@ fetchJwtSecretsFromVault vaultAddr vaultToken vaultPath = do
           -- convert KeyMap to Map Text ByteString if values are strings
           let pairs = KM.toList obj
           let foldFn acc (k, val) = case val of
-                Aeson.String t -> case convertFromBase Base64URLUnpadded (TE.encodeUtf8 t) of
-                  Right bs -> Map.insert (Key.toText k) bs acc
-                  Left _ -> acc
+                Aeson.String t -> case tryB64urlDecode t of
+                  Just bs -> Map.insert (Key.toText k) bs acc
+                  Nothing -> acc
                 _ -> acc
           let result = foldl' foldFn Map.empty pairs
           return $ Right result
@@ -262,9 +262,9 @@ loadSecretsWithOriginals = do
         Just j -> case Aeson.decodeStrict' (TE.encodeUtf8 (T.pack j)) :: Maybe (Map T.Text T.Text) of
           Just m -> do
             -- decode base64url values to ByteString where possible, but keep original text
-            let decodeEntry t = case convertFromBase Base64URLUnpadded (TE.encodeUtf8 t) of
-                  Right bs -> Just (bs, t)
-                  Left _ -> Nothing
+            let decodeEntry t = case tryB64urlDecode t of
+              Just bs -> Just (bs, t)
+              Nothing -> Nothing
             let pairs = Map.toList m
             let decoded = Map.fromList $ foldr (\t acc -> case decodeEntry (snd t) of
                                                           Just x -> (fst t, x):acc
@@ -312,11 +312,13 @@ verifyJwtFromEnv token = do
     Just (sec, origText) -> do
       let secB64 = (convertToBase Base64URLUnpadded sec :: BS.ByteString)
       let providedLen = BS.length (TE.encodeUtf8 origText)
-      let hkdfApplied = BS.length sec < 32
+      let decodedLen = BS.length sec
+      let hkdfApplied = decodedLen < 32
       let finalSecret = if hkdfApplied then hkdfExpand (hkdfExtract BS.empty sec) (TE.encodeUtf8 (T.pack "hs256-derivation")) 32 else sec
       let finalSecretSha256 = TE.decodeUtf8 (convertToBase Base16 (BA.convert (hash finalSecret :: Digest CHA.SHA256) :: BS.ByteString))
       putStrLn $ "Auth debug: verifyJwtFromEnv selected secret for kid=" ++ show mKid ++ " secretB64=" ++ T.unpack (TE.decodeUtf8 secB64)
-      putStrLn $ "Auth debug: provided_secret_len=" ++ show providedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
+      putStrLn $ "Auth debug: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
+      putStrLn $ "DEBUG: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
       verifyJwt sec token
     Nothing -> return $ Left "no matching secret for token kid"
 
@@ -369,3 +371,26 @@ hkdfExpand prk info outLen = BS.take outLen $ BS.concat (go 1 BS.empty [])
 
 infoWrapped :: ByteString -> ByteString
 infoWrapped = id
+
+
+-- Try to decode a Base64URL (possibly padded) textual secret to raw bytes.
+-- Mirrors Python's try_b64url_decode: add padding if needed, decode, then
+-- re-encode (unpadded) and compare to original (unpadded) to avoid false positives.
+tryB64urlDecode :: T.Text -> Maybe ByteString
+tryB64urlDecode t =
+  let origBs = TE.encodeUtf8 t
+    tryDecode bs = case convertFromBase Base64URLUnpadded bs :: Either String ByteString of
+            Right raw -> Just raw
+            Left _ -> Nothing
+    padLen = (4 - (BS.length origBs `mod` 4)) `mod` 4
+    withPad = origBs `BS.append` TE.encodeUtf8 (T.replicate padLen "=")
+    origUnpadded = T.dropWhileEnd (== '=') t
+  in case tryDecode origBs of
+     Just raw -> let reenc = convertToBase Base64URLUnpadded raw :: BS.ByteString
+             reencT = TE.decodeUtf8 reenc
+           in if reencT == origUnpadded then Just raw else Nothing
+     Nothing -> case tryDecode withPad of
+          Just raw -> let reenc = convertToBase Base64URLUnpadded raw :: BS.ByteString
+                  reencT = TE.decodeUtf8 reenc
+                in if reencT == origUnpadded then Just raw else Nothing
+          Nothing -> Nothing
