@@ -277,10 +277,9 @@ loadSecretsWithOriginals = do
           mSecret <- lookupEnv "JWT_SECRET"
           case mSecret of
             Just s -> do
-                let sBS = TE.encodeUtf8 (T.pack s)
-                case convertFromBase Base64URLUnpadded sBS of
-                  Right decoded -> return $ Map.singleton "default" (decoded, T.pack s)
-                  Left _ -> return $ Map.singleton "default" (sBS, T.pack s)
+                case tryB64urlDecode (T.pack s) of
+                  Just decoded -> return $ Map.singleton "default" (decoded, T.pack s)
+                  Nothing -> return $ Map.singleton "default" (TE.encodeUtf8 (T.pack s), T.pack s)
             Nothing -> return Map.empty
 
 
