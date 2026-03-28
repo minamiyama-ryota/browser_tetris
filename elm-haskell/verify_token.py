@@ -42,6 +42,23 @@ def main():
 	if len(sys.argv) >= 3:
 		token_path = sys.argv[2]
 
+	# If the provided secret looks like Base64URL (unpadded), decode it to raw bytes.
+	def try_b64url_decode(s: bytes) -> bytes:
+		try:
+			ss = s.decode('ascii')
+		except Exception:
+			return s
+		pad = (-len(ss)) % 4
+		ss_p = ss + ('=' * pad)
+		try:
+			decoded = base64.urlsafe_b64decode(ss_p)
+		except Exception:
+			return s
+		reenc = base64.urlsafe_b64encode(decoded).decode('utf-8').rstrip('=')
+		if reenc == ss.rstrip('='):
+			return decoded
+		return s
+
 	secret_bytes = secret_arg.encode() if secret_arg else os.environ.get('JWT_SECRET', '').encode()
 	provided_len = len(secret_bytes)
 
