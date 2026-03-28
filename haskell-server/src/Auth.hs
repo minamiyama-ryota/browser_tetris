@@ -231,6 +231,69 @@ fetchJwtSecretsFromVault vaultAddr vaultToken vaultPath = do
           let result = foldl' foldFn Map.empty pairs
           return $ Right result
 
+-- | Load secrets but also preserve the original string value (for diagnostics).
+-- Returns a map of kid -> (decodedBytes, originalString)
+loadSecretsWithOriginals :: IO (Map T.Text (ByteString, T.Text))
+loadSecretsWithOriginals = do
+  mVaultPath <- lookupEnv "JWT_SECRETS_VAULT_PATH"
+  case mVaultPath of
+    Just vaultPath -> do
+      vaultAddr <- lookupEnv "VAULT_ADDR"
+      vaultToken <- lookupEnv "VAULT_TOKEN"
+      case (vaultAddr, vaultToken) of
+        (Just addr, Just tok) -> do
+          ev <- fetchJwtSecretsFromVault addr tok vaultPath
+          case ev of
+            Right m -> do
+              -- we don't have the original textual form from vault; use base64url repr
+              let withOrig = Map.map (\bs -> (bs, TE.decodeUtf8 (convertToBase Base64URLUnpadded bs))) m
+              return withOrig
+            Left e -> do
+              putStrLn $ "Auth warning: vault fetch failed: " ++ e
+              fallbackParse
+        _ -> do
+          putStrLn "Auth warning: VAULT_ADDR or VAULT_TOKEN not set; falling back"
+          fallbackParse
+    Nothing -> fallbackParse
+  where
+    fallbackParse = do
+      mJson <- lookupEnv "JWT_SECRETS"
+      case mJson of
+        Just j -> case Aeson.decodeStrict' (TE.encodeUtf8 (T.pack j)) :: Maybe (Map T.Text T.Text) of
+          Just m -> do
+            -- decode base64url values to ByteString where possible, but keep original text
+            let decodeEntry t = case convertFromBase Base64URLUnpadded (TE.encodeUtf8 t) of
+                  Right bs -> Just (bs, t)
+                  Left _ -> Nothing
+            let pairs = Map.toList m
+            let decoded = Map.fromList $ foldr (\t acc -> case decodeEntry (snd t) of
+                                                          Just x -> (fst t, x):acc
+                                                          Nothing -> acc) [] pairs
+            return decoded
+          Nothing -> do
+            putStrLn "Auth warning: JWT_SECRETS present but failed to parse JSON"
+            return Map.empty
+        Nothing -> do
+          mSecret <- lookupEnv "JWT_SECRET"
+          case mSecret of
+            Just s -> do
+                let sBS = TE.encodeUtf8 (T.pack s)
+                case convertFromBase Base64URLUnpadded sBS of
+                  Right decoded -> return $ Map.singleton "default" (decoded, T.pack s)
+                  Left _ -> return $ Map.singleton "default" (sBS, T.pack s)
+            Nothing -> return Map.empty
+
+
+-- | Select secret (with original text) for given kid (or fallback to default)
+selectSecretWithOriginals :: Map T.Text (ByteString, T.Text) -> Maybe T.Text -> Maybe (ByteString, T.Text)
+selectSecretWithOriginals mp mKid = case mKid of
+  Just k -> Map.lookup k mp
+  Nothing -> case Map.lookup "default" mp of
+    Just s -> Just s
+    Nothing -> case Map.toList mp of
+      [(_, v)] -> Just v
+      _ -> Nothing
+
 -- | Select secret for given kid (or fallback to default)
 selectSecret :: Map T.Text ByteString -> Maybe T.Text -> Maybe ByteString
 selectSecret mp mKid = case mKid of
@@ -243,12 +306,17 @@ selectSecret mp mKid = case mKid of
 -- selecting by `kid` if present in the token header.
 verifyJwtFromEnv :: T.Text -> IO (Either String Value)
 verifyJwtFromEnv token = do
-  secrets <- loadSecrets
+  secretsWithOriginals <- loadSecretsWithOriginals
   let mKid = extractKid token
-  case selectSecret secrets mKid of
-    Just sec -> do
+  case selectSecretWithOriginals secretsWithOriginals mKid of
+    Just (sec, origText) -> do
       let secB64 = (convertToBase Base64URLUnpadded sec :: BS.ByteString)
+      let providedLen = BS.length (TE.encodeUtf8 origText)
+      let hkdfApplied = BS.length sec < 32
+      let finalSecret = if hkdfApplied then hkdfExpand (hkdfExtract BS.empty sec) (TE.encodeUtf8 (T.pack "hs256-derivation")) 32 else sec
+      let finalSecretSha256 = TE.decodeUtf8 (convertToBase Base16 (BA.convert (hash finalSecret :: Digest CHA.SHA256) :: BS.ByteString))
       putStrLn $ "Auth debug: verifyJwtFromEnv selected secret for kid=" ++ show mKid ++ " secretB64=" ++ T.unpack (TE.decodeUtf8 secB64)
+      putStrLn $ "Auth debug: provided_secret_len=" ++ show providedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
       verifyJwt sec token
     Nothing -> return $ Left "no matching secret for token kid"
 
