@@ -43,11 +43,15 @@ def main():
 		token_path = sys.argv[2]
 
 	secret_bytes = secret_arg.encode() if secret_arg else os.environ.get('JWT_SECRET', '').encode()
+	provided_len = len(secret_bytes)
+
+	secret_bytes = try_b64url_decode(secret_bytes)
 	if not secret_bytes:
 		print('Warning: no JWT secret provided; using empty secret')
 
 	token = load_token(token_path)
 
+	hkdf_applied = len(secret_bytes) < 32
 	final_secret = compute_final_secret(secret_bytes)
 
 	# Minimal debug info (enabled by setting DEBUG_VERIFY=1)
@@ -56,7 +60,7 @@ def main():
 			ds = hashlib.sha256(final_secret).hexdigest()
 		except Exception:
 			ds = '<error>'
-		print('DEBUG: secret_len=', len(secret_bytes), 'final_secret_sha256=', ds)
+		print(f'DEBUG: provided_secret_len={provided_len} hkdf_applied={hkdf_applied} final_secret_sha256={ds}')
 
 	try:
 		h1, h2, h3 = token.split('.')
