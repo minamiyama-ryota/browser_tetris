@@ -48,8 +48,11 @@ def main():
             return decoded
         return s
 
-    secret_bytes = try_b64url_decode(secret_bytes)
-    if len(secret_bytes) < 32:
+    provided_len = len(secret_bytes)
+    decoded = try_b64url_decode(secret_bytes)
+    secret_bytes = decoded
+    hkdf_applied = len(secret_bytes) < 32
+    if hkdf_applied:
         final_secret = hkdf_expand(hkdf_extract(b"", secret_bytes), b"hs256-derivation", 32)
     else:
         final_secret = secret_bytes
@@ -59,7 +62,7 @@ def main():
             final_sha = hashlib.sha256(final_secret).hexdigest()
         except Exception:
             final_sha = '<error>'
-        print(f'DEBUG: provided_secret_len={len(secret_bytes)} hkdf_applied={len(secret_bytes)<32} final_secret_sha256={final_sha}', file=sys.stderr)
+        print(f'DEBUG: provided_secret_len={provided_len} hkdf_applied={hkdf_applied} final_secret_sha256={final_sha}', file=sys.stderr)
 
     token = jwt.encode(payload, final_secret, algorithm='HS256', headers=headers)
     # pyjwt may return str or bytes
@@ -90,7 +93,7 @@ def main():
                     final_sha = hashlib.sha256(final_secret).hexdigest()
                 except Exception:
                     final_sha = '<error>'
-                print(f'DEBUG: provided_secret_len={len(secret_bytes)} hkdf_applied={len(secret_bytes)<32} final_secret_sha256={final_sha}', file=sys.stderr)
+                print(f'DEBUG: provided_secret_len={provided_len} hkdf_applied={hkdf_applied} final_secret_sha256={final_sha}', file=sys.stderr)
                 print(f'DEBUG: signing-input (utf8)={signing_input}', file=sys.stderr)
                 print(f'DEBUG: signing-input (hex)={signing_input_hex} len={len(signing_input_bytes)}', file=sys.stderr)
                 print(f'DEBUG: token sig (base64url)={sig_b64} sig(hex)={sig_hex}', file=sys.stderr)
