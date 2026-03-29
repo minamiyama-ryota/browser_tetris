@@ -61,11 +61,17 @@ jobs:
             echo "verify_token.py not found under repository root or elm-haskell"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
           fi
 
+      - name: Install system packages (for GHC/Stack)
+        run: |
+          # Ensure required build tools are present for GHC/stack setup
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential autoconf automake libtool pkg-config ca-certificates \
+            zlib1g-dev libgmp-dev libncurses-dev libtinfo-dev libffi-dev curl
+
       - name: Install Stack (for Haskell build)
         run: |
           # install curl if missing, then install stack only if absent
-          sudo apt-get update
-          sudo apt-get install -y curl
           if command -v stack >/dev/null 2>&1; then
             echo "stack already installed at $(command -v stack)"
           else
