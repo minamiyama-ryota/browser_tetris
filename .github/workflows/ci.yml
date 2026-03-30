@@ -61,13 +61,21 @@ jobs:
         run: |
           VERIFY_DEBUG="$GITHUB_WORKSPACE/verify_debug.txt"
           rm -f "$VERIFY_DEBUG" || true
+          echo "VERIFY DEBUG START" > "$VERIFY_DEBUG"
+          echo "which python: $(which python)" >> "$VERIFY_DEBUG" 2>&1 || true
+          echo "pwd: $(pwd)" >> "$VERIFY_DEBUG" 2>&1 || true
+          echo "ls workspace top-level:" >> "$VERIFY_DEBUG" 2>&1 || true
+          ls -la "$GITHUB_WORKSPACE" >> "$VERIFY_DEBUG" 2>&1 || true
           if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then
-            # Capture both stdout and stderr to the debug file so verification prints are saved
-            python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" > "$VERIFY_DEBUG" 2>&1 || true
+            echo "Using elm-haskell/verify_token.py" >> "$VERIFY_DEBUG" 2>&1 || true
+            python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" >> "$VERIFY_DEBUG" 2>&1 || true
           elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then
-            python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" > "$VERIFY_DEBUG" 2>&1 || true
+            echo "Using root verify_token.py" >> "$VERIFY_DEBUG" 2>&1 || true
+            python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" >> "$VERIFY_DEBUG" 2>&1 || true
           else
-            echo "verify_token.py not found under repository root or elm-haskell"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
+            echo "verify_token.py not found under repository root or elm-haskell" >> "$VERIFY_DEBUG" 2>&1 || true
+            ls -la "$GITHUB_WORKSPACE" >> "$VERIFY_DEBUG" 2>&1 || true
+            exit 1
           fi
           echo "--- verify_debug (first 200 lines) ---"
           head -n 200 "$VERIFY_DEBUG" || true
