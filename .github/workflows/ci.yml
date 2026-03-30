@@ -62,9 +62,10 @@ jobs:
           VERIFY_DEBUG="$GITHUB_WORKSPACE/verify_debug.txt"
           rm -f "$VERIFY_DEBUG" || true
           if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then
-            python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" 2> "$VERIFY_DEBUG" || true
+            # Capture both stdout and stderr to the debug file so verification prints are saved
+            python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" > "$VERIFY_DEBUG" 2>&1 || true
           elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then
-            python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" 2> "$VERIFY_DEBUG" || true
+            python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" > "$VERIFY_DEBUG" 2>&1 || true
           else
             echo "verify_token.py not found under repository root or elm-haskell"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
           fi
