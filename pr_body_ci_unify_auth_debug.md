@@ -20,3 +20,14 @@ This PR aligns Haskell's HS256 verification with the Python issuer by:
 - This PR is created as a draft for review; please review `Auth.hs` carefully as it affects secret handling.
 - After approval, merge to `main` and re-run full CI.
 
+## Recent updates
+
+- Added robustness for Base64URL decoding: both unpadded and padded inputs are accepted, and re-encoding checks ensure we only decode canonical values.
+- Apply HKDF only when the provided secret was base64-encoded and decodes to less than 32 bytes; raw short strings are no longer HKDF-expanded.
+- Added unit tests (`haskell-server/tests/TestHKDF.hs`) to cover padded/unpadded decode and deterministic HKDF expansion.
+- Workflow updated to reliably capture `gen_debug.txt` / `verify_debug.txt` and always upload artifacts for inspection.
+
+CI run results (example): the latest run produced `final_secret_sha256` and `match = True` in `verify_debug.txt`, indicating computed signature matched token signature.
+
+Please review the changes and let me know if you want me to squash commits or rework the PR description further.
+
