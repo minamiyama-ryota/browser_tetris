@@ -154,19 +154,3 @@ jobs:
           path: |
             ${{ github.workspace }}/elm-haskell/haskell-server/coverage
             ${{ github.workspace }}/haskell-server/coverage
-            echo "No .tix files found; skipping hpc markup"
-            exit 0
-          fi
-          mkdir -p coverage
-          for t in $TIXFILES; do
-            stack exec -- hpc markup "$t" --destdir=coverage || true
-          done
-          ls -la coverage || true
-
-      - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: hpc-coverage-html
-          path: |
-            ${{ github.workspace }}/elm-haskell/haskell-server/coverage
-            ${{ github.workspace }}/haskell-server/coverage
