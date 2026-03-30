@@ -2,6 +2,7 @@ module Main where
 
 import Test.Tasty (defaultMain, testGroup)
 import TestIntegration (integrationTests)
+import TestHKDF (hkdfTests)
 import Test.Tasty.HUnit (testCase, (@?=), assertBool)
 import qualified Data.Text as T
 import qualified Data.ByteString as BS
@@ -45,4 +46,4 @@ main = defaultMain tests
             Right _ -> assertBool "expected failure" False
       ]
 
-    tests = testGroup "All" [unitTests, integrationTests]
+    tests = testGroup "All" [unitTests, integrationTests, hkdfTests]

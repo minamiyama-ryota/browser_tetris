@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Auth (verifyJwt, verifyJwtFromEnv, extractKid, computeHmacSig, loadSecrets) where
+module Auth (verifyJwt, verifyJwtFromEnv, extractKid, computeHmacSig, loadSecrets,
+             tryB64urlDecode, hkdfExtract, hkdfExpand) where
 
 import Crypto.JWT
 import Crypto.JOSE.JWK (fromOctets)
