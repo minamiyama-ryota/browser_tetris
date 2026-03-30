@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Auth (verifyJwt, verifyJwtFromEnv, extractKid, computeHmacSig, loadSecrets) where
 
-import Crypto.JWT
+import Crypto.JWT hiding (hash, Digest)
 import Crypto.JOSE.JWK (fromOctets)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as TE
