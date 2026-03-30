@@ -16,6 +16,8 @@ import qualified Crypto.Hash.Algorithms as CHA
 import Data.ByteArray (convert)
 import Data.ByteArray.Encoding (convertToBase, Base(Base64URLUnpadded))
 import System.Process (readProcess)
+import System.Directory (doesFileExist)
+import Data.Maybe (listToMaybe)
 import Auth (verifyJwt, verifyJwtFromEnv)
 import System.Environment (setEnv, unsetEnv)
 
@@ -32,9 +34,21 @@ mkToken secret mKid _payload = do
   let kidArg = case mKid of
         Just k -> [T.unpack k]
         Nothing -> []
-  -- script path is relative to haskell-server/tests
-  token <- readProcess "python" (["../gen_jwt_cli.py", secretStr] ++ kidArg) ""
-  return (T.pack (head (lines token)))
+  -- try several candidate script locations (handles repo layout and runner cwd)
+  let candidates = ["./gen_jwt_cli.py", "../gen_jwt_cli.py", "elm-haskell/gen_jwt_cli.py", "../elm-haskell/gen_jwt_cli.py", "gen_jwt_cli.py"]
+  mpath <- findFirst candidates
+  case mpath of
+    Just script -> do
+      token <- readProcess "python" ([script, secretStr] ++ kidArg) ""
+      return (T.pack (head (lines token)))
+    Nothing -> error "gen_jwt_cli.py not found in expected locations"
+
+  where
+    findFirst :: [FilePath] -> IO (Maybe FilePath)
+    findFirst [] = return Nothing
+    findFirst (p:ps) = do
+      exists <- doesFileExist p
+      if exists then return (Just p) else findFirst ps
 
 integrationTests :: TestTree
 integrationTests = testGroup "Auth.verifyJwtFromEnv integration" [
