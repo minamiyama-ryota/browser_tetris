@@ -99,13 +99,17 @@ jobs:
             ${{ github.workspace }}/gen_debug.txt
             ${{ github.workspace }}/verify_debug.txt
 
-      - name: Install Stack (for Haskell build)
+      - name: Install system packages (for GHC/Stack)
         run: |
+          # Ensure required build tools are present for GHC/stack setup
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             build-essential autoconf automake libtool pkg-config ca-certificates \
-            zlib1g-dev libgmp-dev libncurses-dev libtinfo-dev libffi-dev \
-            curl wget git m4 perl bison flex binutils ccache libssl-dev
+            zlib1g-dev libgmp-dev libncurses-dev libtinfo-dev libffi-dev curl
+
+      - name: Install Stack (for Haskell build)
+        run: |
+          # install curl if missing, then install stack only if absent
           if command -v stack >/dev/null 2>&1; then
             echo "stack already installed at $(command -v stack)"
           else
