@@ -33,7 +33,7 @@ mkToken secret mKid _payload = do
         Just k -> [T.unpack k]
         Nothing -> []
   -- script path is relative to haskell-server/tests
-  token <- readProcess "python" (["..\\gen_jwt_cli.py", secretStr] ++ kidArg) ""
+  token <- readProcess "python" (["../gen_jwt_cli.py", secretStr] ++ kidArg) ""
   return (T.pack (head (lines token)))
 
 integrationTests :: TestTree
