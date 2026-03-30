@@ -22,3 +22,6 @@ __pycache__/
 *.pyc
 .env
 .DS_Store
+# CI artifacts (local downloads)
+haskell-server/ci-artifacts/
+ci-artifacts/

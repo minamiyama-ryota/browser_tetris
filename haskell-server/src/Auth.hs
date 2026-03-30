@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Auth (verifyJwt, verifyJwtFromEnv, extractKid, computeHmacSig, loadSecrets) where
+module Auth (verifyJwt, verifyJwtFromEnv, extractKid, computeHmacSig, loadSecrets,
+             tryB64urlDecode, hkdfExtract, hkdfExpand) where
 
 import Crypto.JWT hiding (hash, Digest)
 import Crypto.JOSE.JWK (fromOctets)
@@ -9,7 +10,7 @@ import qualified Data.ByteString as BS
 import qualified Data.ByteArray as BA
 import Crypto.MAC.HMAC (HMAC, hmac)
 import qualified Crypto.Hash.Algorithms as CHA
-import Crypto.Hash (hash, Digest)
+import qualified Crypto.Hash as CH
 import Data.ByteArray.Encoding (convertToBase, convertFromBase, Base(Base64URLUnpadded, Base16))
 import Control.Monad.Except (runExceptT, ExceptT)
 import Data.ByteString (ByteString)
@@ -23,6 +24,7 @@ import System.Environment (lookupEnv)
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad (when)
 import Data.Char (toLower)
+import qualified Data.List as DL
 import Data.Aeson.Types (withObject, (.:?), parseMaybe)
 import Data.Maybe (fromMaybe, isJust)
 import qualified Data.Map.Strict as Map
@@ -47,7 +49,7 @@ verifyJwt secret token = do
       let info = "hs256-derivation"
       let prk = hkdfExtract salt secret
       let out = hkdfExpand prk info 32
-      putStrLn $ "Auth debug: secret too short (" ++ show secretLen ++ " bytes); deriving 32-byte key via HKDF-SHA256"
+      authDebug $ "Auth debug: secret too short (" ++ show secretLen ++ " bytes); deriving 32-byte key via HKDF-SHA256"
       return (out, True)
     else return (secret, False)
   -- Build explicit JWK JSON with kty=oct and k=<base64url(finalSecret)> and alg=HS256
@@ -55,19 +57,19 @@ verifyJwt secret token = do
   let kText = TE.decodeUtf8 keyB64
   let keyHex = (convertToBase Base16 finalSecret :: BS.ByteString)
   let keyHexT = TE.decodeUtf8 keyHex
-  let finalSecretSha256 = TE.decodeUtf8 (convertToBase Base16 (BA.convert (hash finalSecret :: Digest CHA.SHA256) :: BS.ByteString))
-  putStrLn $ "Auth debug: secret base64url(k)=" ++ T.unpack kText ++ " secret(hex)=" ++ T.unpack keyHexT ++ (if derived then " (derived)" else "")
-  putStrLn $ "Auth debug: final_secret_sha256=" ++ T.unpack finalSecretSha256
+  let finalSecretSha256 = TE.decodeUtf8 (convertToBase Base16 (BA.convert (CH.hash finalSecret :: CH.Digest CHA.SHA256) :: BS.ByteString))
+  authDebug $ "Auth debug: secret base64url(k)=" ++ T.unpack kText ++ " secret(hex)=" ++ T.unpack keyHexT ++ (if derived then " (derived)" else "")
+  authDebug $ "Auth debug: final_secret_sha256=" ++ T.unpack finalSecretSha256
   let jwkVal = object ["kty" .= Aeson.String "oct", "k" .= Aeson.String kText, "alg" .= Aeson.String "HS256", "use" .= Aeson.String "sig", "key_ops" .= ([Aeson.String "verify"] :: [Value])]
   -- Prefer explicit JWK constructed from JSON; fall back to fromOctets
   jwk <- case fromJSON jwkVal :: Result JWK of
     Aeson.Success j -> do
-      putStrLn $ "Auth debug: using explicit jwk json: " ++ show (Aeson.encode jwkVal)
-      putStrLn $ "Auth debug: jwk (show)=" ++ show j
+      authDebug $ "Auth debug: using explicit jwk json: " ++ show (Aeson.encode jwkVal)
+      authDebug $ "Auth debug: jwk (show)=" ++ show j
       return j
     Aeson.Error _ -> do
       let j = fromOctets secret
-      putStrLn $ "Auth debug: falling back to fromOctets jwk"
+      authDebug $ "Auth debug: falling back to fromOctets jwk"
       return j
     -- no other cases
   -- Split token into parts for header/payload decoding and logging
@@ -76,17 +78,17 @@ verifyJwt secret token = do
     (h:p:_) -> do
       let hdrDec = convertFromBase Base64URLUnpadded (TE.encodeUtf8 h) :: Either String BS.ByteString
       let pldDec = convertFromBase Base64URLUnpadded (TE.encodeUtf8 p) :: Either String BS.ByteString
-      putStrLn $ "Auth debug: header raw decode: " ++ either (const "<decode error>") (const "ok") hdrDec
-      putStrLn $ "Auth debug: payload raw decode: " ++ either (const "<decode error>") (const "ok") pldDec
+      authDebug $ "Auth debug: header raw decode: " ++ either (const "<decode error>") (const "ok") hdrDec
+      authDebug $ "Auth debug: payload raw decode: " ++ either (const "<decode error>") (const "ok") pldDec
       case hdrDec of
         Right hb -> case Aeson.decodeStrict' hb :: Maybe Value of
-          Just hv -> putStrLn $ "Auth debug: header json: " ++ show (Aeson.encode hv)
-          Nothing -> putStrLn "Auth debug: header json parse failed"
+          Just hv -> authDebug $ "Auth debug: header json: " ++ show (Aeson.encode hv)
+          Nothing -> authDebug "Auth debug: header json parse failed"
         Left _ -> return ()
       case pldDec of
         Right pb -> case Aeson.decodeStrict' pb :: Maybe Value of
-          Just pv -> putStrLn $ "Auth debug: payload json: " ++ show (Aeson.encode pv)
-          Nothing -> putStrLn "Auth debug: payload json parse failed"
+          Just pv -> authDebug $ "Auth debug: payload json: " ++ show (Aeson.encode pv)
+          Nothing -> authDebug "Auth debug: payload json parse failed"
         Left _ -> return ()
     _ -> return ()
 
@@ -108,24 +110,24 @@ verifyJwt secret token = do
       let sigHex = case sigDec of
                      Right sb -> TE.decodeUtf8 (convertToBase Base16 sb :: BS.ByteString)
                      Left _ -> "<sig decode error>"
-      putStrLn $ "Auth debug: signing-input (utf8): " ++ T.unpack msgUtf8
-      putStrLn $ "Auth debug: signing-input (hex): " ++ T.unpack msgHexT ++ " len=" ++ show (BS.length msg)
-      putStrLn $ "Auth debug: token sig (base64url): " ++ T.unpack s ++ " sig(hex): " ++ T.unpack sigHex
-      putStrLn $ "Auth debug: computed sig (base64url): " ++ T.unpack compT ++ " sig(hex): " ++ T.unpack compHex ++ " match=" ++ show (compT == s)
-    _ -> putStrLn "Auth debug: token does not split into three parts"
+      authDebug $ "Auth debug: signing-input (utf8): " ++ T.unpack msgUtf8
+      authDebug $ "Auth debug: signing-input (hex): " ++ T.unpack msgHexT ++ " len=" ++ show (BS.length msg)
+      authDebug $ "Auth debug: token sig (base64url): " ++ T.unpack s ++ " sig(hex): " ++ T.unpack sigHex
+      authDebug $ "Auth debug: computed sig (base64url): " ++ T.unpack compT ++ " sig(hex): " ++ T.unpack compHex ++ " match=" ++ show (compT == s)
+    _ -> authDebug "Auth debug: token does not split into three parts"
     -- Fallbacks removed: always fail on signature verification error.
   let settings = defaultJWTValidationSettings (const True)
   -- First attempt using the constructed jwk
   res1 <- runExceptT $ do
     jwt <- (decodeCompact (LBS.fromStrict (TE.encodeUtf8 token)) :: ExceptT JWTError IO SignedJWT)
-    liftIO $ putStrLn $ "Auth debug: parsed SignedJWT: " ++ show jwt
+    liftIO $ authDebug $ "Auth debug: parsed SignedJWT: " ++ show jwt
     now <- liftIO getCurrentTime
     verifyClaimsAt settings jwk now jwt :: ExceptT JWTError IO ClaimsSet
   case res1 of
     Left err1 -> do
-      putStrLn $ "Auth debug: primary verifyClaimsAt failed: " ++ show (err1 :: JWTError)
-      putStrLn $ "Auth debug: primary jwk (json)=" ++ show (Aeson.encode jwkVal)
-      putStrLn $ "Auth debug: primary jwk secret(hex)=" ++ T.unpack keyHexT
+      authDebug $ "Auth debug: primary verifyClaimsAt failed: " ++ show (err1 :: JWTError)
+      authDebug $ "Auth debug: primary jwk (json)=" ++ show (Aeson.encode jwkVal)
+      authDebug $ "Auth debug: primary jwk secret(hex)=" ++ T.unpack keyHexT
       putStrLn "Auth error: verification failed (local HMAC fallback removed)"
       return $ Left (show err1)
     Right claims -> do
@@ -171,28 +173,25 @@ loadSecrets = do
     fallbackParse = do
       mJson <- lookupEnv "JWT_SECRETS"
       case mJson of
-        Just j -> case Aeson.decodeStrict' (TE.encodeUtf8 (T.pack j)) :: Maybe (Map T.Text T.Text) of
-          Just m -> do
-            -- decode base64url values to ByteString where possible
-            let decodeEntry t = case convertFromBase Base64URLUnpadded (TE.encodeUtf8 t) of
-                  Right bs -> Just bs
-                  Left _ -> Nothing
-            let pairs = Map.toList m
-            let decoded = Map.fromList $ foldr (\t acc -> case decodeEntry (snd t) of
-                                                          Just bs -> (fst t, bs):acc
-                                                          Nothing -> acc) [] pairs
-            return decoded
-          Nothing -> do
-            putStrLn "Auth warning: JWT_SECRETS present but failed to parse JSON"
-            return Map.empty
+        Just j -> do
+          let mParsed = Aeson.decodeStrict' (TE.encodeUtf8 (T.pack j))
+          case mParsed of
+            Just m -> do
+              -- decode base64url values to ByteString where possible
+              let decoded = Map.foldrWithKey (\k v acc -> case tryB64urlDecode v of
+                                                           Just bs -> Map.insert k bs acc
+                                                           Nothing -> acc) Map.empty m
+              return decoded
+            Nothing -> do
+              putStrLn $ "Auth warning: JWT_SECRETS present but failed to parse JSON: " ++ show j
+              return Map.empty
         Nothing -> do
           mSecret <- lookupEnv "JWT_SECRET"
           case mSecret of
             Just s -> do
-                let sBS = TE.encodeUtf8 (T.pack s)
-                case convertFromBase Base64URLUnpadded sBS of
-                  Right decoded -> return $ Map.singleton "default" decoded
-                  Left _ -> return $ Map.singleton "default" sBS
+                case tryB64urlDecode (T.pack s) of
+                  Just decoded -> return $ Map.singleton "default" decoded
+                  Nothing -> return $ Map.singleton "default" (TE.encodeUtf8 (T.pack s))
             Nothing -> return Map.empty
 
 
@@ -224,9 +223,9 @@ fetchJwtSecretsFromVault vaultAddr vaultToken vaultPath = do
           -- convert KeyMap to Map Text ByteString if values are strings
           let pairs = KM.toList obj
           let foldFn acc (k, val) = case val of
-                Aeson.String t -> case convertFromBase Base64URLUnpadded (TE.encodeUtf8 t) of
-                  Right bs -> Map.insert (Key.toText k) bs acc
-                  Left _ -> acc
+                Aeson.String t -> case tryB64urlDecode t of
+                  Just bs -> Map.insert (Key.toText k) bs acc
+                  Nothing -> acc
                 _ -> acc
           let result = foldl' foldFn Map.empty pairs
           return $ Right result
@@ -259,28 +258,29 @@ loadSecretsWithOriginals = do
     fallbackParse = do
       mJson <- lookupEnv "JWT_SECRETS"
       case mJson of
-        Just j -> case Aeson.decodeStrict' (TE.encodeUtf8 (T.pack j)) :: Maybe (Map T.Text T.Text) of
-          Just m -> do
-            -- decode base64url values to ByteString where possible, but keep original text
-            let decodeEntry t = case convertFromBase Base64URLUnpadded (TE.encodeUtf8 t) of
-                  Right bs -> Just (bs, t)
-                  Left _ -> Nothing
-            let pairs = Map.toList m
-            let decoded = Map.fromList $ foldr (\t acc -> case decodeEntry (snd t) of
-                                                          Just x -> (fst t, x):acc
-                                                          Nothing -> acc) [] pairs
-            return decoded
-          Nothing -> do
-            putStrLn "Auth warning: JWT_SECRETS present but failed to parse JSON"
-            return Map.empty
+        Just j -> do
+          let mParsed = Aeson.decodeStrict' (TE.encodeUtf8 (T.pack j))
+          case mParsed of
+            Just m -> do
+              -- decode base64url values to ByteString where possible, but keep original text
+              let decodeEntry t = case tryB64urlDecode t of
+                    Just bs -> Just (bs, t)
+                    Nothing -> Nothing
+              let pairs = Map.toList m
+              let decoded = Map.fromList $ foldr (\t acc -> case decodeEntry (snd t) of
+                                                           Just x -> (fst t, x):acc
+                                                           Nothing -> acc) [] pairs
+              return decoded
+            Nothing -> do
+              putStrLn "Auth warning: JWT_SECRETS present but failed to parse JSON"
+              return Map.empty
         Nothing -> do
           mSecret <- lookupEnv "JWT_SECRET"
           case mSecret of
             Just s -> do
-                let sBS = TE.encodeUtf8 (T.pack s)
-                case convertFromBase Base64URLUnpadded sBS of
-                  Right decoded -> return $ Map.singleton "default" (decoded, T.pack s)
-                  Left _ -> return $ Map.singleton "default" (sBS, T.pack s)
+                case tryB64urlDecode (T.pack s) of
+                  Just decoded -> return $ Map.singleton "default" (decoded, T.pack s)
+                  Nothing -> return $ Map.singleton "default" (TE.encodeUtf8 (T.pack s), T.pack s)
             Nothing -> return Map.empty
 
 
@@ -312,11 +312,14 @@ verifyJwtFromEnv token = do
     Just (sec, origText) -> do
       let secB64 = (convertToBase Base64URLUnpadded sec :: BS.ByteString)
       let providedLen = BS.length (TE.encodeUtf8 origText)
-      let hkdfApplied = BS.length sec < 32
+      let decodedLen = BS.length sec
+      let origLooksBase64 = isJust (tryB64urlDecode origText)
+      let hkdfApplied = origLooksBase64 && decodedLen < 32
       let finalSecret = if hkdfApplied then hkdfExpand (hkdfExtract BS.empty sec) (TE.encodeUtf8 (T.pack "hs256-derivation")) 32 else sec
-      let finalSecretSha256 = TE.decodeUtf8 (convertToBase Base16 (BA.convert (hash finalSecret :: Digest CHA.SHA256) :: BS.ByteString))
-      putStrLn $ "Auth debug: verifyJwtFromEnv selected secret for kid=" ++ show mKid ++ " secretB64=" ++ T.unpack (TE.decodeUtf8 secB64)
-      putStrLn $ "Auth debug: provided_secret_len=" ++ show providedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
+      let finalSecretSha256 = TE.decodeUtf8 (convertToBase Base16 (BA.convert (CH.hash finalSecret :: CH.Digest CHA.SHA256) :: BS.ByteString))
+      authDebug $ "Auth debug: verifyJwtFromEnv selected secret for kid=" ++ show mKid ++ " secretB64=" ++ T.unpack (TE.decodeUtf8 secB64)
+      authDebug $ "Auth debug: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
+      authDebug $ "DEBUG: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
       verifyJwt sec token
     Nothing -> return $ Left "no matching secret for token kid"
 
@@ -369,3 +372,43 @@ hkdfExpand prk info outLen = BS.take outLen $ BS.concat (go 1 BS.empty [])
 
 infoWrapped :: ByteString -> ByteString
 infoWrapped = id
+
+
+-- Try to decode a Base64URL (possibly padded) textual secret to raw bytes.
+-- Mirrors Python's try_b64url_decode: add padding if needed, decode, then
+-- re-encode (unpadded) and compare to original (unpadded) to avoid false positives.
+tryB64urlDecode :: T.Text -> Maybe ByteString
+tryB64urlDecode t =
+  let origUnpadded = T.dropWhileEnd (== '=') t
+      origUnpaddedBs = TE.encodeUtf8 origUnpadded
+      -- try unpadded decode first (canonical form)
+      tryUnpadded = case convertFromBase Base64URLUnpadded origUnpaddedBs of
+        Right raw ->
+          let reenc = convertToBase Base64URLUnpadded raw
+              reencT = TE.decodeUtf8 reenc
+          in if reencT == origUnpadded then Just raw else Nothing
+        Left _ -> Nothing
+      -- fallback: try padded decode by adding '=' padding to unpadded bytes
+      padLen = (4 - (BS.length origUnpaddedBs `mod` 4)) `mod` 4
+      padded = origUnpaddedBs `BS.append` BS.replicate padLen 61 -- '=' == 61
+      tryPadded = case convertFromBase Base64URLUnpadded padded of
+        Right raw ->
+          let reenc = convertToBase Base64URLUnpadded raw
+              reencT = TE.decodeUtf8 reenc
+          in if reencT == origUnpadded then Just raw else Nothing
+        Left _ -> Nothing
+  in case tryUnpadded of
+       Just raw -> Just raw
+       Nothing -> tryPadded
+
+
+-- | Conditional debug logging controlled by env vars `DEBUG_VERIFY` or `AUTH_DEBUG`.
+-- When either is set to a truthy value (1/true/yes/on) the message is printed.
+authDebug :: String -> IO ()
+authDebug msg = do
+  m1 <- lookupEnv "DEBUG_VERIFY"
+  m2 <- lookupEnv "AUTH_DEBUG"
+  let isTruthy mv = case mv of
+        Just v -> let lv = map toLower v in lv `elem` ["1","true","yes","on"]
+        Nothing -> False
+  if isTruthy m1 || isTruthy m2 then putStrLn msg else return ()

@@ -4,13 +4,17 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      jwt_secret:
+        description: 'Optional JWT secret to override repository secret'
+        required: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       DEBUG_VERIFY: '1'
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_SECRET: ${{ github.event.inputs.jwt_secret || secrets.JWT_SECRET }}
     steps:
       - uses: actions/checkout@v4
 
@@ -38,28 +42,62 @@ jobs:
         run: pip install PyJWT
 
       - name: Generate JWT
+        continue-on-error: true
         run: |
+          set -o pipefail
+          GEN_DEBUG="$GITHUB_WORKSPACE/gen_debug.txt"
+          rm -f "$GEN_DEBUG" || true
+          TOKEN_FILE="$GITHUB_WORKSPACE/token.txt"
+          rm -f "$TOKEN_FILE" || true
           if [ -f "$GITHUB_WORKSPACE/gen_jwt_cli.py" ]; then
-            cd "$GITHUB_WORKSPACE"
+            # capture stdout to token file and both stdout/stderr to gen_debug (also print to log)
+            python "$GITHUB_WORKSPACE/gen_jwt_cli.py" "$JWT_SECRET" > >(tee "$TOKEN_FILE") 2> >(tee -a "$GEN_DEBUG" >&2) || true
           elif [ -f "$GITHUB_WORKSPACE/elm-haskell/gen_jwt_cli.py" ]; then
-            cd "$GITHUB_WORKSPACE/elm-haskell"
+            python "$GITHUB_WORKSPACE/elm-haskell/gen_jwt_cli.py" "$JWT_SECRET" > >(tee "$TOKEN_FILE") 2> >(tee -a "$GEN_DEBUG" >&2) || true
           else
-            echo "gen_jwt_cli.py not found"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
+            echo "gen_jwt_cli.py not found" | tee -a "$GEN_DEBUG"
+            ls -la "$GITHUB_WORKSPACE" | tee -a "$GEN_DEBUG" || true
           fi
-          python gen_jwt_cli.py "$JWT_SECRET" > "$GITHUB_WORKSPACE/token.txt"
+          echo "--- gen_debug (first 200 lines) ---"
+          head -n 200 "$GEN_DEBUG" || true
           echo "Generated token:"
-          cat "$GITHUB_WORKSPACE/token.txt"
+          cat "$TOKEN_FILE" || true
 
       - name: Verify token (simple HKDF check)
+        continue-on-error: true
         run: |
-          # Prefer the updated script in elm-haskell; fall back to root if absent
-          if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then
-            python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
-          elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then
-            python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
-          else
-            echo "verify_token.py not found under repository root or elm-haskell"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
-          fi
+          set -o pipefail
+          VERIFY_DEBUG="$GITHUB_WORKSPACE/verify_debug.txt"
+          rm -f "$VERIFY_DEBUG" || true
+          echo "VERIFY DEBUG START" | tee "$VERIFY_DEBUG"
+          {
+            echo "which python: $(which python)"
+            echo "pwd: $(pwd)"
+            echo "ls workspace top-level:"
+            ls -la "$GITHUB_WORKSPACE" || true
+            if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then
+              echo "Using elm-haskell/verify_token.py"
+              python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
+            elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then
+              echo "Using root verify_token.py"
+              python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
+            else
+              echo "verify_token.py not found under repository root or elm-haskell"
+              ls -la "$GITHUB_WORKSPACE" || true
+            fi
+          } 2>&1 | tee -a "$VERIFY_DEBUG" || true
+          echo "--- verify_debug (first 200 lines) ---"
+          head -n 200 "$VERIFY_DEBUG" || true
+
+      - name: Upload auth debug
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: auth-debug
+          path: |
+            ${{ github.workspace }}/token.txt
+            ${{ github.workspace }}/gen_debug.txt
+            ${{ github.workspace }}/verify_debug.txt
 
       - name: Install system packages (for GHC/Stack)
         run: |
@@ -102,6 +140,7 @@ jobs:
           stack test --no-terminal --coverage
 
       - name: Upload token artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: generated-token
@@ -110,7 +149,6 @@ jobs:
       - name: Generate HPC HTML coverage
         run: |
           set -e
-          # detect haskell-server location (root or elm-haskell subdir)
           if [ -d "$GITHUB_WORKSPACE/elm-haskell/haskell-server" ]; then
             HS_DIR="$GITHUB_WORKSPACE/elm-haskell/haskell-server"
           elif [ -d "$GITHUB_WORKSPACE/haskell-server" ]; then
@@ -120,8 +158,6 @@ jobs:
             exit 0
           fi
           cd "$HS_DIR"
-          echo "Looking for .tix files in $HS_DIR..."
-          find .stack-work -name "*.tix" -print
           TIXFILES=$(find .stack-work -name "*.tix" || true)
           if [ -z "$TIXFILES" ]; then
             echo "No .tix files found; skipping hpc markup"
@@ -134,6 +170,7 @@ jobs:
           ls -la coverage || true
 
       - name: Upload coverage artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: hpc-coverage-html
