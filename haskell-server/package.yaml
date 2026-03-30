@@ -78,6 +78,7 @@ tests:
     - cryptonite
     - memory
     - process
+    - directory
     - text
     - time
   
