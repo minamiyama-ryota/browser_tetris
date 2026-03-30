@@ -86,7 +86,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends \
             build-essential autoconf automake libtool pkg-config ca-certificates \
             zlib1g-dev libgmp-dev libncurses-dev libtinfo-dev libffi-dev \
-            curl wget git m4 perl python3-distutils bison flex binutils ccache libssl-dev
+            curl wget git m4 perl bison flex binutils ccache libssl-dev
           if command -v stack >/dev/null 2>&1; then
             echo "stack already installed at $(command -v stack)"
           else
