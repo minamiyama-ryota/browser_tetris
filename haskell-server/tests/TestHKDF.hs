@@ -27,6 +27,16 @@ hkdfTests = testGroup "HKDF/Base64" [
         Nothing -> assertBool "ok" True
         Just _ -> assertBool "should not decode" False
 
+  , testCase "tryB64urlDecode decodes base64url padded" $ do
+      let raw = BS8.pack "hello-world"
+      let enc = convertToBase Base64URLUnpadded raw
+      let encT = TE.decodeUtf8 enc
+      let padLen = (4 - (BS.length enc `mod` 4)) `mod` 4
+      let encPadT = encT <> T.replicate padLen "="
+      case tryB64urlDecode encPadT of
+        Just got -> assertEqual "decoded matches padded" raw got
+        Nothing -> assertBool "should decode padded" False
+
   , testCase "hkdf expands short secret to 32 bytes and is deterministic" $ do
       let secret = BS8.pack "short"
       let prk = hkdfExtract BS.empty secret

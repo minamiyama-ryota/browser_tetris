@@ -1,9 +1,0 @@
-
-tetrisサーバ起動
-$env:JWT_SECRET='dev-secret'; stack exec tetris-server-exe
-
-tetrisサーバー停止
-Get-Process tetris-server-exe | Stop-Process -Force
-
-JWT送信
-window.sendToJs({ type: 'connect', url: 'ws://localhost:8000', token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTc3NDQwNDQwMH0.ip08-l48V7TmCPHNdNLkn0P8BPKgcTTpwhTwlwl1frw' });
