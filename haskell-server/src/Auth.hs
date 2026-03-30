@@ -183,7 +183,7 @@ loadSecrets = do
                                                            Nothing -> acc) Map.empty m
               return decoded
             Nothing -> do
-              putStrLn "Auth warning: JWT_SECRETS present but failed to parse JSON"
+              putStrLn $ "Auth warning: JWT_SECRETS present but failed to parse JSON: " ++ show j
               return Map.empty
         Nothing -> do
           mSecret <- lookupEnv "JWT_SECRET"
@@ -313,7 +313,8 @@ verifyJwtFromEnv token = do
       let secB64 = (convertToBase Base64URLUnpadded sec :: BS.ByteString)
       let providedLen = BS.length (TE.encodeUtf8 origText)
       let decodedLen = BS.length sec
-      let hkdfApplied = decodedLen < 32
+      let origLooksBase64 = isJust (tryB64urlDecode origText)
+      let hkdfApplied = origLooksBase64 && decodedLen < 32
       let finalSecret = if hkdfApplied then hkdfExpand (hkdfExtract BS.empty sec) (TE.encodeUtf8 (T.pack "hs256-derivation")) 32 else sec
       let finalSecretSha256 = TE.decodeUtf8 (convertToBase Base16 (BA.convert (CH.hash finalSecret :: CH.Digest CHA.SHA256) :: BS.ByteString))
       authDebug $ "Auth debug: verifyJwtFromEnv selected secret for kid=" ++ show mKid ++ " secretB64=" ++ T.unpack (TE.decodeUtf8 secB64)
@@ -378,24 +379,27 @@ infoWrapped = id
 -- re-encode (unpadded) and compare to original (unpadded) to avoid false positives.
 tryB64urlDecode :: T.Text -> Maybe ByteString
 tryB64urlDecode t =
-  let origBs = TE.encodeUtf8 t
-      tryDecode bs = case convertFromBase Base64URLUnpadded bs of
-        Right raw -> Just raw
+  let origUnpadded = T.dropWhileEnd (== '=') t
+      origUnpaddedBs = TE.encodeUtf8 origUnpadded
+      -- try unpadded decode first (canonical form)
+      tryUnpadded = case convertFromBase Base64URLUnpadded origUnpaddedBs of
+        Right raw ->
+          let reenc = convertToBase Base64URLUnpadded raw
+              reencT = TE.decodeUtf8 reenc
+          in if reencT == origUnpadded then Just raw else Nothing
         Left _ -> Nothing
-      padLen = (4 - (BS.length origBs `mod` 4)) `mod` 4
-      withPad = origBs `BS.append` TE.encodeUtf8 (T.replicate padLen "=")
-      origUnpadded = T.dropWhileEnd (== '=') t
-  in case tryDecode origBs of
-       Just raw ->
-         let reenc = convertToBase Base64URLUnpadded raw
-             reencT = TE.decodeUtf8 reenc
-         in if reencT == origUnpadded then Just raw else Nothing
-       Nothing -> case tryDecode withPad of
-         Just raw ->
-           let reenc = convertToBase Base64URLUnpadded raw
-               reencT = TE.decodeUtf8 reenc
-           in if reencT == origUnpadded then Just raw else Nothing
-         Nothing -> Nothing
+      -- fallback: try padded decode by adding '=' padding to unpadded bytes
+      padLen = (4 - (BS.length origUnpaddedBs `mod` 4)) `mod` 4
+      padded = origUnpaddedBs `BS.append` BS.replicate padLen 61 -- '=' == 61
+      tryPadded = case convertFromBase Base64URLUnpadded padded of
+        Right raw ->
+          let reenc = convertToBase Base64URLUnpadded raw
+              reencT = TE.decodeUtf8 reenc
+          in if reencT == origUnpadded then Just raw else Nothing
+        Left _ -> Nothing
+  in case tryUnpadded of
+       Just raw -> Just raw
+       Nothing -> tryPadded
 
 
 -- | Conditional debug logging controlled by env vars `DEBUG_VERIFY` or `AUTH_DEBUG`.

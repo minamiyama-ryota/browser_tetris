@@ -1,0 +1,36 @@
+VERIFY DEBUG START
+which python: /opt/hostedtoolcache/Python/3.14.3/x64/bin/python
+pwd: /home/runner/work/browser_tetris/browser_tetris
+ls workspace top-level:
+total 140
+drwxr-xr-x 8 runner runner  4096 Mar 30 11:54 .
+drwxr-xr-x 3 runner runner  4096 Mar 30 11:54 ..
+drwxr-xr-x 7 runner runner  4096 Mar 30 11:54 .git
+drwxr-xr-x 3 runner runner  4096 Mar 30 11:54 .github
+-rw-r--r-- 1 runner runner   265 Mar 30 11:54 .gitignore
+-rw-r--r-- 1 runner runner  5436 Mar 30 11:54 NEW_SESSION_SUMMARY.md
+-rw-r--r-- 1 runner runner  2061 Mar 30 11:54 PROTOCOL.md
+-rw-r--r-- 1 runner runner    30 Mar 30 11:54 README.md
+-rw-r--r-- 1 runner runner  5244 Mar 30 11:54 WS_SECURITY.md
+drwxr-xr-x 4 runner runner  4096 Mar 30 11:54 elm-app
+drwxr-xr-x 3 runner runner  4096 Mar 30 11:54 elm-haskell
+drwxr-xr-x 2 runner runner  4096 Mar 30 11:54 examples
+-rw-r--r-- 1 runner runner 20947 Mar 30 11:54 game.js
+-rw-r--r-- 1 runner runner   745 Mar 30 11:54 gen_debug.txt
+-rw-r--r-- 1 runner runner   682 Mar 30 11:54 gen_jwt.py
+-rw-r--r-- 1 runner runner  6224 Mar 30 11:54 gen_jwt_cli.py
+drwxr-xr-x 7 runner runner  4096 Mar 30 11:54 haskell-server
+-rw-r--r-- 1 runner runner 11675 Mar 30 11:54 index.html
+-rw-r--r-- 1 runner runner   672 Mar 30 11:54 pr_body.txt
+-rw-r--r-- 1 runner runner   129 Mar 30 11:54 token.txt
+-rw-r--r-- 1 runner runner   160 Mar 30 11:54 verify_debug.txt
+-rw-r--r-- 1 runner runner  2836 Mar 30 11:54 verify_token.py
+-rw-r--r-- 1 runner runner  3657 Mar 30 11:54 ws_schema.json
+-rw-r--r-- 1 runner runner   815 Mar 30 11:54 ws_test.py
+-rw-r--r-- 1 runner runner   376 Mar 30 11:54 無題1_20260325_224633.txt
+Using elm-haskell/verify_token.py
+DEBUG: provided_secret_len=5 hkdf_applied=True final_secret_sha256=d1815ff74a3ed2dad662dcd9f561caffcae0ebbc4caff992dd746338c246a91f
+header.payload = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTc3NDg3NTI3MH0
+signature (from token) = p4C1_z-ixgrrPea2U-xEezMUUSPRKFh7G-8b3TUETpY
+computed signature = p4C1_z-ixgrrPea2U-xEezMUUSPRKFh7G-8b3TUETpY
+match = True
