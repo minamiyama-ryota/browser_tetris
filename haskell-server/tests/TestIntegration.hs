@@ -16,9 +16,9 @@ import qualified Crypto.Hash.Algorithms as CHA
 import Data.ByteArray (convert)
 import Data.ByteArray.Encoding (convertToBase, Base(Base64URLUnpadded))
 import System.Process (readProcess)
-import System.Directory (doesFileExist)
+import System.Directory (doesFileExist, findExecutable)
 import Data.Maybe (listToMaybe)
-import Auth (verifyJwt, verifyJwtFromEnv)
+import Auth (verifyJwt, verifyJwtFromEnv, tryB64urlDecode, hkdfExtract, hkdfExpand)
 import System.Environment (setEnv, unsetEnv)
 
 -- helper: base64url encode Lazy/Strict
@@ -29,26 +29,31 @@ toB64 bs = TE.decodeUtf8 (convertToBase Base64URLUnpadded bs)
 -- mkToken now delegates to the Python CLI so tokens are generated the same
 -- way as the Python tooling (pyjwt). Returns token Text.
 mkToken :: BS.ByteString -> Maybe T.Text -> Aeson.Value -> IO T.Text
-mkToken secret mKid _payload = do
-  let secretStr = BS8.unpack secret
-  let kidArg = case mKid of
-        Just k -> [T.unpack k]
-        Nothing -> []
-  -- try several candidate script locations (handles repo layout and runner cwd)
-  let candidates = ["./gen_jwt_cli.py", "../gen_jwt_cli.py", "elm-haskell/gen_jwt_cli.py", "../elm-haskell/gen_jwt_cli.py", "gen_jwt_cli.py"]
-  mpath <- findFirst candidates
-  case mpath of
-    Just script -> do
-      token <- readProcess "python" ([script, secretStr] ++ kidArg) ""
-      return (T.pack (head (lines token)))
-    Nothing -> error "gen_jwt_cli.py not found in expected locations"
+mkToken secret mKid payload = do
+  -- Build JWT header and payload, base64url-encode (unpadded), then HMAC-SHA256 sign.
+  let hdrObj = case mKid of
+        Just k -> Aeson.object ["typ" .= ("JWT" :: T.Text), "alg" .= ("HS256" :: T.Text), "kid" .= k]
+        Nothing -> Aeson.object ["typ" .= ("JWT" :: T.Text), "alg" .= ("HS256" :: T.Text)]
+  let hdrBs = LBS.toStrict (Aeson.encode hdrObj)
+  let pldBs = LBS.toStrict (Aeson.encode payload)
+  let hdrB64 = convertToBase Base64URLUnpadded (hdrBs :: BS.ByteString)
+  let pldB64 = convertToBase Base64URLUnpadded (pldBs :: BS.ByteString)
+  let signingInput = BS.intercalate (BS8.pack ".") [hdrB64, pldB64]
 
-  where
-    findFirst :: [FilePath] -> IO (Maybe FilePath)
-    findFirst [] = return Nothing
-    findFirst (p:ps) = do
-      exists <- doesFileExist p
-      if exists then return (Just p) else findFirst ps
+  -- Normalize secret: if it looks like base64url, decode; if <32 bytes derive via HKDF
+  let providedLen = BS.length secret
+  let mDecoded = tryB64urlDecode (TE.decodeUtf8 secret)
+  let secretBytes = case mDecoded of
+        Just b -> b
+        Nothing -> secret
+  let hkdfApplied = BS.length secretBytes < 32
+  let finalSecret = if hkdfApplied then hkdfExpand (hkdfExtract BS.empty secretBytes) (TE.encodeUtf8 (T.pack "hs256-derivation")) 32 else secretBytes
+
+  let mac = hmac finalSecret signingInput :: HMAC CHA.SHA256
+  let macBytes = (convert mac :: BS.ByteString)
+  let sigB64 = convertToBase Base64URLUnpadded macBytes :: BS.ByteString
+  let token = TE.decodeUtf8 hdrB64 `T.append` "." `T.append` TE.decodeUtf8 pldB64 `T.append` "." `T.append` TE.decodeUtf8 sigB64
+  return token
 
 integrationTests :: TestTree
 integrationTests = testGroup "Auth.verifyJwtFromEnv integration" [
