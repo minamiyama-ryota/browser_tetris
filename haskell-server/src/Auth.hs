@@ -300,7 +300,9 @@ selectSecret mp mKid = case mKid of
   Just k -> Map.lookup k mp
   Nothing -> case Map.lookup "default" mp of
     Just s -> Just s
-    Nothing -> if Map.size mp == 1 then Just (snd $ head (Map.toList mp)) else Nothing
+    Nothing -> case Map.toList mp of
+      [(_, v)] -> Just v
+      _ -> Nothing
 
 -- | Verify a token by automatically loading secrets from environment and
 -- selecting by `kid` if present in the token header.
