@@ -88,6 +88,30 @@ PATTERN_DEFINITIONS = [
         "severity": "info",
         "suggestion": "Token printed or expected; verify token file if present."
     },
+    {
+        "id": "hkdf_detail",
+        "regex": re.compile(r"provided_secret_len=(\d+).*?hkdf_applied=(True|False)(?:.*?final_secret_sha256=([0-9a-fA-F]+))?", re.IGNORECASE),
+        "severity": "info",
+        "suggestion": "HKDF usage detected; check provided secret length and HKDF application."
+    },
+    {
+        "id": "signature_failure",
+        "regex": re.compile(r"(Signature verification failed|InvalidSignature|BadSignature|bad signature|signature.*failed|SignatureError)", re.IGNORECASE),
+        "severity": "error",
+        "suggestion": "Signature verification or JWT verification failed."
+    },
+    {
+        "id": "jwt_decode_error",
+        "regex": re.compile(r"(InvalidTokenError|ExpiredSignatureError|DecodeError|InvalidSignatureError|jwt\.exceptions\.[A-Za-z_]+)", re.IGNORECASE),
+        "severity": "error",
+        "suggestion": "JWT decoding/verification error."
+    },
+    {
+        "id": "bad_token_format",
+        "regex": re.compile(r"(Malformed token|token invalid|Token is invalid|token malformed|bad token)", re.IGNORECASE),
+        "severity": "error",
+        "suggestion": "Token format or content invalid."
+    },
 ]
 
 def get_context(lines, idx, ctx=CONTEXT_LINES):

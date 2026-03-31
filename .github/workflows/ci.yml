@@ -126,6 +126,17 @@ jobs:
             echo '{"error":"gen_debug not found"}' > "$REPORT"
           fi
 
+      - name: "HKDF expectations check"
+        if: always()
+        run: |
+          GEN_DEBUG="$GITHUB_WORKSPACE/gen_debug.txt"
+          if [ -f "$GEN_DEBUG" ]; then
+            echo "Running HKDF expectations check"
+            python "$GITHUB_WORKSPACE/tools/check_hkdf.py" "$GEN_DEBUG"
+          else
+            echo "gen_debug not found; skipping HKDF check"
+          fi
+
       - name: Upload gen_debug report
         if: always()
         uses: actions/upload-artifact@v4
