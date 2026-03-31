@@ -1,6 +1,7 @@
 module Main where
 
-import Test.Tasty (defaultMain, testGroup)
+import Test.Tasty (defaultMain, testGroup, localOption)
+import Test.Tasty.Runners (NumThreads(..))
 import TestIntegration (integrationTests)
 import TestHKDF (hkdfTests)
 import Test.Tasty.HUnit (testCase, (@?=), assertBool)
@@ -46,4 +47,4 @@ main = defaultMain tests
             Right _ -> assertBool "expected failure" False
       ]
 
-    tests = testGroup "All" [unitTests, integrationTests, hkdfTests]
+    tests = testGroup "All" [unitTests, localOption (NumThreads 1) integrationTests, hkdfTests]
