@@ -144,6 +144,40 @@ jobs:
           name: gen-debug-report
           path: ${{ github.workspace }}/gen_debug_report.json
 
+      - name: "Append gen_debug aggregate to history"
+        if: always()
+        run: |
+          set -o pipefail
+          AGG="$GITHUB_WORKSPACE/tools/ci_artifacts/aggregate_gen_debug_summary.json"
+          if [ -f "$AGG" ]; then
+            python "$GITHUB_WORKSPACE/tools/append_aggregate_to_history.py" "$AGG" "${{ github.sha }}" || true
+          else
+            echo "aggregate not found; skipping append"
+          fi
+
+      - name: "Generate gen_debug trend report"
+        if: always()
+        run: |
+          set -o pipefail
+          CSV="$GITHUB_WORKSPACE/tools/ci_artifacts/gen_debug_history.csv"
+          OUT="$GITHUB_WORKSPACE/tools/ci_artifacts/gen_debug_trend.html"
+          if [ -f "$CSV" ]; then
+            python "$GITHUB_WORKSPACE/tools/gen_debug_trend.py" "$CSV" "$OUT" || true
+            echo "--- trend (first 200 chars) ---"
+            head -c 200 "$OUT" || true
+          else
+            echo "history csv not found; skipping trend generation"
+          fi
+
+      - name: "Upload gen_debug history and trend"
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gen-debug-history
+          path: |
+            ${{ github.workspace }}/tools/ci_artifacts/gen_debug_history.csv
+            ${{ github.workspace }}/tools/ci_artifacts/gen_debug_trend.html
+
       - name: Install system packages (for GHC/Stack)
         run: |
           # Ensure required build tools are present for GHC/stack setup
