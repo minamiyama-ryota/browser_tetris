@@ -47,4 +47,4 @@ main = defaultMain tests
             Right _ -> assertBool "expected failure" False
       ]
 
-    tests = testGroup "All" [unitTests, localOption (NumThreads 1) integrationTests, hkdfTests]
+    tests = localOption (NumThreads 1) $ testGroup "All" [unitTests, integrationTests, hkdfTests]
