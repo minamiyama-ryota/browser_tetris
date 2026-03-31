@@ -148,11 +148,11 @@ jobs:
         if: always()
         run: |
           set -o pipefail
-          AGG="$GITHUB_WORKSPACE/tools/ci_artifacts/aggregate_gen_debug_summary.json"
-          if [ -f "$AGG" ]; then
-            python "$GITHUB_WORKSPACE/tools/append_aggregate_to_history.py" "$AGG" "${{ github.sha }}" || true
+          REPORT="$GITHUB_WORKSPACE/gen_debug_report.json"
+          if [ -f "$REPORT" ]; then
+            python "$GITHUB_WORKSPACE/tools/append_aggregate_to_history.py" "$REPORT" "${{ github.sha }}" || true
           else
-            echo "aggregate not found; skipping append"
+            echo "gen_debug_report not found; skipping append"
           fi
 
       - name: "Generate gen_debug trend report"
