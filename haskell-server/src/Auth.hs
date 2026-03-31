@@ -433,7 +433,7 @@ tryB64urlDecode t =
        Nothing -> tryPadded
 
 
--- | Conditional debug logging controlled by env vars `DEBUG_VERIFY` or `AUTH_DEBUG`.
+-- | Conditional debug logging controlled by environment variables DEBUG_VERIFY or AUTH_DEBUG.
 -- When either is set to a truthy value (1/true/yes/on) the message is printed.
 authDebug :: String -> IO ()
 authDebug msg = do
