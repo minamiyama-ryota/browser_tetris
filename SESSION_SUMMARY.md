@@ -33,3 +33,15 @@
 ---
 
 この内容を `SESSION_SUMMARY.md` に保存しました。
+
+**Final actions (2026-03-31)**
+
+- **PR 合流**: PR #11 を `main` にマージし、リモートの `fix/auth-head-safe` を削除しました (https://github.com/minamiyama-ryota/browser_tetris/pull/11)。
+- **ローカル整合**: 作業ブランチから `main` に切り替え、ローカルの `fix/auth-head-safe` ブランチを削除しました。
+- **テスト**: `main` 上で `stack test` を実行し、全11件のテストが合格しました。
+- **CI**: 最新の GitHub Actions 実行は成功状態で、`auth-debug` の出力を確認済みです。開いている PR はありません。
+- **状態**: セッション中の保留作業はすべて処理済みです。
+
+--
+
+記録を更新しました。
