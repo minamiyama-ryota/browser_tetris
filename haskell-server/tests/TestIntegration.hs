@@ -18,8 +18,9 @@ import Data.ByteArray.Encoding (convertToBase, Base(Base64URLUnpadded))
 import System.Process (readProcess)
 import System.Directory (doesFileExist, findExecutable)
 import Data.Maybe (listToMaybe)
-import Auth (verifyJwt, verifyJwtFromEnv, tryB64urlDecode, hkdfExtract, hkdfExpand)
-import System.Environment (setEnv, unsetEnv)
+import Auth (verifyJwt, verifyJwtFromEnv, verifyJwtWithSecrets, tryB64urlDecode, hkdfExtract, hkdfExpand)
+import qualified Data.Map.Strict as Map
+import Data.Map.Strict (Map)
 
 -- helper: base64url encode Lazy/Strict
 toB64 :: BS.ByteString -> T.Text
@@ -62,10 +63,9 @@ integrationTests = testGroup "Auth.verifyJwtFromEnv integration" [
           let secretB64 = TE.decodeUtf8 (convertToBase Base64URLUnpadded secret)
           let payload = object ["sub" .= ("intuser" :: T.Text), "exp" .= (9999999999 :: Int)]
           token <- mkToken secret (Just "k1") payload
-          -- verify via env-path selection
-          setEnv "JWT_SECRETS" (T.unpack (TE.decodeUtf8 (LBS.toStrict (Aeson.encode (Aeson.object ["k1" .= secretB64])))))
-          r <- verifyJwtFromEnv token
-          unsetEnv "JWT_SECRETS"
+          -- verify by passing explicit secrets map (avoid env vars)
+          let secrets = Map.singleton "k1" secretB64
+          r <- verifyJwtWithSecrets secrets token
           case r of
             Right _ -> assertBool "ok" True
             Left e -> assertBool ("expected success, got: " ++ e) False
@@ -74,9 +74,8 @@ integrationTests = testGroup "Auth.verifyJwtFromEnv integration" [
           let secret = BS8.pack "dev-secret"
           let payload = object ["sub" .= ("u2" :: T.Text), "exp" .= (9999999999 :: Int)]
           token <- mkToken secret Nothing payload
-          setEnv "JWT_SECRET" "dev-secret"
-          r <- verifyJwtFromEnv token
-          unsetEnv "JWT_SECRET"
+          let secrets = Map.singleton "default" (TE.decodeUtf8 (convertToBase Base64URLUnpadded secret))
+          r <- verifyJwtWithSecrets secrets token
           case r of
             Right _ -> assertBool "ok" True
             Left e -> assertBool ("expected success, got: " ++ e) False
@@ -85,11 +84,10 @@ integrationTests = testGroup "Auth.verifyJwtFromEnv integration" [
           let secret = BS8.pack "sA"
           let payload = object ["sub" .= ("u3" :: T.Text), "exp" .= (9999999999 :: Int)]
           token <- mkToken secret (Just "kX") payload
-          -- set a different secret under kX
+          -- provide a different secret under kX
           let wrong = TE.decodeUtf8 (convertToBase Base64URLUnpadded (BS8.pack "other"))
-          setEnv "JWT_SECRETS" (T.unpack (TE.decodeUtf8 (LBS.toStrict (Aeson.encode (Aeson.object ["kX" .= wrong])))))
-          r <- verifyJwtFromEnv token
-          unsetEnv "JWT_SECRETS"
+          let secrets = Map.singleton "kX" wrong
+          r <- verifyJwtWithSecrets secrets token
           case r of
             Left _ -> assertBool "ok" True
             Right _ -> assertBool "expected failure" False

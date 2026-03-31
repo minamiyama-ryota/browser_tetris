@@ -105,6 +105,7 @@ test-suite tetris-server-tests
       aeson
     , base >=4.7 && <5
     , bytestring
+    , containers
     , cryptonite
     , directory
     , jose

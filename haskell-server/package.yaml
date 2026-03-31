@@ -80,5 +80,6 @@ tests:
     - process
     - directory
     - text
+    - containers
     - time
   
