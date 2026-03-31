@@ -63,6 +63,19 @@ jobs:
           echo "Generated token:"
           cat "$TOKEN_FILE" || true
 
+      - name: "Fail if token not generated"
+        if: always()
+        run: |
+          TOKEN_FILE="$GITHUB_WORKSPACE/token.txt"
+          if [ ! -s "$TOKEN_FILE" ]; then
+            echo "ERROR: token.txt is missing or empty" >&2
+            echo "--- gen_debug (first 200 lines) ---" >&2
+            head -n 200 "$GITHUB_WORKSPACE/gen_debug.txt" 2>/dev/null || true
+            echo "Workspace top-level:" >&2
+            ls -la "$GITHUB_WORKSPACE" || true
+            exit 1
+          fi
+
       - name: Verify token (simple HKDF check)
         continue-on-error: true
         run: |
