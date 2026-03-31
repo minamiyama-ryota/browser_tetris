@@ -1,0 +1,42 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "move": true,
+        "gh": true,
+        "Out-File": true,
+        "ForEach-Object": true,
+        "/^python scripts/ci_debug_compare\\.py$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "ConvertFrom-Json": true,
+        "Test-Path": true,
+        "Get-Item": true,
+        "git remote": true,
+        "then": true,
+        "else": true,
+        "fi": true,
+        "/^\\$repo='minamiyama-ryota/browser_tetris'\n\\$merge='9c866b25b69c9112505fe5b9ba71b67ea1c89488'\n\\$merged_at='2026-03-30T02:20:50Z'\nWrite-Output \"Repo: \\$repo\"\n\n\\$raw = gh run list --repo \\$repo --branch main --limit 50 --json databaseId,headSha,headBranch,status,conclusion,createdAt 2>\\$null\nif \\(-not \\$raw\\) \\{ Write-Output \"gh run list failed or returned empty\"; exit 1 \\}\n\\$runs = \\$raw \\| ConvertFrom-Json\nif \\(-not \\$runs\\) \\{ Write-Output \"no runs found\"; exit 1 \\}\n\\$sel = \\$null\nforeach \\(\\$r in \\$runs\\) \\{ if \\(\\$r\\.headSha -and \\$r\\.headSha\\.StartsWith\\(\\$merge\\.Substring\\(0,7\\)\\)\\) \\{ \\$sel = \\$r; break \\} \\}\nif \\(-not \\$sel\\) \\{ foreach \\(\\$r in \\$runs\\) \\{ if \\(\\$r\\.createdAt -and \\$r\\.createdAt -ge \\$merged_at\\) \\{ \\$sel = \\$r; break \\} \\} \\}\nif \\(-not \\$sel\\) \\{ \\$sel = \\$runs\\[0\\] \\}\n\\$run_id = \\$sel\\.databaseId\nWrite-Output \"Selected run: \\$run_id \\(headSha=\\$\\(\\$sel\\.headSha\\)\\) createdAt=\\$\\(\\$sel\\.createdAt\\)\"\n\nfor \\(\\$i=0; \\$i -lt 240; \\$i\\+\\+\\) \\{\n  \\$status = gh run view \\$run_id --repo \\$repo --json status --jq '\\.status' 2>\\$null\n  Write-Output \"poll \\$i status: \\$status\"\n  if \\(\\$status -eq 'completed'\\) \\{ break \\}\n  Start-Sleep -s 5\n\\}\n\n\\$logfile = \"ci_run_\\$\\{run_id\\}_log\\.txt\"\nWrite-Output \"Saving log to \\$logfile\"\ngh run view \\$run_id --repo \\$repo --log \\| Out-File -FilePath \\$logfile -Encoding utf8\n\\$debugfile = \"ci_run_\\$\\{run_id\\}_debug\\.txt\"\nWrite-Output \"Extracting debug lines to \\$debugfile\"\nSelect-String -Path \\$logfile -Pattern \"DEBUG:\",\"Auth debug:\",\"provided_secret_len\",\"hkdf_applied\" -SimpleMatch \\| ForEach-Object \\{ \\$_\\.Line \\} \\| Out-File -FilePath \\$debugfile -Encoding utf8\n\n\\$artifactDir = \"auth-debug-\\$run_id\"\nWrite-Output \"Attempting to download artifact auth-debug to \\$artifactDir\"\n\\$dlout = gh run download \\$run_id --repo \\$repo --name auth-debug -D \\$artifactDir 2>&1\nWrite-Output \\$dlout\nif \\(Test-Path \\$artifactDir\\) \\{ Write-Output \"Artifact files:\"; Get-ChildItem -Recurse \\$artifactDir \\| Select-Object FullName,Length \\| Format-Table -AutoSize \\| Out-String \\| Write-Output \\}\nelse \\{ Write-Output \"No artifact directory found: \\$artifactDir\" \\}\n\nWrite-Output \"Running scripts/ci_debug_compare\\.py\"\npython scripts/ci_debug_compare\\.py\n\nWrite-Output \"Done\"\n$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "Copy-Item": true,
+        "../gen_jwt_cli.py": true,
+        "git cherry-pick": true,
+        "/^python tools/check_yaml\\.py$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "C:/Users/User/miniconda3/Scripts/conda.exe": true,
+        "Set-Content": true,
+        "Add-Content": true,
+        "/^python --version$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "py": true,
+        "stack": true,
+        "ConvertTo-Json": true,
+        "git for-each-ref": true,
+        "committerdate:iso8601": true
+    }
+}

@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Auth (verifyJwt, verifyJwtFromEnv, extractKid, computeHmacSig, loadSecrets,
+module Auth (verifyJwt, verifyJwtFromEnv, verifyJwtWithSecrets, extractKid, computeHmacSig, loadSecrets,
              tryB64urlDecode, hkdfExtract, hkdfExpand) where
 
 import Crypto.JWT hiding (hash, Digest)
@@ -310,17 +310,46 @@ verifyJwtFromEnv token = do
   let mKid = extractKid token
   case selectSecretWithOriginals secretsWithOriginals mKid of
     Just (sec, origText) -> do
+      -- Align HKDF behaviour with token generation: apply HKDF when the
+      -- decoded secret bytes are shorter than 32 bytes.
       let secB64 = (convertToBase Base64URLUnpadded sec :: BS.ByteString)
       let providedLen = BS.length (TE.encodeUtf8 origText)
       let decodedLen = BS.length sec
-      let origLooksBase64 = isJust (tryB64urlDecode origText)
-      let hkdfApplied = origLooksBase64 && decodedLen < 32
+      let hkdfApplied = decodedLen < 32
       let finalSecret = if hkdfApplied then hkdfExpand (hkdfExtract BS.empty sec) (TE.encodeUtf8 (T.pack "hs256-derivation")) 32 else sec
       let finalSecretSha256 = TE.decodeUtf8 (convertToBase Base16 (BA.convert (CH.hash finalSecret :: CH.Digest CHA.SHA256) :: BS.ByteString))
       authDebug $ "Auth debug: verifyJwtFromEnv selected secret for kid=" ++ show mKid ++ " secretB64=" ++ T.unpack (TE.decodeUtf8 secB64)
       authDebug $ "Auth debug: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
       authDebug $ "DEBUG: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
-      verifyJwt sec token
+      verifyJwt finalSecret token
+    Nothing -> return $ Left "no matching secret for token kid"
+
+
+-- | Verify using an explicit map of kid -> textual secret values (the same
+-- format used in `JWT_SECRETS` JSON). This helper is intended for tests or
+-- callers that want to avoid using process-global environment variables.
+verifyJwtWithSecrets :: Map T.Text T.Text -> T.Text -> IO (Either String Value)
+verifyJwtWithSecrets secretsText token = do
+  -- Decode entries where possible, but keep the original textual form for
+  -- diagnostics. Resulting map is kid -> (decodedBytes, originalText).
+  let decoded = Map.foldrWithKey (\rk rv acc -> case tryB64urlDecode rv of
+                                                  Just bs -> Map.insert rk (bs, rv) acc
+                                                  Nothing -> Map.insert rk (TE.encodeUtf8 rv, rv) acc)
+                                 Map.empty
+                                 secretsText
+  let mKid = extractKid token
+  case selectSecretWithOriginals decoded mKid of
+    Just (sec, origText) -> do
+      let secB64 = (convertToBase Base64URLUnpadded sec :: BS.ByteString)
+      let providedLen = BS.length (TE.encodeUtf8 origText)
+      let decodedLen = BS.length sec
+      let hkdfApplied = decodedLen < 32
+      let finalSecret = if hkdfApplied then hkdfExpand (hkdfExtract BS.empty sec) (TE.encodeUtf8 (T.pack "hs256-derivation")) 32 else sec
+      let finalSecretSha256 = TE.decodeUtf8 (convertToBase Base16 (BA.convert (CH.hash finalSecret :: CH.Digest CHA.SHA256) :: BS.ByteString))
+      authDebug $ "Auth debug: verifyJwtWithSecrets selected secret for kid=" ++ show mKid ++ " secretB64=" ++ T.unpack (TE.decodeUtf8 secB64)
+      authDebug $ "Auth debug: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
+      authDebug $ "DEBUG: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
+      verifyJwt finalSecret token
     Nothing -> return $ Left "no matching secret for token kid"
 
 -- | Extract `kid` from JWT header if present (does not verify signature)
