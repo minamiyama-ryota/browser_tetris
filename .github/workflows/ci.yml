@@ -112,6 +112,27 @@ jobs:
             ${{ github.workspace }}/gen_debug.txt
             ${{ github.workspace }}/verify_debug.txt
 
+      - name: "Parse gen_debug"
+        if: always()
+        run: |
+          set -o pipefail
+          GEN_DEBUG="$GITHUB_WORKSPACE/gen_debug.txt"
+          REPORT="$GITHUB_WORKSPACE/gen_debug_report.json"
+          if [ -f "$GEN_DEBUG" ]; then
+            python "$GITHUB_WORKSPACE/tools/parse_gen_debug.py" "$GEN_DEBUG" > "$REPORT" 2>/dev/null || true
+            echo "--- gen_debug_report (first 200 chars) ---"
+            head -c 200 "$REPORT" || true
+          else
+            echo '{"error":"gen_debug not found"}' > "$REPORT"
+          fi
+
+      - name: Upload gen_debug report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gen-debug-report
+          path: ${{ github.workspace }}/gen_debug_report.json
+
       - name: Install system packages (for GHC/Stack)
         run: |
           # Ensure required build tools are present for GHC/stack setup
