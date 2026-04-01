@@ -188,16 +188,20 @@ jobs:
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "actions@github.com"
-          # Configure remote to use provided push token
-          git remote set-url origin https://x-access-token:${PUSH_GIT_TOKEN}@github.com/${REPO}.git
-          git fetch origin || true
-          if git ls-remote --exit-code --heads origin gen-debug-history >/dev/null 2>&1; then
-            git checkout gen-debug-history
+          REPO_URL="https://x-access-token:${PUSH_GIT_TOKEN}@github.com/${REPO}.git"
+          TMPDIR=$(mktemp -d)
+          # If remote branch exists, clone that branch; else clone default and create the branch
+          if git ls-remote --exit-code --heads "$REPO_URL" gen-debug-history >/dev/null 2>&1; then
+            git clone --single-branch --branch gen-debug-history "$REPO_URL" "$TMPDIR"
           else
+            git clone "$REPO_URL" "$TMPDIR"
+            cd "$TMPDIR"
             git checkout -b gen-debug-history
+            cd - >/dev/null || true
           fi
-          mkdir -p tools/ci_artifacts
-          cp "$GITHUB_WORKSPACE/tools/ci_artifacts/gen_debug_history.csv" tools/ci_artifacts/gen_debug_history.csv || true
+          mkdir -p "$TMPDIR/tools/ci_artifacts"
+          cp "$GITHUB_WORKSPACE/tools/ci_artifacts/gen_debug_history.csv" "$TMPDIR/tools/ci_artifacts/gen_debug_history.csv" || true
+          cd "$TMPDIR"
           git add tools/ci_artifacts/gen_debug_history.csv
           if git diff --cached --quiet; then
             echo "No changes to commit"
@@ -205,6 +209,7 @@ jobs:
             git commit -m "CI: update gen_debug_history for ${GITHUB_SHA}"
             git push origin gen-debug-history
           fi
+          rm -rf "$TMPDIR" || true
 
       - name: Install system packages (for GHC/Stack)
         run: |
