@@ -56,6 +56,27 @@
     - PAT の有効期限は短く保ち、必要に応じて定期的にローテーションしてください。
     - シークレットのアクセス履歴は GitHub の監査ログ（Organization の場合）や Actions 実行ログで確認できます。
 
+  ---
+
+  ## 履歴 CSV の永続化戦略（推奨）
+
+  - **当面の方針（推奨）**: 現状のまま `gen-debug-history` ブランチへ継続して追記して運用します。簡単で CI からの自動更新が容易なため、まずはこの方法を継続してください。
+  - **保守策**: ブランチのサイズや行数が大きくなってきたら、定期的にアーカイブ（例: 月次で CSV を GitHub Release に添付、または S3 等へエクスポート）するジョブを追加すると良いです。
+  - **将来的な移行案**:
+    - GitHub Release に保存: `gh release create ...` を使って時点ごとのスナップショットを作る。
+    - 外部オブジェクトストレージ (S3 / GCS): CI から直接アップロードし、ブランチは最小履歴のみ保持する。
+
+  例: CI で月次アーカイブを作る psuedo-step
+
+  ```yaml
+  # 月次ジョブ（擬似）
+  - name: Archive gen_debug history to release
+    run: |
+      ts=$(date -u +%Y%m%dT%H%M%SZ)
+      gh release create gen-debug-history-${ts} tools/ci_artifacts/gen_debug_history.csv --title "gen-debug-history ${ts}"
+  ```
+
+  これにより、ブランチは短期的な履歴保管に使い、定期アーカイブで長期保存を別途確保できます。
 4) 動作確認
   - 手動でワークフローを `workflow_dispatch` で走らせ、最後に `gen-debug-history` ブランチに `tools/ci_artifacts/gen_debug_history.csv` が更新されていることを確認してください。
 
