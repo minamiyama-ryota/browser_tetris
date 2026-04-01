@@ -37,16 +37,20 @@ else:
         'total_findings': total_findings
     }
 
-out_csv = in_path.parent / 'gen_debug_history.csv'
+ # write history into the CI artifacts directory so CI steps that expect
+ # tools/ci_artifacts/gen_debug_history.csv will find it.
+out_csv = Path('tools/ci_artifacts/gen_debug_history.csv')
+out_csv.parent.mkdir(parents=True, exist_ok=True)
 
 now = datetime.utcnow().isoformat() + 'Z'
 commit = sys.argv[2] if len(sys.argv) >= 3 else ''
-line = [now, commit, str(agg.get('files_scanned',0)), str(agg.get('files_with_errors',0)), str(agg.get('total_findings',0))]
+line = [now, commit, str(agg.get('files_scanned', 0)), str(agg.get('files_with_errors', 0)), str(agg.get('total_findings', 0))]
 
 header = 'timestamp,commit,files_scanned,files_with_errors,total_findings\n'
 if not out_csv.exists():
-    out_csv.write_text(header + ','.join(line) + '\n', encoding='utf-8')
-else:
-    out_csv.write_text(out_csv.read_text(encoding='utf-8') + ','.join(line) + '\n', encoding='utf-8')
+    out_csv.write_text(header, encoding='utf-8')
+
+with out_csv.open('a', encoding='utf-8') as f:
+    f.write(','.join(line) + '\n')
 
 print('Appended history to', out_csv)
