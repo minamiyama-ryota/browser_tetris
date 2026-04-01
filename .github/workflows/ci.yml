@@ -202,6 +202,9 @@ jobs:
           mkdir -p "$TMPDIR/tools/ci_artifacts"
           cp "$GITHUB_WORKSPACE/tools/ci_artifacts/gen_debug_history.csv" "$TMPDIR/tools/ci_artifacts/gen_debug_history.csv" || true
           cd "$TMPDIR"
+          # Ensure git identity is set inside the cloned repo to allow commits
+          git -C "$TMPDIR" config user.name "github-actions[bot]"
+          git -C "$TMPDIR" config user.email "actions@github.com"
           git add tools/ci_artifacts/gen_debug_history.csv
           if git diff --cached --quiet; then
             echo "No changes to commit"
