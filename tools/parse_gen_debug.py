@@ -112,6 +112,24 @@ PATTERN_DEFINITIONS = [
         "severity": "error",
         "suggestion": "Token format or content invalid."
     },
+    {
+        "id": "cli_unknown_json_field",
+        "regex": re.compile(r"Unknown JSON field:\s*\"?([^\"\\s]+)\"?", re.IGNORECASE),
+        "severity": "warning",
+        "suggestion": "CLI returned unknown JSON field; adjust parsing or use REST fallback."
+    },
+    {
+        "id": "auth_header_malformed",
+        "regex": re.compile(r"Malformed\s+Authorization\s+header|authorization header is malformed", re.IGNORECASE),
+        "severity": "error",
+        "suggestion": "Authorization header malformed; ensure token has no extra quotes/newlines."
+    },
+    {
+        "id": "http_unauthorized",
+        "regex": re.compile(r"\b401\b|\bUnauthorized\b|authentication failed", re.IGNORECASE),
+        "severity": "error",
+        "suggestion": "HTTP 401/Unauthorized returned; check credentials and token formatting."
+    },
 ]
 
 def get_context(lines, idx, ctx=CONTEXT_LINES):

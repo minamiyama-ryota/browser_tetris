@@ -178,6 +178,34 @@ jobs:
             ${{ github.workspace }}/tools/ci_artifacts/gen_debug_history.csv
             ${{ github.workspace }}/tools/ci_artifacts/gen_debug_trend.html
 
+      - name: "Push gen_debug history to branch"
+        if: always()
+        env:
+          PUSH_GIT_TOKEN: ${{ secrets.PUSH_GIT_TOKEN }}
+          REPO: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "actions@github.com"
+          # Configure remote to use provided push token
+          git remote set-url origin https://x-access-token:${PUSH_GIT_TOKEN}@github.com/${REPO}.git
+          git fetch origin || true
+          if git ls-remote --exit-code --heads origin gen-debug-history >/dev/null 2>&1; then
+            git checkout gen-debug-history
+          else
+            git checkout -b gen-debug-history
+          fi
+          mkdir -p tools/ci_artifacts
+          cp "$GITHUB_WORKSPACE/tools/ci_artifacts/gen_debug_history.csv" tools/ci_artifacts/gen_debug_history.csv || true
+          git add tools/ci_artifacts/gen_debug_history.csv
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "CI: update gen_debug_history for ${GITHUB_SHA}"
+            git push origin gen-debug-history
+          fi
+
       - name: Install system packages (for GHC/Stack)
         run: |
           # Ensure required build tools are present for GHC/stack setup
