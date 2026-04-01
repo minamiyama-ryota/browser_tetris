@@ -2,7 +2,13 @@ name: CI
 
 on:
   push:
+    branches:
+      - main
+    branches-ignore:
+      - gen-debug-history
   pull_request:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       jwt_secret:
@@ -209,7 +215,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "CI: update gen_debug_history for ${GITHUB_SHA}"
+            git commit -m "CI: update gen_debug_history for ${GITHUB_SHA} [skip ci]"
             git push origin gen-debug-history
           fi
           rm -rf "$TMPDIR" || true
