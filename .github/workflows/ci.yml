@@ -2,22 +2,22 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       jwt_secret:
         description: 'Optional JWT secret to override repository secret'
+        required: false
+      debug_verify:
+        description: 'Optional: set to "1" to enable DEBUG_VERIFY/AUTH_DEBUG for debugging'
         required: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      DEBUG_VERIFY: '1'
+      DEBUG_VERIFY: ${{ github.event.inputs.debug_verify || '0' }}
+      AUTH_DEBUG: ${{ github.event.inputs.debug_verify || '0' }}
       JWT_SECRET: ${{ github.event.inputs.jwt_secret || secrets.JWT_SECRET }}
     steps:
       - uses: actions/checkout@v4
@@ -46,68 +46,45 @@ jobs:
         run: pip install PyJWT
 
       - name: Generate JWT
-        continue-on-error: true
         run: |
-          set -o pipefail
           GEN_DEBUG="$GITHUB_WORKSPACE/gen_debug.txt"
           rm -f "$GEN_DEBUG" || true
-          TOKEN_FILE="$GITHUB_WORKSPACE/token.txt"
-          rm -f "$TOKEN_FILE" || true
           if [ -f "$GITHUB_WORKSPACE/gen_jwt_cli.py" ]; then
-            # capture stdout to token file and both stdout/stderr to gen_debug (also print to log)
-            python "$GITHUB_WORKSPACE/gen_jwt_cli.py" "$JWT_SECRET" > >(tee "$TOKEN_FILE") 2> >(tee -a "$GEN_DEBUG" >&2) || true
+            python "$GITHUB_WORKSPACE/gen_jwt_cli.py" "$JWT_SECRET" > "$GITHUB_WORKSPACE/token.txt" 2> "$GEN_DEBUG" || true
           elif [ -f "$GITHUB_WORKSPACE/elm-haskell/gen_jwt_cli.py" ]; then
-            python "$GITHUB_WORKSPACE/elm-haskell/gen_jwt_cli.py" "$JWT_SECRET" > >(tee "$TOKEN_FILE") 2> >(tee -a "$GEN_DEBUG" >&2) || true
+            python "$GITHUB_WORKSPACE/elm-haskell/gen_jwt_cli.py" "$JWT_SECRET" > "$GITHUB_WORKSPACE/token.txt" 2> "$GEN_DEBUG" || true
           else
-            echo "gen_jwt_cli.py not found" | tee -a "$GEN_DEBUG"
-            ls -la "$GITHUB_WORKSPACE" | tee -a "$GEN_DEBUG" || true
+            echo "gen_jwt_cli.py not found"; ls -la "$GITHUB_WORKSPACE" || true; exit 1
           fi
           echo "--- gen_debug (first 200 lines) ---"
           head -n 200 "$GEN_DEBUG" || true
           echo "Generated token:"
-          cat "$TOKEN_FILE" || true
-
-      - name: "Fail if token not generated"
-        if: always()
-        run: |
-          TOKEN_FILE="$GITHUB_WORKSPACE/token.txt"
-          if [ ! -s "$TOKEN_FILE" ]; then
-            echo "ERROR: token.txt is missing or empty" >&2
-            echo "--- gen_debug (first 200 lines) ---" >&2
-            head -n 200 "$GITHUB_WORKSPACE/gen_debug.txt" 2>/dev/null || true
-            echo "Workspace top-level:" >&2
-            ls -la "$GITHUB_WORKSPACE" || true
-            exit 1
-          fi
+          cat "$GITHUB_WORKSPACE/token.txt" || true
 
       - name: Verify token (simple HKDF check)
-        continue-on-error: true
         run: |
-          set -o pipefail
           VERIFY_DEBUG="$GITHUB_WORKSPACE/verify_debug.txt"
           rm -f "$VERIFY_DEBUG" || true
-          echo "VERIFY DEBUG START" | tee "$VERIFY_DEBUG"
-          {
-            echo "which python: $(which python)"
-            echo "pwd: $(pwd)"
-            echo "ls workspace top-level:"
-            ls -la "$GITHUB_WORKSPACE" || true
-            if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then
-              echo "Using elm-haskell/verify_token.py"
-              python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
-            elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then
-              echo "Using root verify_token.py"
-              python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"
-            else
-              echo "verify_token.py not found under repository root or elm-haskell"
-              ls -la "$GITHUB_WORKSPACE" || true
-            fi
-          } 2>&1 | tee -a "$VERIFY_DEBUG" || true
+          echo "VERIFY DEBUG START" > "$VERIFY_DEBUG"
+          echo "which python: $(which python)" >> "$VERIFY_DEBUG" 2>&1 || true
+          echo "pwd: $(pwd)" >> "$VERIFY_DEBUG" 2>&1 || true
+          echo "ls workspace top-level:" >> "$VERIFY_DEBUG" 2>&1 || true
+          ls -la "$GITHUB_WORKSPACE" >> "$VERIFY_DEBUG" 2>&1 || true
+          if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then
+            echo "Using elm-haskell/verify_token.py" >> "$VERIFY_DEBUG" 2>&1 || true
+            python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" >> "$VERIFY_DEBUG" 2>&1 || true
+          elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then
+            echo "Using root verify_token.py" >> "$VERIFY_DEBUG" 2>&1 || true
+            python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" >> "$VERIFY_DEBUG" 2>&1 || true
+          else
+            echo "verify_token.py not found under repository root or elm-haskell" >> "$VERIFY_DEBUG" 2>&1 || true
+            ls -la "$GITHUB_WORKSPACE" >> "$VERIFY_DEBUG" 2>&1 || true
+            exit 1
+          fi
           echo "--- verify_debug (first 200 lines) ---"
           head -n 200 "$VERIFY_DEBUG" || true
 
       - name: Upload auth debug
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: auth-debug
@@ -116,119 +93,13 @@ jobs:
             ${{ github.workspace }}/gen_debug.txt
             ${{ github.workspace }}/verify_debug.txt
 
-      - name: "Parse gen_debug"
-        if: always()
+      - name: Install Stack (for Haskell build)
         run: |
-          set -o pipefail
-          GEN_DEBUG="$GITHUB_WORKSPACE/gen_debug.txt"
-          REPORT="$GITHUB_WORKSPACE/gen_debug_report.json"
-          if [ -f "$GEN_DEBUG" ]; then
-            python "$GITHUB_WORKSPACE/tools/parse_gen_debug.py" "$GEN_DEBUG" > "$REPORT" 2>/dev/null || true
-            echo "--- gen_debug_report (first 200 chars) ---"
-            head -c 200 "$REPORT" || true
-          else
-            echo '{"error":"gen_debug not found"}' > "$REPORT"
-          fi
-
-      - name: "HKDF expectations check"
-        if: always()
-        run: |
-          GEN_DEBUG="$GITHUB_WORKSPACE/gen_debug.txt"
-          if [ -f "$GEN_DEBUG" ]; then
-            echo "Running HKDF expectations check"
-            python "$GITHUB_WORKSPACE/tools/check_hkdf.py" "$GEN_DEBUG"
-          else
-            echo "gen_debug not found; skipping HKDF check"
-          fi
-
-      - name: Upload gen_debug report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gen-debug-report
-          path: ${{ github.workspace }}/gen_debug_report.json
-
-      - name: "Append gen_debug aggregate to history"
-        if: always()
-        run: |
-          set -o pipefail
-          REPORT="$GITHUB_WORKSPACE/gen_debug_report.json"
-          if [ -f "$REPORT" ]; then
-            python "$GITHUB_WORKSPACE/tools/append_aggregate_to_history.py" "$REPORT" "${{ github.sha }}" || true
-          else
-            echo "gen_debug_report not found; skipping append"
-          fi
-
-      - name: "Generate gen_debug trend report"
-        if: always()
-        run: |
-          set -o pipefail
-          CSV="$GITHUB_WORKSPACE/tools/ci_artifacts/gen_debug_history.csv"
-          OUT="$GITHUB_WORKSPACE/tools/ci_artifacts/gen_debug_trend.html"
-          if [ -f "$CSV" ]; then
-            python "$GITHUB_WORKSPACE/tools/gen_debug_trend.py" "$CSV" "$OUT" || true
-            echo "--- trend (first 200 chars) ---"
-            head -c 200 "$OUT" || true
-          else
-            echo "history csv not found; skipping trend generation"
-          fi
-
-      - name: "Upload gen_debug history and trend"
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gen-debug-history
-          path: |
-            ${{ github.workspace }}/tools/ci_artifacts/gen_debug_history.csv
-            ${{ github.workspace }}/tools/ci_artifacts/gen_debug_trend.html
-
-      - name: "Push gen_debug history to branch"
-        if: always()
-        env:
-          PUSH_GIT_TOKEN: ${{ secrets.PUSH_GIT_TOKEN }}
-          REPO: ${{ github.repository }}
-          GITHUB_SHA: ${{ github.sha }}
-        run: |
-          set -e
-          git config user.name "github-actions[bot]"
-          git config user.email "actions@github.com"
-          REPO_URL="https://x-access-token:${PUSH_GIT_TOKEN}@github.com/${REPO}.git"
-          TMPDIR=$(mktemp -d)
-          # If remote branch exists, clone that branch; else clone default and create the branch
-          if git ls-remote --exit-code --heads "$REPO_URL" gen-debug-history >/dev/null 2>&1; then
-            git clone --single-branch --branch gen-debug-history "$REPO_URL" "$TMPDIR"
-          else
-            git clone "$REPO_URL" "$TMPDIR"
-            cd "$TMPDIR"
-            git checkout -b gen-debug-history
-            cd - >/dev/null || true
-          fi
-          mkdir -p "$TMPDIR/tools/ci_artifacts"
-          cp "$GITHUB_WORKSPACE/tools/ci_artifacts/gen_debug_history.csv" "$TMPDIR/tools/ci_artifacts/gen_debug_history.csv" || true
-          cd "$TMPDIR"
-          # Ensure git identity is set inside the cloned repo to allow commits
-          git -C "$TMPDIR" config user.name "github-actions[bot]"
-          git -C "$TMPDIR" config user.email "actions@github.com"
-          git add tools/ci_artifacts/gen_debug_history.csv
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "CI: update gen_debug_history for ${GITHUB_SHA} [skip ci]"
-            git push origin gen-debug-history
-          fi
-          rm -rf "$TMPDIR" || true
-
-      - name: Install system packages (for GHC/Stack)
-        run: |
-          # Ensure required build tools are present for GHC/stack setup
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             build-essential autoconf automake libtool pkg-config ca-certificates \
-            zlib1g-dev libgmp-dev libncurses-dev libtinfo-dev libffi-dev curl
-
-      - name: Install Stack (for Haskell build)
-        run: |
-          # install curl if missing, then install stack only if absent
+            zlib1g-dev libgmp-dev libncurses-dev libtinfo-dev libffi-dev \
+            curl wget git m4 perl bison flex binutils ccache libssl-dev
           if command -v stack >/dev/null 2>&1; then
             echo "stack already installed at $(command -v stack)"
           else
@@ -259,7 +130,6 @@ jobs:
           stack test --no-terminal --coverage
 
       - name: Upload token artifact
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: generated-token
@@ -289,7 +159,6 @@ jobs:
           ls -la coverage || true
 
       - name: Upload coverage artifact
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: hpc-coverage-html
