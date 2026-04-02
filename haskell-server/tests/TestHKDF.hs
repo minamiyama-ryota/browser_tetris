@@ -27,16 +27,6 @@ hkdfTests = testGroup "HKDF/Base64" [
         Nothing -> assertBool "ok" True
         Just _ -> assertBool "should not decode" False
 
-  , testCase "tryB64urlDecode decodes base64url padded" $ do
-      let raw = BS8.pack "hello-world"
-      let enc = convertToBase Base64URLUnpadded raw
-      let encT = TE.decodeUtf8 enc
-      let padLen = (4 - (BS.length enc `mod` 4)) `mod` 4
-      let encPadT = encT <> T.replicate padLen "="
-      case tryB64urlDecode encPadT of
-        Just got -> assertEqual "decoded matches padded" raw got
-        Nothing -> assertBool "should decode padded" False
-
   , testCase "hkdf expands short secret to 32 bytes and is deterministic" $ do
       let secret = BS8.pack "short"
       let prk = hkdfExtract BS.empty secret
@@ -45,4 +35,26 @@ hkdfTests = testGroup "HKDF/Base64" [
       assertEqual "length 32" 32 (BS.length out1)
       assertEqual "deterministic" out1 out2
       assertBool "expanded differs from input" (out1 /= secret)
+
+  , testCase "tryB64urlDecode handles padded base64url input" $ do
+      let raw2 = BS8.pack "pad-test-data"
+      let encUnp = TE.decodeUtf8 (convertToBase Base64URLUnpadded raw2)
+      let encPad = encUnp `T.append` "="
+      case tryB64urlDecode encPad of
+        Just got -> assertEqual "padded decoded matches" raw2 got
+        Nothing -> assertBool "should decode padded" False
+
+  , testCase "tryB64urlDecode rejects similar-but-invalid strings" $ do
+      let almost = T.pack "abc123!?"
+      case tryB64urlDecode almost of
+        Nothing -> assertBool "ok" True
+        Just _ -> assertBool "should not decode" False
+
+  , testCase "hkdfExpand handles >32 output and is deterministic" $ do
+      let secret3 = BS8.pack "another-secret"
+      let prk3 = hkdfExtract BS.empty secret3
+      let outA = hkdfExpand prk3 (TE.encodeUtf8 (T.pack "info1")) 64
+      let outB = hkdfExpand prk3 (TE.encodeUtf8 (T.pack "info1")) 64
+      assertEqual "length 64" 64 (BS.length outA)
+      assertEqual "deterministic long" outA outB
   ]
