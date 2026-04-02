@@ -25,3 +25,7 @@ __pycache__/
 # CI artifacts (local downloads)
 haskell-server/ci-artifacts/
 ci-artifacts/
+
+# Ignore CI debug archives
+debug-archive*
+
