@@ -23,3 +23,8 @@ stack test    # または debug-verify 実行
 
 CI ではデバッグ用に `gen_debug.txt` / `verify_debug.txt` を出力してアーティファクトとしてアップロードします。問題が発生した場合はこれらのログを確認してください。
 
+リリース:
+
+- v0.1.1 — Unify HS256 secret normalization, HKDF derivation, tests and CI improvements.
+- リリースページ: https://github.com/minamiyama-ryota/browser_tetris/releases/tag/v0.1.1
+
