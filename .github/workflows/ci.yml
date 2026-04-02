@@ -72,10 +72,11 @@ jobs:
           ls -la "$GITHUB_WORKSPACE" >> "$VERIFY_DEBUG" 2>&1 || true
           if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then
             echo "Using elm-haskell/verify_token.py" >> "$VERIFY_DEBUG" 2>&1 || true
-            python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" >> "$VERIFY_DEBUG" 2>&1 || true
+            # pipe both stdout and stderr through tee so output appears in logs and is saved to the file
+            python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" 2>&1 | tee -a "$VERIFY_DEBUG" || true
           elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then
             echo "Using root verify_token.py" >> "$VERIFY_DEBUG" 2>&1 || true
-            python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" >> "$VERIFY_DEBUG" 2>&1 || true
+            python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt" 2>&1 | tee -a "$VERIFY_DEBUG" || true
           else
             echo "verify_token.py not found under repository root or elm-haskell" >> "$VERIFY_DEBUG" 2>&1 || true
             ls -la "$GITHUB_WORKSPACE" >> "$VERIFY_DEBUG" 2>&1 || true
