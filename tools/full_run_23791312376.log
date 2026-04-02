@@ -1,0 +1,1172 @@
+build	Set up job	﻿2026-03-31T09:52:39.2749610Z Current runner version: '2.333.0'
+build	Set up job	2026-03-31T09:52:39.2773935Z ##[group]Runner Image Provisioner
+build	Set up job	2026-03-31T09:52:39.2774889Z Hosted Compute Agent
+build	Set up job	2026-03-31T09:52:39.2775418Z Version: 20260213.493
+build	Set up job	2026-03-31T09:52:39.2776411Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+build	Set up job	2026-03-31T09:52:39.2777218Z Build Date: 2026-02-13T00:28:41Z
+build	Set up job	2026-03-31T09:52:39.2778039Z Worker ID: {263b462d-a782-4a97-b0cf-ab826ebcc572}
+build	Set up job	2026-03-31T09:52:39.2778798Z Azure Region: westus3
+build	Set up job	2026-03-31T09:52:39.2779422Z ##[endgroup]
+build	Set up job	2026-03-31T09:52:39.2780798Z ##[group]Operating System
+build	Set up job	2026-03-31T09:52:39.2781423Z Ubuntu
+build	Set up job	2026-03-31T09:52:39.2781946Z 24.04.4
+build	Set up job	2026-03-31T09:52:39.2782402Z LTS
+build	Set up job	2026-03-31T09:52:39.2782844Z ##[endgroup]
+build	Set up job	2026-03-31T09:52:39.2783370Z ##[group]Runner Image
+build	Set up job	2026-03-31T09:52:39.2783910Z Image: ubuntu-24.04
+build	Set up job	2026-03-31T09:52:39.2784433Z Version: 20260323.65.1
+build	Set up job	2026-03-31T09:52:39.2785437Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260323.65/images/ubuntu/Ubuntu2404-Readme.md
+build	Set up job	2026-03-31T09:52:39.2786993Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260323.65
+build	Set up job	2026-03-31T09:52:39.2788151Z ##[endgroup]
+build	Set up job	2026-03-31T09:52:39.2790785Z ##[group]GITHUB_TOKEN Permissions
+build	Set up job	2026-03-31T09:52:39.2792871Z Actions: write
+build	Set up job	2026-03-31T09:52:39.2793474Z ArtifactMetadata: write
+build	Set up job	2026-03-31T09:52:39.2794001Z Attestations: write
+build	Set up job	2026-03-31T09:52:39.2794616Z Checks: write
+build	Set up job	2026-03-31T09:52:39.2795122Z Contents: write
+build	Set up job	2026-03-31T09:52:39.2795623Z Deployments: write
+build	Set up job	2026-03-31T09:52:39.2796271Z Discussions: write
+build	Set up job	2026-03-31T09:52:39.2796729Z Issues: write
+build	Set up job	2026-03-31T09:52:39.2797217Z Metadata: read
+build	Set up job	2026-03-31T09:52:39.2798067Z Models: read
+build	Set up job	2026-03-31T09:52:39.2798542Z Packages: write
+build	Set up job	2026-03-31T09:52:39.2799079Z Pages: write
+build	Set up job	2026-03-31T09:52:39.2799730Z PullRequests: write
+build	Set up job	2026-03-31T09:52:39.2800253Z RepositoryProjects: write
+build	Set up job	2026-03-31T09:52:39.2800828Z SecurityEvents: write
+build	Set up job	2026-03-31T09:52:39.2801399Z Statuses: write
+build	Set up job	2026-03-31T09:52:39.2801865Z ##[endgroup]
+build	Set up job	2026-03-31T09:52:39.2803984Z Secret source: Actions
+build	Set up job	2026-03-31T09:52:39.2804763Z Prepare workflow directory
+build	Set up job	2026-03-31T09:52:39.3342737Z Prepare all required actions
+build	Set up job	2026-03-31T09:52:39.3381106Z Getting action download info
+build	Set up job	2026-03-31T09:52:39.8280765Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+build	Set up job	2026-03-31T09:52:39.9969939Z Download action repository 'actions/setup-python@v4' (SHA:7f4fc3e22c37d6ff65e88745f38bd3157c663f7c)
+build	Set up job	2026-03-31T09:52:40.1142662Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+build	Set up job	2026-03-31T09:52:40.2076315Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+build	Set up job	2026-03-31T09:52:40.4782598Z Complete job name: build
+build	Run actions/checkout@v4	﻿2026-03-31T09:52:40.5721140Z ##[group]Run actions/checkout@v4
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5723005Z with:
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5723787Z   repository: minamiyama-ryota/browser_tetris
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5725103Z   token: ***
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5725797Z   ssh-strict: true
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5726507Z   ssh-user: git
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5727200Z   persist-credentials: true
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5728303Z   clean: true
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5729024Z   sparse-checkout-cone-mode: true
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5729893Z   fetch-depth: 1
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5730597Z   fetch-tags: false
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5731293Z   show-progress: true
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5732015Z   lfs: false
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5732659Z   submodules: false
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5733375Z   set-safe-directory: true
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5734460Z env:
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5735080Z   DEBUG_VERIFY: 1
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5735808Z   JWT_SECRET: ***
+build	Run actions/checkout@v4	2026-03-31T09:52:40.5736491Z ##[endgroup]
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6832744Z Syncing repository: minamiyama-ryota/browser_tetris
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6835513Z ##[group]Getting Git version info
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6836918Z Working directory is '/home/runner/work/browser_tetris/browser_tetris'
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6838972Z [command]/usr/bin/git version
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6866716Z git version 2.53.0
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6893015Z ##[endgroup]
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6914967Z Temporarily overriding HOME='/home/runner/work/_temp/8aa4f8d4-a53f-45ba-9b30-a81aacfdb0f8' before making global git config changes
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6917834Z Adding repository directory to the temporary git global config as a safe directory
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6920502Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/browser_tetris/browser_tetris
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6951436Z Deleting the contents of '/home/runner/work/browser_tetris/browser_tetris'
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6954863Z ##[group]Initializing the repository
+build	Run actions/checkout@v4	2026-03-31T09:52:40.6958955Z [command]/usr/bin/git init /home/runner/work/browser_tetris/browser_tetris
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7054091Z hint: Using 'master' as the name for the initial branch. This default branch name
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7056367Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7058453Z hint: to use in all of your new repositories, which will suppress this warning,
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7060333Z hint: call:
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7060994Z hint:
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7061824Z hint: 	git config --global init.defaultBranch <name>
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7062879Z hint:
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7063863Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7066005Z hint: 'development'. The just-created branch can be renamed via this command:
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7067329Z hint:
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7068240Z hint: 	git branch -m <name>
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7069029Z hint:
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7070288Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7072229Z Initialized empty Git repository in /home/runner/work/browser_tetris/browser_tetris/.git/
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7075363Z [command]/usr/bin/git remote add origin https://github.com/minamiyama-ryota/browser_tetris
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7097930Z ##[endgroup]
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7099222Z ##[group]Disabling automatic garbage collection
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7101328Z [command]/usr/bin/git config --local gc.auto 0
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7129645Z ##[endgroup]
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7130852Z ##[group]Setting up auth
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7135916Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7168250Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7448547Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7481347Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7693393Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7729481Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7948428Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7982638Z ##[endgroup]
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7983933Z ##[group]Fetching the repository
+build	Run actions/checkout@v4	2026-03-31T09:52:40.7991910Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b7f159757e6a31ac20012335605c2d0e3249a9f6:refs/remotes/origin/main
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5363705Z From https://github.com/minamiyama-ryota/browser_tetris
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5366325Z  * [new ref]         b7f159757e6a31ac20012335605c2d0e3249a9f6 -> origin/main
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5393894Z ##[endgroup]
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5396319Z ##[group]Determining the checkout info
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5399185Z ##[endgroup]
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5401265Z [command]/usr/bin/git sparse-checkout disable
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5439947Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5466340Z ##[group]Checking out the ref
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5470088Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5663296Z Switched to a new branch 'main'
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5664948Z branch 'main' set up to track 'origin/main'.
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5673068Z ##[endgroup]
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5709842Z [command]/usr/bin/git log -1 --format=%H
+build	Run actions/checkout@v4	2026-03-31T09:52:41.5731966Z b7f159757e6a31ac20012335605c2d0e3249a9f6
+build	Debug: show workspace	﻿2026-03-31T09:52:41.5940701Z ##[group]Run echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
+build	Debug: show workspace	2026-03-31T09:52:41.5942223Z [36;1mecho "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"[0m
+build	Debug: show workspace	2026-03-31T09:52:41.5943397Z [36;1mecho "pwd: $(pwd)"[0m
+build	Debug: show workspace	2026-03-31T09:52:41.5944319Z [36;1mecho "ls workspace:"[0m
+build	Debug: show workspace	2026-03-31T09:52:41.5945340Z [36;1mls -la "$GITHUB_WORKSPACE" || true[0m
+build	Debug: show workspace	2026-03-31T09:52:41.5978406Z shell: /usr/bin/bash -e {0}
+build	Debug: show workspace	2026-03-31T09:52:41.5979343Z env:
+build	Debug: show workspace	2026-03-31T09:52:41.5980079Z   DEBUG_VERIFY: 1
+build	Debug: show workspace	2026-03-31T09:52:41.5981020Z   JWT_SECRET: ***
+build	Debug: show workspace	2026-03-31T09:52:41.5981793Z ##[endgroup]
+build	Debug: show workspace	2026-03-31T09:52:41.6062298Z GITHUB_WORKSPACE=/home/runner/work/browser_tetris/browser_tetris
+build	Debug: show workspace	2026-03-31T09:52:41.6066232Z pwd: /home/runner/work/browser_tetris/browser_tetris
+build	Debug: show workspace	2026-03-31T09:52:41.6068339Z ls workspace:
+build	Debug: show workspace	2026-03-31T09:52:41.6081339Z total 3212
+build	Debug: show workspace	2026-03-31T09:52:41.6082510Z drwxr-xr-x 11 runner runner    4096 Mar 31 09:52 .
+build	Debug: show workspace	2026-03-31T09:52:41.6084550Z drwxr-xr-x  3 runner runner    4096 Mar 31 09:52 ..
+build	Debug: show workspace	2026-03-31T09:52:41.6086737Z drwxr-xr-x  7 runner runner    4096 Mar 31 09:52 .git
+build	Debug: show workspace	2026-03-31T09:52:41.6088389Z drwxr-xr-x  3 runner runner    4096 Mar 31 09:52 .github
+build	Debug: show workspace	2026-03-31T09:52:41.6089711Z -rw-r--r--  1 runner runner     341 Mar 31 09:52 .gitignore
+build	Debug: show workspace	2026-03-31T09:52:41.6091094Z -rw-r--r--  1 runner runner    2061 Mar 31 09:52 PROTOCOL.md
+build	Debug: show workspace	2026-03-31T09:52:41.6092419Z -rw-r--r--  1 runner runner    1218 Mar 31 09:52 README.md
+build	Debug: show workspace	2026-03-31T09:52:41.6093838Z -rw-r--r--  1 runner runner    1117 Mar 31 09:52 SESSION_SUMMARY.md
+build	Debug: show workspace	2026-03-31T09:52:41.6095383Z -rw-r--r--  1 runner runner       0 Mar 31 09:52 TestIntegration_fix.patch
+build	Debug: show workspace	2026-03-31T09:52:41.6096866Z -rw-r--r--  1 runner runner    5244 Mar 31 09:52 WS_SECURITY.md
+build	Debug: show workspace	2026-03-31T09:52:41.6098593Z -rw-r--r--  1 runner runner 3143148 Mar 31 09:52 ci_run_23729294056_full_log.txt
+build	Debug: show workspace	2026-03-31T09:52:41.6100096Z drwxr-xr-x  4 runner runner    4096 Mar 31 09:52 elm-app
+build	Debug: show workspace	2026-03-31T09:52:41.6101411Z drwxr-xr-x  3 runner runner    4096 Mar 31 09:52 elm-haskell
+build	Debug: show workspace	2026-03-31T09:52:41.6102753Z drwxr-xr-x  2 runner runner    4096 Mar 31 09:52 examples
+build	Debug: show workspace	2026-03-31T09:52:41.6104028Z -rw-r--r--  1 runner runner   20947 Mar 31 09:52 game.js
+build	Debug: show workspace	2026-03-31T09:52:41.6105299Z -rw-r--r--  1 runner runner     682 Mar 31 09:52 gen_jwt.py
+build	Debug: show workspace	2026-03-31T09:52:41.6106630Z -rw-r--r--  1 runner runner    6224 Mar 31 09:52 gen_jwt_cli.py
+build	Debug: show workspace	2026-03-31T09:52:41.6108209Z drwxr-xr-x  7 runner runner    4096 Mar 31 09:52 haskell-server
+build	Debug: show workspace	2026-03-31T09:52:41.6109549Z -rw-r--r--  1 runner runner   11675 Mar 31 09:52 index.html
+build	Debug: show workspace	2026-03-31T09:52:41.6110866Z -rw-r--r--  1 runner runner     672 Mar 31 09:52 pr_body.txt
+build	Debug: show workspace	2026-03-31T09:52:41.6112337Z -rw-r--r--  1 runner runner    2416 Mar 31 09:52 pr_body_ci_unify_auth_debug.md
+build	Debug: show workspace	2026-03-31T09:52:41.6113859Z -rw-r--r--  1 runner runner     181 Mar 31 09:52 runs_main.json
+build	Debug: show workspace	2026-03-31T09:52:41.6115170Z drwxr-xr-x  2 runner runner    4096 Mar 31 09:52 scripts
+build	Debug: show workspace	2026-03-31T09:52:41.6116671Z drwxr-xr-x  5 runner runner    4096 Mar 31 09:52 stash_untracked_backup2_20260331092630
+build	Debug: show workspace	2026-03-31T09:52:41.6118415Z drwxr-xr-x  2 runner runner    4096 Mar 31 09:52 tools
+build	Debug: show workspace	2026-03-31T09:52:41.6119722Z -rw-r--r--  1 runner runner    2836 Mar 31 09:52 verify_token.py
+build	Debug: show workspace	2026-03-31T09:52:41.6121085Z -rw-r--r--  1 runner runner    3657 Mar 31 09:52 ws_schema.json
+build	Debug: show workspace	2026-03-31T09:52:41.6122390Z -rw-r--r--  1 runner runner     815 Mar 31 09:52 ws_test.py
+build	Setup Python	﻿2026-03-31T09:52:41.6270200Z ##[group]Run actions/setup-python@v4
+build	Setup Python	2026-03-31T09:52:41.6271214Z with:
+build	Setup Python	2026-03-31T09:52:41.6271905Z   python-version: 3.x
+build	Setup Python	2026-03-31T09:52:41.6272884Z   check-latest: false
+build	Setup Python	2026-03-31T09:52:41.6273891Z   token: ***
+build	Setup Python	2026-03-31T09:52:41.6274630Z   update-environment: true
+build	Setup Python	2026-03-31T09:52:41.6275502Z   allow-prereleases: false
+build	Setup Python	2026-03-31T09:52:41.6276323Z env:
+build	Setup Python	2026-03-31T09:52:41.6276972Z   DEBUG_VERIFY: 1
+build	Setup Python	2026-03-31T09:52:41.6278065Z   JWT_SECRET: ***
+build	Setup Python	2026-03-31T09:52:41.6278842Z ##[endgroup]
+build	Setup Python	2026-03-31T09:52:41.7975067Z ##[group]Installed versions
+build	Setup Python	2026-03-31T09:52:41.8087187Z Successfully set up CPython (3.14.3)
+build	Setup Python	2026-03-31T09:52:41.8089999Z ##[endgroup]
+build	Cache pip	﻿2026-03-31T09:52:41.9128132Z ##[group]Run actions/cache@v4
+build	Cache pip	2026-03-31T09:52:41.9129090Z with:
+build	Cache pip	2026-03-31T09:52:41.9129755Z   path: ~/.cache/pip
+build	Cache pip	2026-03-31T09:52:41.9130510Z   key: Linux-pip-
+build	Cache pip	2026-03-31T09:52:41.9131256Z   restore-keys: Linux-pip-
+build	Cache pip	
+build	Cache pip	2026-03-31T09:52:41.9132131Z   enableCrossOsArchive: false
+build	Cache pip	2026-03-31T09:52:41.9133028Z   fail-on-cache-miss: false
+build	Cache pip	2026-03-31T09:52:41.9133861Z   lookup-only: false
+build	Cache pip	2026-03-31T09:52:41.9134620Z   save-always: false
+build	Cache pip	2026-03-31T09:52:41.9135370Z env:
+build	Cache pip	2026-03-31T09:52:41.9136018Z   DEBUG_VERIFY: 1
+build	Cache pip	2026-03-31T09:52:41.9136878Z   JWT_SECRET: ***
+build	Cache pip	2026-03-31T09:52:41.9138114Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Cache pip	2026-03-31T09:52:41.9139603Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Cache pip	2026-03-31T09:52:41.9141037Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Cache pip	2026-03-31T09:52:41.9142331Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Cache pip	2026-03-31T09:52:41.9143659Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Cache pip	2026-03-31T09:52:41.9145026Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Cache pip	2026-03-31T09:52:41.9146134Z ##[endgroup]
+build	Cache pip	2026-03-31T09:52:42.2996102Z Cache hit for: Linux-pip-
+build	Cache pip	2026-03-31T09:52:42.8141378Z Received 88514 of 88514 (100.0%), 0.3 MBs/sec
+build	Cache pip	2026-03-31T09:52:42.8142258Z Cache Size: ~0 MB (88514 B)
+build	Cache pip	2026-03-31T09:52:42.8201937Z [command]/usr/bin/tar -xf /home/runner/work/_temp/2a137bbf-b0a1-46b8-aaf2-a509f6237cb1/cache.tzst -P -C /home/runner/work/browser_tetris/browser_tetris --use-compress-program unzstd
+build	Cache pip	2026-03-31T09:52:42.8256248Z Cache restored successfully
+build	Cache pip	2026-03-31T09:52:42.8334639Z Cache restored from key: Linux-pip-
+build	Install deps	﻿2026-03-31T09:52:42.8412880Z ##[group]Run pip install PyJWT
+build	Install deps	2026-03-31T09:52:42.8413254Z [36;1mpip install PyJWT[0m
+build	Install deps	2026-03-31T09:52:42.8548945Z shell: /usr/bin/bash -e {0}
+build	Install deps	2026-03-31T09:52:42.8549267Z env:
+build	Install deps	2026-03-31T09:52:42.8549503Z   DEBUG_VERIFY: 1
+build	Install deps	2026-03-31T09:52:42.8549954Z   JWT_SECRET: ***
+build	Install deps	2026-03-31T09:52:42.8550288Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install deps	2026-03-31T09:52:42.8550803Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Install deps	2026-03-31T09:52:42.8551304Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install deps	2026-03-31T09:52:42.8551764Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install deps	2026-03-31T09:52:42.8552564Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install deps	2026-03-31T09:52:42.8553022Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Install deps	2026-03-31T09:52:42.8553420Z ##[endgroup]
+build	Install deps	2026-03-31T09:52:45.4778996Z Collecting PyJWT
+build	Install deps	2026-03-31T09:52:45.4794519Z   Using cached pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+build	Install deps	2026-03-31T09:52:45.4853083Z Using cached pyjwt-2.12.1-py3-none-any.whl (29 kB)
+build	Install deps	2026-03-31T09:52:45.4997278Z Installing collected packages: PyJWT
+build	Install deps	2026-03-31T09:52:45.5330012Z Successfully installed PyJWT-2.12.1
+build	Generate JWT	﻿2026-03-31T09:52:45.5896050Z ##[group]Run set -o pipefail
+build	Generate JWT	2026-03-31T09:52:45.5896401Z [36;1mset -o pipefail[0m
+build	Generate JWT	2026-03-31T09:52:45.5896670Z [36;1mGEN_DEBUG="$GITHUB_WORKSPACE/gen_debug.txt"[0m
+build	Generate JWT	2026-03-31T09:52:45.5896979Z [36;1mrm -f "$GEN_DEBUG" || true[0m
+build	Generate JWT	2026-03-31T09:52:45.5897264Z [36;1mTOKEN_FILE="$GITHUB_WORKSPACE/token.txt"[0m
+build	Generate JWT	2026-03-31T09:52:45.5897927Z [36;1mrm -f "$TOKEN_FILE" || true[0m
+build	Generate JWT	2026-03-31T09:52:45.5898307Z [36;1mif [ -f "$GITHUB_WORKSPACE/gen_jwt_cli.py" ]; then[0m
+build	Generate JWT	2026-03-31T09:52:45.5898833Z [36;1m  # capture stdout to token file and both stdout/stderr to gen_debug (also print to log)[0m
+build	Generate JWT	2026-03-31T09:52:45.5899750Z [36;1m  python "$GITHUB_WORKSPACE/gen_jwt_cli.py" "$JWT_SECRET" > >(tee "$TOKEN_FILE") 2> >(tee -a "$GEN_DEBUG" >&2) || true[0m
+build	Generate JWT	2026-03-31T09:52:45.5900349Z [36;1melif [ -f "$GITHUB_WORKSPACE/elm-haskell/gen_jwt_cli.py" ]; then[0m
+build	Generate JWT	2026-03-31T09:52:45.5900973Z [36;1m  python "$GITHUB_WORKSPACE/elm-haskell/gen_jwt_cli.py" "$JWT_SECRET" > >(tee "$TOKEN_FILE") 2> >(tee -a "$GEN_DEBUG" >&2) || true[0m
+build	Generate JWT	2026-03-31T09:52:45.5901536Z [36;1melse[0m
+build	Generate JWT	2026-03-31T09:52:45.5901791Z [36;1m  echo "gen_jwt_cli.py not found" | tee -a "$GEN_DEBUG"[0m
+build	Generate JWT	2026-03-31T09:52:45.5902170Z [36;1m  ls -la "$GITHUB_WORKSPACE" | tee -a "$GEN_DEBUG" || true[0m
+build	Generate JWT	2026-03-31T09:52:45.5902479Z [36;1mfi[0m
+build	Generate JWT	2026-03-31T09:52:45.5902702Z [36;1mecho "--- gen_debug (first 200 lines) ---"[0m
+build	Generate JWT	2026-03-31T09:52:45.5926645Z [36;1mhead -n 200 "$GEN_DEBUG" || true[0m
+build	Generate JWT	2026-03-31T09:52:45.5926969Z [36;1mecho "Generated token:"[0m
+build	Generate JWT	2026-03-31T09:52:45.5927235Z [36;1mcat "$TOKEN_FILE" || true[0m
+build	Generate JWT	2026-03-31T09:52:45.5954585Z shell: /usr/bin/bash -e {0}
+build	Generate JWT	2026-03-31T09:52:45.5954847Z env:
+build	Generate JWT	2026-03-31T09:52:45.5955031Z   DEBUG_VERIFY: 1
+build	Generate JWT	2026-03-31T09:52:45.5955472Z   JWT_SECRET: ***
+build	Generate JWT	2026-03-31T09:52:45.5955756Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate JWT	2026-03-31T09:52:45.5956180Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Generate JWT	2026-03-31T09:52:45.5956590Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate JWT	2026-03-31T09:52:45.5956972Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate JWT	2026-03-31T09:52:45.5957337Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate JWT	2026-03-31T09:52:45.5958002Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Generate JWT	2026-03-31T09:52:45.5958319Z ##[endgroup]
+build	Generate JWT	2026-03-31T09:52:45.6610378Z DEBUG: provided_secret_len=5 hkdf_applied=True final_secret_sha256=d1815ff74a3ed2dad662dcd9f561caffcae0ebbc4caff992dd746338c246a91f
+build	Generate JWT	2026-03-31T09:52:45.6612104Z DEBUG: signing-input (utf8)=***
+build	Generate JWT	2026-03-31T09:52:45.6613165Z DEBUG: signing-input (hex)=65794a68624763694f694a49557a49314e694973496e523563434936496b705856434a392e65794a7a645749694f694a305a584e3064584e6c63694973496d5634634349364d5463334e446b314e444d324e5830 len=84
+build	Generate JWT	2026-03-31T09:52:45.6614666Z DEBUG: token sig (base64url)=KEE-Jd8zWbDuNUm4m4j3D5likyi1QmCgg4OWpD37sGc sig(hex)=28413e25df3359b0ee3549b89b88f70f99629328b54260a0838396a43dfbb067
+build	Generate JWT	2026-03-31T09:52:45.6615905Z DEBUG: computed sig (base64url)=KEE-Jd8zWbDuNUm4m4j3D5likyi1QmCgg4OWpD37sGc sig(hex)=28413e25df3359b0ee3549b89b88f70f99629328b54260a0838396a43dfbb067
+build	Generate JWT	2026-03-31T09:52:45.6617336Z ***
+build	Generate JWT	2026-03-31T09:52:45.6718380Z --- gen_debug (first 200 lines) ---
+build	Generate JWT	2026-03-31T09:52:45.6729249Z DEBUG: provided_secret_len=5 hkdf_applied=True final_secret_sha256=d1815ff74a3ed2dad662dcd9f561caffcae0ebbc4caff992dd746338c246a91f
+build	Generate JWT	2026-03-31T09:52:45.6730912Z DEBUG: signing-input (utf8)=***
+build	Generate JWT	2026-03-31T09:52:45.6732444Z DEBUG: signing-input (hex)=65794a68624763694f694a49557a49314e694973496e523563434936496b705856434a392e65794a7a645749694f694a305a584e3064584e6c63694973496d5634634349364d5463334e446b314e444d324e5830 len=84
+build	Generate JWT	2026-03-31T09:52:45.6733795Z DEBUG: token sig (base64url)=KEE-Jd8zWbDuNUm4m4j3D5likyi1QmCgg4OWpD37sGc sig(hex)=28413e25df3359b0ee3549b89b88f70f99629328b54260a0838396a43dfbb067
+build	Generate JWT	2026-03-31T09:52:45.6734808Z DEBUG: computed sig (base64url)=KEE-Jd8zWbDuNUm4m4j3D5likyi1QmCgg4OWpD37sGc sig(hex)=28413e25df3359b0ee3549b89b88f70f99629328b54260a0838396a43dfbb067
+build	Generate JWT	2026-03-31T09:52:45.6735778Z Generated token:
+build	Generate JWT	2026-03-31T09:52:45.6740721Z ***
+build	Fail if token not generated	﻿2026-03-31T09:52:45.6772711Z ##[group]Run TOKEN_FILE="$GITHUB_WORKSPACE/token.txt"
+build	Fail if token not generated	2026-03-31T09:52:45.6773127Z [36;1mTOKEN_FILE="$GITHUB_WORKSPACE/token.txt"[0m
+build	Fail if token not generated	2026-03-31T09:52:45.6773436Z [36;1mif [ ! -s "$TOKEN_FILE" ]; then[0m
+build	Fail if token not generated	2026-03-31T09:52:45.6773746Z [36;1m  echo "ERROR: token.txt is missing or empty" >&2[0m
+build	Fail if token not generated	2026-03-31T09:52:45.6774106Z [36;1m  echo "--- gen_debug (first 200 lines) ---" >&2[0m
+build	Fail if token not generated	2026-03-31T09:52:45.6774508Z [36;1m  head -n 200 "$GITHUB_WORKSPACE/gen_debug.txt" 2>/dev/null || true[0m
+build	Fail if token not generated	2026-03-31T09:52:45.6775066Z [36;1m  echo "Workspace top-level:" >&2[0m
+build	Fail if token not generated	2026-03-31T09:52:45.6775362Z [36;1m  ls -la "$GITHUB_WORKSPACE" || true[0m
+build	Fail if token not generated	2026-03-31T09:52:45.6775617Z [36;1m  exit 1[0m
+build	Fail if token not generated	2026-03-31T09:52:45.6775805Z [36;1mfi[0m
+build	Fail if token not generated	2026-03-31T09:52:45.6802529Z shell: /usr/bin/bash -e {0}
+build	Fail if token not generated	2026-03-31T09:52:45.6802785Z env:
+build	Fail if token not generated	2026-03-31T09:52:45.6802972Z   DEBUG_VERIFY: 1
+build	Fail if token not generated	2026-03-31T09:52:45.6803222Z   JWT_SECRET: ***
+build	Fail if token not generated	2026-03-31T09:52:45.6803494Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Fail if token not generated	2026-03-31T09:52:45.6803947Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Fail if token not generated	2026-03-31T09:52:45.6804354Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Fail if token not generated	2026-03-31T09:52:45.6804727Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Fail if token not generated	2026-03-31T09:52:45.6805088Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Fail if token not generated	2026-03-31T09:52:45.6805454Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Fail if token not generated	2026-03-31T09:52:45.6805770Z ##[endgroup]
+build	Verify token (simple HKDF check)	﻿2026-03-31T09:52:45.6876524Z ##[group]Run set -o pipefail
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6876849Z [36;1mset -o pipefail[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6877148Z [36;1mVERIFY_DEBUG="$GITHUB_WORKSPACE/verify_debug.txt"[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6877781Z [36;1mrm -f "$VERIFY_DEBUG" || true[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6878106Z [36;1mecho "VERIFY DEBUG START" | tee "$VERIFY_DEBUG"[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6878396Z [36;1m{[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6878616Z [36;1m  echo "which python: $(which python)"[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6878901Z [36;1m  echo "pwd: $(pwd)"[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6879150Z [36;1m  echo "ls workspace top-level:"[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6879439Z [36;1m  ls -la "$GITHUB_WORKSPACE" || true[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6879792Z [36;1m  if [ -f "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" ]; then[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6880184Z [36;1m    echo "Using elm-haskell/verify_token.py"[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6880698Z [36;1m    python "$GITHUB_WORKSPACE/elm-haskell/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6881284Z [36;1m  elif [ -f "$GITHUB_WORKSPACE/verify_token.py" ]; then[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6881621Z [36;1m    echo "Using root verify_token.py"[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6882060Z [36;1m    python "$GITHUB_WORKSPACE/verify_token.py" "$JWT_SECRET" "$GITHUB_WORKSPACE/token.txt"[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6882485Z [36;1m  else[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6882791Z [36;1m    echo "verify_token.py not found under repository root or elm-haskell"[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6883182Z [36;1m    ls -la "$GITHUB_WORKSPACE" || true[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6883447Z [36;1m  fi[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6883657Z [36;1m} 2>&1 | tee -a "$VERIFY_DEBUG" || true[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6883973Z [36;1mecho "--- verify_debug (first 200 lines) ---"[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6884284Z [36;1mhead -n 200 "$VERIFY_DEBUG" || true[0m
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6908819Z shell: /usr/bin/bash -e {0}
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6909073Z env:
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6909247Z   DEBUG_VERIFY: 1
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6909496Z   JWT_SECRET: ***
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6909782Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6910213Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6910623Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6910982Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6911340Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6911702Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6912023Z ##[endgroup]
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6977227Z VERIFY DEBUG START
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.6997217Z which python: /opt/hostedtoolcache/Python/3.14.3/x64/bin/python
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7001703Z pwd: /home/runner/work/browser_tetris/browser_tetris
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7002095Z ls workspace top-level:
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7016850Z total 3224
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7017339Z drwxr-xr-x 11 runner runner    4096 Mar 31 09:52 .
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7018234Z drwxr-xr-x  3 runner runner    4096 Mar 31 09:52 ..
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7018934Z drwxr-xr-x  7 runner runner    4096 Mar 31 09:52 .git
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7019574Z drwxr-xr-x  3 runner runner    4096 Mar 31 09:52 .github
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7020200Z -rw-r--r--  1 runner runner     341 Mar 31 09:52 .gitignore
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7020854Z -rw-r--r--  1 runner runner    2061 Mar 31 09:52 PROTOCOL.md
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7021452Z -rw-r--r--  1 runner runner    1218 Mar 31 09:52 README.md
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7022091Z -rw-r--r--  1 runner runner    1117 Mar 31 09:52 SESSION_SUMMARY.md
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7022720Z -rw-r--r--  1 runner runner       0 Mar 31 09:52 TestIntegration_fix.patch
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7023157Z -rw-r--r--  1 runner runner    5244 Mar 31 09:52 WS_SECURITY.md
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7023583Z -rw-r--r--  1 runner runner 3143148 Mar 31 09:52 ci_run_23729294056_full_log.txt
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7024006Z drwxr-xr-x  4 runner runner    4096 Mar 31 09:52 elm-app
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7024372Z drwxr-xr-x  3 runner runner    4096 Mar 31 09:52 elm-haskell
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7024958Z drwxr-xr-x  2 runner runner    4096 Mar 31 09:52 examples
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7025320Z -rw-r--r--  1 runner runner   20947 Mar 31 09:52 game.js
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7025668Z -rw-r--r--  1 runner runner     745 Mar 31 09:52 gen_debug.txt
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7026038Z -rw-r--r--  1 runner runner     682 Mar 31 09:52 gen_jwt.py
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7026411Z -rw-r--r--  1 runner runner    6224 Mar 31 09:52 gen_jwt_cli.py
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7026804Z drwxr-xr-x  7 runner runner    4096 Mar 31 09:52 haskell-server
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7027177Z -rw-r--r--  1 runner runner   11675 Mar 31 09:52 index.html
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7028242Z -rw-r--r--  1 runner runner     672 Mar 31 09:52 pr_body.txt
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7028687Z -rw-r--r--  1 runner runner    2416 Mar 31 09:52 pr_body_ci_unify_auth_debug.md
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7029133Z -rw-r--r--  1 runner runner     181 Mar 31 09:52 runs_main.json
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7029509Z drwxr-xr-x  2 runner runner    4096 Mar 31 09:52 scripts
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7029950Z drwxr-xr-x  5 runner runner    4096 Mar 31 09:52 stash_untracked_backup2_20260331092630
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7030416Z -rw-r--r--  1 runner runner     129 Mar 31 09:52 token.txt
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7030781Z drwxr-xr-x  2 runner runner    4096 Mar 31 09:52 tools
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7031169Z -rw-r--r--  1 runner runner     160 Mar 31 09:52 verify_debug.txt
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7031579Z -rw-r--r--  1 runner runner    2836 Mar 31 09:52 verify_token.py
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7031983Z -rw-r--r--  1 runner runner    3657 Mar 31 09:52 ws_schema.json
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7032369Z -rw-r--r--  1 runner runner     815 Mar 31 09:52 ws_test.py
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7032721Z Using elm-haskell/verify_token.py
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7174540Z DEBUG: provided_secret_len=5 hkdf_applied=True final_secret_sha256=d1815ff74a3ed2dad662dcd9f561caffcae0ebbc4caff992dd746338c246a91f
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7175862Z header.payload = ***
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7176234Z signature (from token) = KEE-Jd8zWbDuNUm4m4j3D5likyi1QmCgg4OWpD37sGc
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7176756Z computed signature = KEE-Jd8zWbDuNUm4m4j3D5likyi1QmCgg4OWpD37sGc
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7177110Z match = True
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7206959Z --- verify_debug (first 200 lines) ---
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7216802Z VERIFY DEBUG START
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7217771Z which python: /opt/hostedtoolcache/Python/3.14.3/x64/bin/python
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7218261Z pwd: /home/runner/work/browser_tetris/browser_tetris
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7218607Z ls workspace top-level:
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7218835Z total 3224
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7219083Z drwxr-xr-x 11 runner runner    4096 Mar 31 09:52 .
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7219484Z drwxr-xr-x  3 runner runner    4096 Mar 31 09:52 ..
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7219927Z drwxr-xr-x  7 runner runner    4096 Mar 31 09:52 .git
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7220749Z drwxr-xr-x  3 runner runner    4096 Mar 31 09:52 .github
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7221368Z -rw-r--r--  1 runner runner     341 Mar 31 09:52 .gitignore
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7221949Z -rw-r--r--  1 runner runner    2061 Mar 31 09:52 PROTOCOL.md
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7222578Z -rw-r--r--  1 runner runner    1218 Mar 31 09:52 README.md
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7223012Z -rw-r--r--  1 runner runner    1117 Mar 31 09:52 SESSION_SUMMARY.md
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7223493Z -rw-r--r--  1 runner runner       0 Mar 31 09:52 TestIntegration_fix.patch
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7223946Z -rw-r--r--  1 runner runner    5244 Mar 31 09:52 WS_SECURITY.md
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7224413Z -rw-r--r--  1 runner runner 3143148 Mar 31 09:52 ci_run_23729294056_full_log.txt
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7224868Z drwxr-xr-x  4 runner runner    4096 Mar 31 09:52 elm-app
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7225396Z drwxr-xr-x  3 runner runner    4096 Mar 31 09:52 elm-haskell
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7225821Z drwxr-xr-x  2 runner runner    4096 Mar 31 09:52 examples
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7226200Z -rw-r--r--  1 runner runner   20947 Mar 31 09:52 game.js
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7226584Z -rw-r--r--  1 runner runner     745 Mar 31 09:52 gen_debug.txt
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7226974Z -rw-r--r--  1 runner runner     682 Mar 31 09:52 gen_jwt.py
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7227758Z -rw-r--r--  1 runner runner    6224 Mar 31 09:52 gen_jwt_cli.py
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7228182Z drwxr-xr-x  7 runner runner    4096 Mar 31 09:52 haskell-server
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7228573Z -rw-r--r--  1 runner runner   11675 Mar 31 09:52 index.html
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7228949Z -rw-r--r--  1 runner runner     672 Mar 31 09:52 pr_body.txt
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7229400Z -rw-r--r--  1 runner runner    2416 Mar 31 09:52 pr_body_ci_unify_auth_debug.md
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7229848Z -rw-r--r--  1 runner runner     181 Mar 31 09:52 runs_main.json
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7230224Z drwxr-xr-x  2 runner runner    4096 Mar 31 09:52 scripts
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7230672Z drwxr-xr-x  5 runner runner    4096 Mar 31 09:52 stash_untracked_backup2_20260331092630
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7231124Z -rw-r--r--  1 runner runner     129 Mar 31 09:52 token.txt
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7231481Z drwxr-xr-x  2 runner runner    4096 Mar 31 09:52 tools
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7231874Z -rw-r--r--  1 runner runner     160 Mar 31 09:52 verify_debug.txt
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7232291Z -rw-r--r--  1 runner runner    2836 Mar 31 09:52 verify_token.py
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7232681Z -rw-r--r--  1 runner runner    3657 Mar 31 09:52 ws_schema.json
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7233050Z -rw-r--r--  1 runner runner     815 Mar 31 09:52 ws_test.py
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7233372Z Using elm-haskell/verify_token.py
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7233991Z DEBUG: provided_secret_len=5 hkdf_applied=True final_secret_sha256=d1815ff74a3ed2dad662dcd9f561caffcae0ebbc4caff992dd746338c246a91f
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7234958Z header.payload = ***
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7235320Z signature (from token) = KEE-Jd8zWbDuNUm4m4j3D5likyi1QmCgg4OWpD37sGc
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7235799Z computed signature = KEE-Jd8zWbDuNUm4m4j3D5likyi1QmCgg4OWpD37sGc
+build	Verify token (simple HKDF check)	2026-03-31T09:52:45.7236147Z match = True
+build	Upload auth debug	﻿2026-03-31T09:52:45.7295691Z ##[group]Run actions/upload-artifact@v4
+build	Upload auth debug	2026-03-31T09:52:45.7295993Z with:
+build	Upload auth debug	2026-03-31T09:52:45.7296171Z   name: auth-debug
+build	Upload auth debug	2026-03-31T09:52:45.7296879Z   path: /home/runner/work/browser_tetris/browser_tetris/token.txt
+build	Upload auth debug	/home/runner/work/browser_tetris/browser_tetris/gen_debug.txt
+build	Upload auth debug	/home/runner/work/browser_tetris/browser_tetris/verify_debug.txt
+build	Upload auth debug	
+build	Upload auth debug	2026-03-31T09:52:45.7297914Z   if-no-files-found: warn
+build	Upload auth debug	2026-03-31T09:52:45.7298145Z   compression-level: 6
+build	Upload auth debug	2026-03-31T09:52:45.7298352Z   overwrite: false
+build	Upload auth debug	2026-03-31T09:52:45.7298549Z   include-hidden-files: false
+build	Upload auth debug	2026-03-31T09:52:45.7298770Z env:
+build	Upload auth debug	2026-03-31T09:52:45.7298938Z   DEBUG_VERIFY: 1
+build	Upload auth debug	2026-03-31T09:52:45.7299175Z   JWT_SECRET: ***
+build	Upload auth debug	2026-03-31T09:52:45.7299430Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload auth debug	2026-03-31T09:52:45.7299844Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Upload auth debug	2026-03-31T09:52:45.7300257Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload auth debug	2026-03-31T09:52:45.7300622Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload auth debug	2026-03-31T09:52:45.7301012Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload auth debug	2026-03-31T09:52:45.7301385Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Upload auth debug	2026-03-31T09:52:45.7301856Z ##[endgroup]
+build	Upload auth debug	2026-03-31T09:52:45.9441175Z Multiple search paths detected. Calculating the least common ancestor of all paths
+build	Upload auth debug	2026-03-31T09:52:45.9446916Z The least common ancestor is /home/runner/work/browser_tetris/browser_tetris. This will be the root directory of the artifact
+build	Upload auth debug	2026-03-31T09:52:45.9448132Z With the provided path, there will be 3 files uploaded
+build	Upload auth debug	2026-03-31T09:52:45.9452687Z Artifact name is valid!
+build	Upload auth debug	2026-03-31T09:52:45.9454327Z Root directory input is valid!
+build	Upload auth debug	2026-03-31T09:52:46.1733298Z Beginning upload of artifact content to blob storage
+build	Upload auth debug	2026-03-31T09:52:46.4470047Z Uploaded bytes 1761
+build	Upload auth debug	2026-03-31T09:52:46.5192115Z Finished uploading artifact content to blob storage!
+build	Upload auth debug	2026-03-31T09:52:46.5195150Z SHA256 digest of uploaded artifact zip is 4772d29bedfaa1a1daa16c0c63b5fdb695cf39658cf3c5e566825c9b187f887c
+build	Upload auth debug	2026-03-31T09:52:46.5196738Z Finalizing artifact upload
+build	Upload auth debug	2026-03-31T09:52:46.7060058Z Artifact auth-debug.zip successfully finalized. Artifact ID 6196642855
+build	Upload auth debug	2026-03-31T09:52:46.7061236Z Artifact auth-debug has been successfully uploaded! Final size is 1761 bytes. Artifact ID is 6196642855
+build	Upload auth debug	2026-03-31T09:52:46.7068376Z Artifact download URL: https://github.com/minamiyama-ryota/browser_tetris/actions/runs/23791312376/artifacts/6196642855
+build	Parse gen_debug	﻿2026-03-31T09:52:46.7177113Z ##[group]Run set -o pipefail
+build	Parse gen_debug	2026-03-31T09:52:46.7177864Z [36;1mset -o pipefail[0m
+build	Parse gen_debug	2026-03-31T09:52:46.7178347Z [36;1mGEN_DEBUG="$GITHUB_WORKSPACE/gen_debug.txt"[0m
+build	Parse gen_debug	2026-03-31T09:52:46.7178965Z [36;1mREPORT="$GITHUB_WORKSPACE/gen_debug_report.json"[0m
+build	Parse gen_debug	2026-03-31T09:52:46.7179515Z [36;1mif [ -f "$GEN_DEBUG" ]; then[0m
+build	Parse gen_debug	2026-03-31T09:52:46.7180303Z [36;1m  python "$GITHUB_WORKSPACE/tools/parse_gen_debug.py" "$GEN_DEBUG" > "$REPORT" 2>/dev/null || true[0m
+build	Parse gen_debug	2026-03-31T09:52:46.7181194Z [36;1m  echo "--- gen_debug_report (first 200 chars) ---"[0m
+build	Parse gen_debug	2026-03-31T09:52:46.7181747Z [36;1m  head -c 200 "$REPORT" || true[0m
+build	Parse gen_debug	2026-03-31T09:52:46.7182193Z [36;1melse[0m
+build	Parse gen_debug	2026-03-31T09:52:46.7182631Z [36;1m  echo '{"error":"gen_debug not found"}' > "$REPORT"[0m
+build	Parse gen_debug	2026-03-31T09:52:46.7183145Z [36;1mfi[0m
+build	Parse gen_debug	2026-03-31T09:52:46.7219247Z shell: /usr/bin/bash -e {0}
+build	Parse gen_debug	2026-03-31T09:52:46.7219622Z env:
+build	Parse gen_debug	2026-03-31T09:52:46.7219890Z   DEBUG_VERIFY: 1
+build	Parse gen_debug	2026-03-31T09:52:46.7220289Z   JWT_SECRET: ***
+build	Parse gen_debug	2026-03-31T09:52:46.7220776Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Parse gen_debug	2026-03-31T09:52:46.7221462Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Parse gen_debug	2026-03-31T09:52:46.7222182Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Parse gen_debug	2026-03-31T09:52:46.7222809Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Parse gen_debug	2026-03-31T09:52:46.7223412Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Parse gen_debug	2026-03-31T09:52:46.7224081Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Parse gen_debug	2026-03-31T09:52:46.7224635Z ##[endgroup]
+build	Parse gen_debug	2026-03-31T09:52:46.7578315Z --- gen_debug_report (first 200 chars) ---
+build	Parse gen_debug	2026-03-31T09:52:46.7589612Z {
+build	Parse gen_debug	2026-03-31T09:52:46.7589834Z   "has_error": false,
+build	Parse gen_debug	2026-03-31T09:52:46.7590097Z   "findings": [
+build	Parse gen_debug	2026-03-31T09:52:46.7590296Z     {
+build	Parse gen_debug	2026-03-31T09:52:46.7590586Z       "pattern": "hkdf",
+build	Parse gen_debug	2026-03-31T09:52:46.7590987Z       "severity": "warning",
+build	Parse gen_debug	2026-03-31T09:52:46.7591364Z       "line": 1,
+build	Parse gen_debug	2026-03-31T09:52:46.7594196Z       "text": "DEBUG: provided_secret_len=5 hkdf_applied=True final_secret_sha256=d
+build	HKDF expectations check	﻿2026-03-31T09:52:46.7617663Z ##[group]Run GEN_DEBUG="$GITHUB_WORKSPACE/gen_debug.txt"
+build	HKDF expectations check	2026-03-31T09:52:46.7618141Z [36;1mGEN_DEBUG="$GITHUB_WORKSPACE/gen_debug.txt"[0m
+build	HKDF expectations check	2026-03-31T09:52:46.7618453Z [36;1mif [ -f "$GEN_DEBUG" ]; then[0m
+build	HKDF expectations check	2026-03-31T09:52:46.7618747Z [36;1m  echo "Running HKDF expectations check"[0m
+build	HKDF expectations check	2026-03-31T09:52:46.7619130Z [36;1m  python "$GITHUB_WORKSPACE/tools/check_hkdf.py" "$GEN_DEBUG"[0m
+build	HKDF expectations check	2026-03-31T09:52:46.7619471Z [36;1melse[0m
+build	HKDF expectations check	2026-03-31T09:52:46.7619728Z [36;1m  echo "gen_debug not found; skipping HKDF check"[0m
+build	HKDF expectations check	2026-03-31T09:52:46.7620029Z [36;1mfi[0m
+build	HKDF expectations check	2026-03-31T09:52:46.7646907Z shell: /usr/bin/bash -e {0}
+build	HKDF expectations check	2026-03-31T09:52:46.7647327Z env:
+build	HKDF expectations check	2026-03-31T09:52:46.7647730Z   DEBUG_VERIFY: 1
+build	HKDF expectations check	2026-03-31T09:52:46.7648016Z   JWT_SECRET: ***
+build	HKDF expectations check	2026-03-31T09:52:46.7648298Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	HKDF expectations check	2026-03-31T09:52:46.7648718Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	HKDF expectations check	2026-03-31T09:52:46.7649142Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	HKDF expectations check	2026-03-31T09:52:46.7649551Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	HKDF expectations check	2026-03-31T09:52:46.7649917Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	HKDF expectations check	2026-03-31T09:52:46.7650284Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	HKDF expectations check	2026-03-31T09:52:46.7650602Z ##[endgroup]
+build	HKDF expectations check	2026-03-31T09:52:46.7696476Z Running HKDF expectations check
+build	HKDF expectations check	2026-03-31T09:52:46.7924187Z {
+build	HKDF expectations check	2026-03-31T09:52:46.7924582Z   "matches": [
+build	HKDF expectations check	2026-03-31T09:52:46.7924862Z     {
+build	HKDF expectations check	2026-03-31T09:52:46.7925107Z       "line": 1,
+build	HKDF expectations check	2026-03-31T09:52:46.7925404Z       "provided_secret_len": 5,
+build	HKDF expectations check	2026-03-31T09:52:46.7925759Z       "hkdf_applied": true,
+build	HKDF expectations check	2026-03-31T09:52:46.7926621Z       "raw": "DEBUG: provided_secret_len=5 hkdf_applied=True final_secret_sha256=d1815ff74a3ed2dad662dcd9f561caffcae0ebbc4caff992dd746338c246a91f"
+build	HKDF expectations check	2026-03-31T09:52:46.7927858Z     }
+build	HKDF expectations check	2026-03-31T09:52:46.7928099Z   ],
+build	HKDF expectations check	2026-03-31T09:52:46.7928340Z   "issues": []
+build	HKDF expectations check	2026-03-31T09:52:46.7928591Z }
+build	Upload gen_debug report	﻿2026-03-31T09:52:46.8024492Z ##[group]Run actions/upload-artifact@v4
+build	Upload gen_debug report	2026-03-31T09:52:46.8024800Z with:
+build	Upload gen_debug report	2026-03-31T09:52:46.8024997Z   name: gen-debug-report
+build	Upload gen_debug report	2026-03-31T09:52:46.8025357Z   path: /home/runner/work/browser_tetris/browser_tetris/gen_debug_report.json
+build	Upload gen_debug report	2026-03-31T09:52:46.8025750Z   if-no-files-found: warn
+build	Upload gen_debug report	2026-03-31T09:52:46.8025983Z   compression-level: 6
+build	Upload gen_debug report	2026-03-31T09:52:46.8026204Z   overwrite: false
+build	Upload gen_debug report	2026-03-31T09:52:46.8026417Z   include-hidden-files: false
+build	Upload gen_debug report	2026-03-31T09:52:46.8026650Z env:
+build	Upload gen_debug report	2026-03-31T09:52:46.8026825Z   DEBUG_VERIFY: 1
+build	Upload gen_debug report	2026-03-31T09:52:46.8027104Z   JWT_SECRET: ***
+build	Upload gen_debug report	2026-03-31T09:52:46.8027374Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload gen_debug report	2026-03-31T09:52:46.8028017Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Upload gen_debug report	2026-03-31T09:52:46.8028436Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload gen_debug report	2026-03-31T09:52:46.8028807Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload gen_debug report	2026-03-31T09:52:46.8029177Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload gen_debug report	2026-03-31T09:52:46.8029579Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Upload gen_debug report	2026-03-31T09:52:46.8029892Z ##[endgroup]
+build	Upload gen_debug report	2026-03-31T09:52:47.0232862Z With the provided path, there will be 1 file uploaded
+build	Upload gen_debug report	2026-03-31T09:52:47.0237746Z Artifact name is valid!
+build	Upload gen_debug report	2026-03-31T09:52:47.0239292Z Root directory input is valid!
+build	Upload gen_debug report	2026-03-31T09:52:47.2651863Z Beginning upload of artifact content to blob storage
+build	Upload gen_debug report	2026-03-31T09:52:47.5321406Z Uploaded bytes 653
+build	Upload gen_debug report	2026-03-31T09:52:47.6039157Z Finished uploading artifact content to blob storage!
+build	Upload gen_debug report	2026-03-31T09:52:47.6042725Z SHA256 digest of uploaded artifact zip is 5a0aae7dccf7f544bf650132b2997a15edc0b0780721d4473811410c9d770b77
+build	Upload gen_debug report	2026-03-31T09:52:47.6044514Z Finalizing artifact upload
+build	Upload gen_debug report	2026-03-31T09:52:47.7358321Z Artifact gen-debug-report.zip successfully finalized. Artifact ID 6196643166
+build	Upload gen_debug report	2026-03-31T09:52:47.7359648Z Artifact gen-debug-report has been successfully uploaded! Final size is 653 bytes. Artifact ID is 6196643166
+build	Upload gen_debug report	2026-03-31T09:52:47.7366978Z Artifact download URL: https://github.com/minamiyama-ryota/browser_tetris/actions/runs/23791312376/artifacts/6196643166
+build	Append gen_debug aggregate to history	﻿2026-03-31T09:52:47.7462531Z ##[group]Run set -o pipefail
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7462859Z [36;1mset -o pipefail[0m
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7463185Z [36;1mREPORT="$GITHUB_WORKSPACE/gen_debug_report.json"[0m
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7463522Z [36;1mif [ -f "$REPORT" ]; then[0m
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7464089Z [36;1m  python "$GITHUB_WORKSPACE/tools/append_aggregate_to_history.py" "$REPORT" "b7f159757e6a31ac20012335605c2d0e3249a9f6" || true[0m
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7464660Z [36;1melse[0m
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7464940Z [36;1m  echo "gen_debug_report not found; skipping append"[0m
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7465437Z [36;1mfi[0m
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7492427Z shell: /usr/bin/bash -e {0}
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7492686Z env:
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7492874Z   DEBUG_VERIFY: 1
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7493177Z   JWT_SECRET: ***
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7493465Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7493903Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7494328Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7494738Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7495110Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7495486Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7495807Z ##[endgroup]
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7789218Z /home/runner/work/browser_tetris/browser_tetris/tools/append_aggregate_to_history.py:42: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7791245Z   now = datetime.utcnow().isoformat() + 'Z'
+build	Append gen_debug aggregate to history	2026-03-31T09:52:47.7792019Z Appended history to /home/runner/work/browser_tetris/browser_tetris/gen_debug_history.csv
+build	Generate gen_debug trend report	﻿2026-03-31T09:52:47.7859112Z ##[group]Run set -o pipefail
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7859542Z [36;1mset -o pipefail[0m
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7859898Z [36;1mCSV="$GITHUB_WORKSPACE/tools/ci_artifacts/gen_debug_history.csv"[0m
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7860403Z [36;1mOUT="$GITHUB_WORKSPACE/tools/ci_artifacts/gen_debug_trend.html"[0m
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7860823Z [36;1mif [ -f "$CSV" ]; then[0m
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7861206Z [36;1m  python "$GITHUB_WORKSPACE/tools/gen_debug_trend.py" "$CSV" "$OUT" || true[0m
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7861638Z [36;1m  echo "--- trend (first 200 chars) ---"[0m
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7861945Z [36;1m  head -c 200 "$OUT" || true[0m
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7862197Z [36;1melse[0m
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7862487Z [36;1m  echo "history csv not found; skipping trend generation"[0m
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7862818Z [36;1mfi[0m
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7888409Z shell: /usr/bin/bash -e {0}
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7888679Z env:
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7888868Z   DEBUG_VERIFY: 1
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7889156Z   JWT_SECRET: ***
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7889445Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7889921Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7890349Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7890848Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7891226Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7891609Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7891931Z ##[endgroup]
+build	Generate gen_debug trend report	2026-03-31T09:52:47.7938532Z history csv not found; skipping trend generation
+build	Upload gen_debug history and trend	﻿2026-03-31T09:52:47.7981203Z ##[group]Run actions/upload-artifact@v4
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7981522Z with:
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7981725Z   name: gen-debug-history
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7982929Z   path: /home/runner/work/browser_tetris/browser_tetris/tools/ci_artifacts/gen_debug_history.csv
+build	Upload gen_debug history and trend	/home/runner/work/browser_tetris/browser_tetris/tools/ci_artifacts/gen_debug_trend.html
+build	Upload gen_debug history and trend	
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7984065Z   if-no-files-found: warn
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7984303Z   compression-level: 6
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7984524Z   overwrite: false
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7984740Z   include-hidden-files: false
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7984975Z env:
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7985151Z   DEBUG_VERIFY: 1
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7985415Z   JWT_SECRET: ***
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7985689Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7986138Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7986563Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7986948Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7987855Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7988282Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Upload gen_debug history and trend	2026-03-31T09:52:47.7988601Z ##[endgroup]
+build	Upload gen_debug history and trend	2026-03-31T09:52:48.0188782Z Multiple search paths detected. Calculating the least common ancestor of all paths
+build	Upload gen_debug history and trend	2026-03-31T09:52:48.0191212Z The least common ancestor is /home/runner/work/browser_tetris/browser_tetris/tools/ci_artifacts. This will be the root directory of the artifact
+build	Upload gen_debug history and trend	2026-03-31T09:52:48.0223463Z ##[warning]No files were found with the provided path: /home/runner/work/browser_tetris/browser_tetris/tools/ci_artifacts/gen_debug_history.csv
+build	Upload gen_debug history and trend	/home/runner/work/browser_tetris/browser_tetris/tools/ci_artifacts/gen_debug_trend.html. No artifacts will be uploaded.
+build	Install system packages (for GHC/Stack)	﻿2026-03-31T09:52:48.0284800Z ##[group]Run # Ensure required build tools are present for GHC/stack setup
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0285368Z [36;1m# Ensure required build tools are present for GHC/stack setup[0m
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0285765Z [36;1msudo apt-get update[0m
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0286088Z [36;1msudo apt-get install -y --no-install-recommends \[0m
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0286581Z [36;1m  build-essential autoconf automake libtool pkg-config ca-certificates \[0m
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0287113Z [36;1m  zlib1g-dev libgmp-dev libncurses-dev libtinfo-dev libffi-dev curl[0m
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0313100Z shell: /usr/bin/bash -e {0}
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0313359Z env:
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0313551Z   DEBUG_VERIFY: 1
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0313827Z   JWT_SECRET: ***
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0314122Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0314557Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0314982Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0315400Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0315771Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0316154Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.0316481Z ##[endgroup]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.1479623Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.2038161Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.2057688Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.2128863Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.2158153Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.3490327Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1847 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.3527027Z Hit:20 https://packages.microsoft.com/repos/azure-cli noble InRelease
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.3679830Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [339 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.3699444Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [178 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.3709469Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 c-n-f Metadata [16.9 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.3728221Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1665 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.3751414Z Get:21 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.3831232Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [323 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.3858444Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [386 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.3886283Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 c-n-f Metadata [34.2 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.3902667Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [2837 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4048102Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [656 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4575903Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [212 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4587766Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [32.1 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4655797Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4662940Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 c-n-f Metadata [500 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4664702Z Get:22 http://azure.archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [7364 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4665885Z Get:23 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [30.7 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4667050Z Get:24 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [13.2 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4668785Z Get:25 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 c-n-f Metadata [1480 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4678926Z Get:26 http://azure.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [212 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4688589Z Get:27 http://azure.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [212 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4720311Z Get:28 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1551 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4791780Z Get:29 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [250 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4801927Z Get:30 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Components [21.5 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.4815071Z Get:31 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 c-n-f Metadata [10.7 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.5290566Z Get:32 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1166 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.5354406Z Get:33 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [225 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.5376326Z Get:34 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Components [74.2 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.5392955Z Get:35 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 c-n-f Metadata [22.9 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.5406800Z Get:36 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2701 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.5560783Z Get:37 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [627 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.5608933Z Get:38 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Components [212 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.5620069Z Get:39 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [208 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.5960982Z Get:40 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [87.1 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:48.6497334Z Get:41 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [109 kB]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:58.2688943Z Fetched 15.6 MB in 2s (8873 kB/s)
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.0328144Z Reading package lists...
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.0634339Z Reading package lists...
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.2494821Z Building dependency tree...
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.2502099Z Reading state information...
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4234248Z autoconf is already the newest version (2.71-3).
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4235007Z automake is already the newest version (1:1.16.5-1.3ubuntu1).
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4235615Z libtool is already the newest version (2.4.7-7build1).
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4236019Z pkg-config is already the newest version (1.8.1-2build1).
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4236407Z ca-certificates is already the newest version (20240203).
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4236822Z zlib1g-dev is already the newest version (1:1.3.dfsg-3.1ubuntu2.1).
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4237257Z libgmp-dev is already the newest version (2:6.3.0+dfsg-2ubuntu6.1).
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4238032Z libncurses-dev is already the newest version (6.4+20240113-1ubuntu2).
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4238410Z libncurses-dev set to manually installed.
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4239091Z libffi-dev is already the newest version (3.4.6-1build1).
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4239428Z libffi-dev set to manually installed.
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4239750Z curl is already the newest version (8.5.0-2ubuntu10.8).
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4240100Z The following NEW packages will be installed:
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4243168Z   build-essential
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4414780Z 0 upgraded, 1 newly installed, 0 to remove and 48 not upgraded.
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4415268Z Need to get 4928 B of archives.
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4415634Z After this operation, 17.4 kB of additional disk space will be used.
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.4416055Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.5103436Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 build-essential amd64 12.10ubuntu1 [4928 B]
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.7583095Z Fetched 4928 B in 0s (62.3 kB/s)
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.7803199Z Selecting previously unselected package build-essential.
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8156242Z (Reading database ... 
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8156718Z (Reading database ... 5%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8157118Z (Reading database ... 10%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8157686Z (Reading database ... 15%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8158037Z (Reading database ... 20%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8158275Z (Reading database ... 25%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8158509Z (Reading database ... 30%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8158757Z (Reading database ... 35%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8159009Z (Reading database ... 40%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8159524Z (Reading database ... 45%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8159948Z (Reading database ... 50%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:52:59.8374422Z (Reading database ... 55%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:00.0011170Z (Reading database ... 60%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:00.1504989Z (Reading database ... 65%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:00.3532074Z (Reading database ... 70%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:00.4940536Z (Reading database ... 75%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:00.8423893Z (Reading database ... 80%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:01.0683114Z (Reading database ... 85%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:01.2382275Z (Reading database ... 90%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:01.4508384Z (Reading database ... 95%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:01.4509039Z (Reading database ... 100%
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:01.4509786Z (Reading database ... 220111 files and directories currently installed.)
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:01.4552576Z Preparing to unpack .../build-essential_12.10ubuntu1_amd64.deb ...
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:01.4587048Z Unpacking build-essential (12.10ubuntu1) ...
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:01.4991468Z Setting up build-essential (12.10ubuntu1) ...
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:02.5585988Z 
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:02.5586669Z Running kernel seems to be up-to-date.
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:02.5587135Z 
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:02.5587366Z No services need to be restarted.
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:02.5588025Z 
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:02.5588169Z No containers need to be restarted.
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:02.5588419Z 
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:02.5588584Z No user sessions are running outdated binaries.
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:02.5588866Z 
+build	Install system packages (for GHC/Stack)	2026-03-31T09:53:02.5589284Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+build	Install Stack (for Haskell build)	﻿2026-03-31T09:53:03.4735404Z ##[group]Run # install curl if missing, then install stack only if absent
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4735964Z [36;1m# install curl if missing, then install stack only if absent[0m
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4736365Z [36;1mif command -v stack >/dev/null 2>&1; then[0m
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4736735Z [36;1m  echo "stack already installed at $(command -v stack)"[0m
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4737059Z [36;1melse[0m
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4737347Z [36;1m  curl -sSL https://get.haskellstack.org/ | sh || true[0m
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4738014Z [36;1mfi[0m
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4763898Z shell: /usr/bin/bash -e {0}
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4764145Z env:
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4764332Z   DEBUG_VERIFY: 1
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4764612Z   JWT_SECRET: ***
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4764904Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4765345Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4765774Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4766150Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4766730Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4767109Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4767685Z ##[endgroup]
+build	Install Stack (for Haskell build)	2026-03-31T09:53:03.4818950Z stack already installed at /usr/local/bin/stack
+build	Cache Stack and system deps	﻿2026-03-31T09:53:03.5680401Z ##[group]Run actions/cache@v4
+build	Cache Stack and system deps	2026-03-31T09:53:03.5680692Z with:
+build	Cache Stack and system deps	2026-03-31T09:53:03.5680901Z   path: ~/.stack
+build	Cache Stack and system deps	~/.local/bin
+build	Cache Stack and system deps	
+build	Cache Stack and system deps	2026-03-31T09:53:03.5681338Z   key: Linux-stack-fab3d7c483da32b36e3ccad3de2435b2678aee54c0b46eef9c3ab5d1ac0a0791
+build	Cache Stack and system deps	2026-03-31T09:53:03.5681795Z   restore-keys: Linux-stack-
+build	Cache Stack and system deps	
+build	Cache Stack and system deps	2026-03-31T09:53:03.5682055Z   enableCrossOsArchive: false
+build	Cache Stack and system deps	2026-03-31T09:53:03.5682304Z   fail-on-cache-miss: false
+build	Cache Stack and system deps	2026-03-31T09:53:03.5682545Z   lookup-only: false
+build	Cache Stack and system deps	2026-03-31T09:53:03.5682766Z   save-always: false
+build	Cache Stack and system deps	2026-03-31T09:53:03.5682968Z env:
+build	Cache Stack and system deps	2026-03-31T09:53:03.5683151Z   DEBUG_VERIFY: 1
+build	Cache Stack and system deps	2026-03-31T09:53:03.5683450Z   JWT_SECRET: ***
+build	Cache Stack and system deps	2026-03-31T09:53:03.5683727Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Cache Stack and system deps	2026-03-31T09:53:03.5684185Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Cache Stack and system deps	2026-03-31T09:53:03.5684608Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Cache Stack and system deps	2026-03-31T09:53:03.5684990Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Cache Stack and system deps	2026-03-31T09:53:03.5685404Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Cache Stack and system deps	2026-03-31T09:53:03.5685805Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Cache Stack and system deps	2026-03-31T09:53:03.5686129Z ##[endgroup]
+build	Cache Stack and system deps	2026-03-31T09:53:03.9432654Z Cache hit for: Linux-stack-fab3d7c483da32b36e3ccad3de2435b2678aee54c0b46eef9c3ab5d1ac0a0791
+build	Cache Stack and system deps	2026-03-31T09:53:05.2073276Z Received 8388608 of 498161631 (1.7%), 8.0 MBs/sec
+build	Cache Stack and system deps	2026-03-31T09:53:06.2079914Z Received 130023424 of 498161631 (26.1%), 62.0 MBs/sec
+build	Cache Stack and system deps	2026-03-31T09:53:07.2349855Z Received 268435456 of 498161631 (53.9%), 84.6 MBs/sec
+build	Cache Stack and system deps	2026-03-31T09:53:08.2363528Z Received 385875968 of 498161631 (77.5%), 91.3 MBs/sec
+build	Cache Stack and system deps	2026-03-31T09:53:09.2366071Z Received 493967327 of 498161631 (99.2%), 93.7 MBs/sec
+build	Cache Stack and system deps	2026-03-31T09:53:09.2599367Z Received 498161631 of 498161631 (100.0%), 94.0 MBs/sec
+build	Cache Stack and system deps	2026-03-31T09:53:09.2602021Z Cache Size: ~475 MB (498161631 B)
+build	Cache Stack and system deps	2026-03-31T09:53:09.2711598Z [command]/usr/bin/tar -xf /home/runner/work/_temp/16752934-17e2-4a9a-9248-228e85dee425/cache.tzst -P -C /home/runner/work/browser_tetris/browser_tetris --use-compress-program unzstd
+build	Cache Stack and system deps	2026-03-31T09:53:17.2200184Z Cache restored successfully
+build	Cache Stack and system deps	2026-03-31T09:53:17.2492778Z Cache restored from key: Linux-stack-fab3d7c483da32b36e3ccad3de2435b2678aee54c0b46eef9c3ab5d1ac0a0791
+build	Build & test Haskell server (with coverage)	﻿2026-03-31T09:53:17.2604724Z ##[group]Run if [ -d "$GITHUB_WORKSPACE/elm-haskell/haskell-server" ]; then
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2605287Z [36;1mif [ -d "$GITHUB_WORKSPACE/elm-haskell/haskell-server" ]; then[0m
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2605717Z [36;1m  cd "$GITHUB_WORKSPACE/elm-haskell/haskell-server"[0m
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2606110Z [36;1melif [ -d "$GITHUB_WORKSPACE/haskell-server" ]; then[0m
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2606479Z [36;1m  cd "$GITHUB_WORKSPACE/haskell-server"[0m
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2606784Z [36;1melse[0m
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2607158Z [36;1m  echo "haskell-server directory not found"; ls -la "$GITHUB_WORKSPACE" || true; exit 1[0m
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2607849Z [36;1mfi[0m
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2608053Z [36;1mstack setup[0m
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2608348Z [36;1mstack build --test --no-run-tests --haddock --fast[0m
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2608714Z [36;1mstack test --no-terminal --coverage[0m
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2634858Z shell: /usr/bin/bash -e {0}
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2635119Z env:
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2635315Z   DEBUG_VERIFY: 1
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2635655Z   JWT_SECRET: ***
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2635947Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2636389Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2636824Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2637209Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2638047Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2638450Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:17.2638793Z ##[endgroup]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:19.8686198Z /home/runner/work/browser_tetris/browser_tetris/haskell-server/package.yaml: Ignoring unrecognized field $.tests.tetris-server-tests.type
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:20.7904294Z Stack will use a sandboxed GHC it installed. To use this GHC and packages outside of a project,
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:20.7905452Z consider using: stack ghc, stack ghci, stack runghc, or stack exec.
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:21.1094470Z /home/runner/work/browser_tetris/browser_tetris/haskell-server/package.yaml: Ignoring unrecognized field $.tests.tetris-server-tests.type
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:21.3759146Z All test running disabled by --no-run-tests flag. To mute this message in future, set
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:21.3759760Z notify-if-no-run-tests: false in Stack's configuration.
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:21.3766225Z tetris-server> configure (lib + exe + test)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:21.3835399Z Configuring tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:22.0345334Z tetris-server> build (lib + exe + test) with ghc-9.10.3
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:22.1019727Z Preprocessing library for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:22.1020439Z Building library for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:22.2054181Z [1 of 4] Compiling Auth
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:23.1728001Z [2 of 4] Compiling Paths_tetris_server
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:23.2121420Z [3 of 4] Compiling Protocol
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:23.3544515Z [4 of 4] Compiling Server
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:27.5346710Z Preprocessing executable 'tetris-server-exe' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:27.5347647Z Building executable 'tetris-server-exe' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:27.6237109Z [1 of 3] Compiling DebugVerify
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:27.8470738Z [2 of 3] Compiling Main
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:27.8573447Z [3 of 3] Compiling Paths_tetris_server
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:28.0582970Z [4 of 4] Linking .stack-work/dist/x86_64-linux-tinfo6/ghc-9.10.3/build/tetris-server-exe/tetris-server-exe
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:29.0995920Z Preprocessing executable 'debug-verify' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:29.0996498Z Building executable 'debug-verify' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:29.1850943Z [1 of 3] Compiling DebugVerify
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:29.4100433Z [2 of 3] Compiling Main
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:29.4184144Z [3 of 3] Compiling Paths_tetris_server
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:29.6142411Z [4 of 4] Linking .stack-work/dist/x86_64-linux-tinfo6/ghc-9.10.3/build/debug-verify/debug-verify
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:30.6126370Z Preprocessing test suite 'tetris-server-tests' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:30.6127338Z Building test suite 'tetris-server-tests' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:30.7010491Z [1 of 4] Compiling Paths_tetris_server
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:30.7671162Z [2 of 4] Compiling TestHKDF
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:31.1298067Z [3 of 4] Compiling TestIntegration
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:31.1997916Z [4 of 4] Compiling Main
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:31.4218995Z [5 of 5] Linking .stack-work/dist/x86_64-linux-tinfo6/ghc-9.10.3/build/tetris-server-tests/tetris-server-tests
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:32.5239418Z tetris-server> haddock
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:32.6554312Z Preprocessing library for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:32.6554877Z Running Haddock on library for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:32.9336884Z [1 of 4] Compiling Auth             ( src/Auth.hs, nothing )
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:33.5765596Z [2 of 4] Compiling Paths_tetris_server ( .stack-work/dist/x86_64-linux-tinfo6/ghc-9.10.3/build/autogen/Paths_tetris_server.hs, nothing )
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:33.5866626Z [3 of 4] Compiling Protocol         ( src/Protocol.hs, nothing )
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:33.6064614Z [4 of 4] Compiling Server           ( src/Server.hs, nothing )
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0669585Z Haddock coverage:
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0670534Z Warning: 'JWT_SECRETS' is out of scope.
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0671576Z     If you qualify the identifier, haddock can try to link it anyway.
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0672552Z   50% (  5 / 10) in 'Auth'
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0673568Z   Missing documentation for:
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0674199Z     Module header
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0674664Z     verifyJwt (src/Auth.hs:43)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0675094Z     tryB64urlDecode (src/Auth.hs:412)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0675542Z     hkdfExtract (src/Auth.hs:387)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0675981Z     hkdfExpand (src/Auth.hs:390)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0676397Z    0% (  0 /  3) in 'Protocol'
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0676800Z   Missing documentation for:
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0677184Z     Module header
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0677733Z     ClientMessage (src/Protocol.hs:9)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0678124Z     ServerMessage (src/Protocol.hs:31)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0678473Z    0% (  0 /  2) in 'Server'
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0678779Z   Missing documentation for:
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0679086Z     Module header
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.0679369Z     runServer (src/Server.hs:53)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.3401907Z Documentation created:
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.3402608Z .stack-work/dist/x86_64-linux-tinfo6/ghc-9.10.3/doc/html/tetris-server/,
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.3403383Z .stack-work/dist/x86_64-linux-tinfo6/ghc-9.10.3/doc/html/tetris-server/tetris-server.txt
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.4064840Z Preprocessing executable 'tetris-server-exe' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.4065641Z Preprocessing executable 'debug-verify' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.4066210Z Preprocessing test suite 'tetris-server-tests' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.4104614Z tetris-server> copy/register
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.5029312Z Installing library in /home/runner/work/browser_tetris/browser_tetris/haskell-server/.stack-work/install/x86_64-linux-tinfo6/078db5bf8a77531884fa18d73ff3f8eb01336d321cdb7412542f6bb2432f373c/9.10.3/lib/x86_64-linux-ghc-9.10.3-56e0/tetris-server-0.1.0.0-Ly2s4AqfP8hACQOIqe8a4L
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.5651356Z Installing executable tetris-server-exe in /home/runner/work/browser_tetris/browser_tetris/haskell-server/.stack-work/install/x86_64-linux-tinfo6/078db5bf8a77531884fa18d73ff3f8eb01336d321cdb7412542f6bb2432f373c/9.10.3/bin
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.6905715Z Installing executable debug-verify in /home/runner/work/browser_tetris/browser_tetris/haskell-server/.stack-work/install/x86_64-linux-tinfo6/078db5bf8a77531884fa18d73ff3f8eb01336d321cdb7412542f6bb2432f373c/9.10.3/bin
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.9148845Z Registering library for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.9902551Z Updating Haddock index for project packages in:
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:41.9903756Z /home/runner/work/browser_tetris/browser_tetris/haskell-server/.stack-work/install/x86_64-linux-tinfo6/078db5bf8a77531884fa18d73ff3f8eb01336d321cdb7412542f6bb2432f373c/9.10.3/doc/index.html
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:42.1715841Z Updating Haddock index for project packages and dependencies in:
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:42.1717138Z /home/runner/work/browser_tetris/browser_tetris/haskell-server/.stack-work/install/x86_64-linux-tinfo6/078db5bf8a77531884fa18d73ff3f8eb01336d321cdb7412542f6bb2432f373c/9.10.3/doc/all/index.html
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:45.5375506Z Haddock index for snapshot packages already up to date at:
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:45.5376682Z /home/runner/.stack/snapshots/x86_64-linux-tinfo6/078db5bf8a77531884fa18d73ff3f8eb01336d321cdb7412542f6bb2432f373c/9.10.3/doc/index.html
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:45.7668761Z /home/runner/work/browser_tetris/browser_tetris/haskell-server/package.yaml: Ignoring unrecognized field $.tests.tetris-server-tests.type
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:46.0374640Z tetris-server> configure (lib + exe + test)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:46.0445186Z Configuring tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:46.6568865Z tetris-server> build (lib + exe + test) with ghc-9.10.3
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:46.7221622Z Preprocessing library for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:46.7222178Z Building library for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:46.8136861Z [1 of 4] Compiling Auth [Optimisation flags changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:49.1387759Z [2 of 4] Compiling Paths_tetris_server [Source file changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:49.9274939Z [3 of 4] Compiling Protocol [Optimisation flags changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:50.4758369Z [4 of 4] Compiling Server [Optimisation flags changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:51.6715271Z Preprocessing executable 'tetris-server-exe' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:51.6715899Z Building executable 'tetris-server-exe' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:51.7594840Z [1 of 3] Compiling DebugVerify [Optimisation flags changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:52.3427354Z [2 of 3] Compiling Main [Optimisation flags changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:52.4145827Z [3 of 3] Compiling Paths_tetris_server [Source file changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:52.7148736Z [4 of 4] Linking .stack-work/dist/x86_64-linux-tinfo6/ghc-9.10.3/build/tetris-server-exe/tetris-server-exe [Objects changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:53.7282913Z Preprocessing executable 'debug-verify' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:53.7283532Z Building executable 'debug-verify' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:53.8181483Z [1 of 3] Compiling DebugVerify [Optimisation flags changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:54.4161879Z [2 of 3] Compiling Main [Optimisation flags changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:54.4839536Z [3 of 3] Compiling Paths_tetris_server [Source file changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:54.7816792Z [4 of 4] Linking .stack-work/dist/x86_64-linux-tinfo6/ghc-9.10.3/build/debug-verify/debug-verify [Objects changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:55.8105324Z Preprocessing test suite 'tetris-server-tests' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:55.8106062Z Building test suite 'tetris-server-tests' for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:55.8979239Z [1 of 4] Compiling Paths_tetris_server [Source file changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:56.0576397Z [2 of 4] Compiling TestHKDF [Optimisation flags changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:56.5753659Z [3 of 4] Compiling TestIntegration [Optimisation flags changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:56.7902289Z [4 of 4] Compiling Main [Optimisation flags changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:57.1521970Z [5 of 5] Linking .stack-work/dist/x86_64-linux-tinfo6/ghc-9.10.3/build/tetris-server-tests/tetris-server-tests [Objects changed]
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.2098477Z tetris-server> copy/register
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.3018419Z Installing library in /home/runner/work/browser_tetris/browser_tetris/haskell-server/.stack-work/install/x86_64-linux-tinfo6/942f8309e506b26d8e14d6c969428a82db00b5e987cabc2a07c1a94b6925528a/9.10.3/lib/x86_64-linux-ghc-9.10.3-56e0/tetris-server-0.1.0.0-Ly2s4AqfP8hACQOIqe8a4L
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.3669946Z Installing executable tetris-server-exe in /home/runner/work/browser_tetris/browser_tetris/haskell-server/.stack-work/install/x86_64-linux-tinfo6/942f8309e506b26d8e14d6c969428a82db00b5e987cabc2a07c1a94b6925528a/9.10.3/bin
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.4955900Z Installing executable debug-verify in /home/runner/work/browser_tetris/browser_tetris/haskell-server/.stack-work/install/x86_64-linux-tinfo6/942f8309e506b26d8e14d6c969428a82db00b5e987cabc2a07c1a94b6925528a/9.10.3/bin
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.7230796Z Registering library for tetris-server-0.1.0.0...
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.7996171Z tetris-server> test (suite: tetris-server-tests)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.7996640Z 
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8027022Z Auth debug: secret too *** (10 bytes); deriving 32-byte key via HKDF-SHA256
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8030284Z Auth debug: secret too *** (12 bytes); deriving 32-byte key via HKDF-SHA256
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8031019Z All
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8032191Z Auth debug: secret base64url(k)=3Kj0Hpr4WucZRAM_bVlz7JtjslFsyQNF82vy0PgKJ1Q secret(hex)=dca8f41e9af85ae71944033f6d5973ec9b63b2516cc90345f36bf2d0f80a2754 (derived)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8034345Z Auth debug: secret base64url(k)=_dOiWWNFLb6Oo47YRE5u6qQf3nT-ZkYwiiieeRg0TwM secret(hex)=fdd3a25963452dbe8ea38ed8444e6eeaa41fde74fe6646308a289e7918344f03 (derived)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8036135Z Auth debug: verifyJwtWithSecrets selected secret for kid=Nothing secretB64=ZGV2LXNlY3JldA
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8037237Z Auth debug: verifyJwtWithSecrets selected secret for kid=Just "k1" secretB64=c2VjcmV0MQ
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8038291Z   Auth.verifyJwt
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8039031Z Auth debug: final_secret_sha256=8ac503a8121b100b5642a266ca482e9702f2dc86adb20a10098a29ef303b6682
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8041736Z Auth debug: final_secret_sha256=f4f69161b51eb835b3a8e3f364f049959d848385e770c92673cd6d3e83803ef3
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8042683Z Auth debug: provided_secret_len=14 decoded_secret_len=10 hkdf_applied=True final_secret_sha256=f4f69161b51eb835b3a8e3f364f049959d848385e770c92673cd6d3e83803ef3
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8044503Z Auth debug: provided_secret_len=10 decoded_secret_len=7 hkdf_applied=True final_secret_sha256=0e779531dc3ef41b1f27dc26cd7d71991dd12a3ea67d38879a3323529934c908
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8046831Z     header/payload signature computed matches token signature:  DEBUG: provided_secret_len=14 decoded_secret_len=10 hkdf_applied=True final_secret_sha256=f4f69161b51eb835b3a8e3f364f049959d848385e770c92673cd6d3e83803ef3
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8049282Z DEBUG: provided_secret_len=10 decoded_secret_len=7 hkdf_applied=True final_secret_sha256=0e779531dc3ef41b1f27dc26cd7d71991dd12a3ea67d38879a3323529934c908
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8051151Z Auth debug: using explicit jwk json: "{\"alg\":\"HS256\",\"k\":\"3Kj0Hpr4WucZRAM_bVlz7JtjslFsyQNF82vy0PgKJ1Q\",\"key_ops\":[\"verify\"],\"kty\":\"oct\",\"use\":\"sig\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8053073Z Auth debug: using explicit jwk json: "{\"alg\":\"HS256\",\"k\":\"_dOiWWNFLb6Oo47YRE5u6qQf3nT-ZkYwiiieeRg0TwM\",\"key_ops\":[\"verify\"],\"kty\":\"oct\",\"use\":\"sig\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8054246Z OK
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8055334Z Auth debug: secret base64url(k)=_dOiWWNFLb6Oo47YRE5u6qQf3nT-ZkYwiiieeRg0TwM secret(hex)=fdd3a25963452dbe8ea38ed8444e6eeaa41fde74fe6646308a289e7918344f03
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8057290Z Auth debug: secret base64url(k)=G5CFx7mNRMDO3f15oi1AJOIKA7slwqzcJM3ChD0Zy2E secret(hex)=1b9085c7b98d44c0ceddfd79a22d4024e20a03bb25c2acdc24cdc2843d19cb61
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8060449Z Auth debug: jwk (show)=JWK {_jwkMaterial = OctKeyMaterial (OctKeyParameters (Base64Octets "\220\168\244\RS\154\248Z\231\EMD\ETX?mYs\236\155c\178Ql\201\ETXE\243k\242\208\248\n'T")), _jwkUse = Just Sig, _jwkKeyOps = Just [Verify], _jwkAlg = Just (JWSAlg HS256), _jwkKid = Nothing, _jwkX5u = Nothing, _jwkX5cRaw = Nothing, _jwkX5t = Nothing, _jwkX5tS256 = Nothing}
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8064227Z Auth debug: jwk (show)=JWK {_jwkMaterial = OctKeyMaterial (OctKeyParameters (Base64Octets "\253\211\162YcE-\190\142\163\142\216DNn\234\164\US\222t\254fF0\138(\158y\CAN4O\ETX")), _jwkUse = Just Sig, _jwkKeyOps = Just [Verify], _jwkAlg = Just (JWSAlg HS256), _jwkKid = Nothing, _jwkX5u = Nothing, _jwkX5cRaw = Nothing, _jwkX5t = Nothing, _jwkX5tS256 = Nothing}
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8067151Z     kid can be extracted when present (none in test token):     Auth debug: final_secret_sha256=f4f69161b51eb835b3a8e3f364f049959d848385e770c92673cd6d3e83803ef3
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8077856Z Auth debug: final_secret_sha256=0e779531dc3ef41b1f27dc26cd7d71991dd12a3ea67d38879a3323529934c908
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8078359Z Auth debug: header raw decode: ok
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8078634Z Auth debug: header raw decode: ok
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8079299Z OKAuth debug: using explicit jwk json: "{\"alg\":\"HS256\",\"k\":\"_dOiWWNFLb6Oo47YRE5u6qQf3nT-ZkYwiiieeRg0TwM\",\"key_ops\":[\"verify\"],\"kty\":\"oct\",\"use\":\"sig\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8080358Z Auth debug: using explicit jwk json: "{\"alg\":\"HS256\",\"k\":\"G5CFx7mNRMDO3f15oi1AJOIKA7slwqzcJM3ChD0Zy2E\",\"key_ops\":[\"verify\"],\"kty\":\"oct\",\"use\":\"sig\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8081025Z Auth debug: payload raw decode: ok
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8081430Z Auth debug: payload raw decode: ok
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8081755Z 
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8083544Z Auth debug: jwk (show)=JWK {_jwkMaterial = OctKeyMaterial (OctKeyParameters (Base64Octets "\253\211\162YcE-\190\142\163\142\216DNn\234\164\US\222t\254fF0\138(\158y\CAN4O\ETX")), _jwkUse = Just Sig, _jwkKeyOps = Just [Verify], _jwkAlg = Just (JWSAlg HS256), _jwkKid = Nothing, _jwkX5u = Nothing, _jwkX5cRaw = Nothing, _jwkX5t = Nothing, _jwkX5tS256 = Nothing}
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8087371Z Auth debug: jwk (show)=JWK {_jwkMaterial = OctKeyMaterial (OctKeyParameters (Base64Octets "\ESC\144\133\199\185\141D\192\206\221\253y\162-@$\226\n\ETX\187%\194\172\220$\205\194\132=\EM\203a")), _jwkUse = Just Sig, _jwkKeyOps = Just [Verify], _jwkAlg = Just (JWSAlg HS256), _jwkKid = Nothing, _jwkX5u = Nothing, _jwkX5cRaw = Nothing, _jwkX5t = Nothing, _jwkX5tS256 = Nothing}
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8090400Z Auth debug: header json: "{\"alg\":\"HS256\",\"typ\":\"JWT\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8091091Z Auth debug: header json: "{\"alg\":\"HS256\",\"typ\":\"JWT\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8091922Z     invalid token or wrong signature fails:                     Auth debug: header raw decode: ok
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8092682Z Auth debug: header raw decode: ok
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8093256Z Auth debug: payload json: "{\"exp\":1600000000,\"sub\":\"fosile\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8093999Z Auth debug: payload json: "{\"exp\":1774399072,\"sub\":\"testuser\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8094615Z Auth debug: payload raw decode: ok
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8095077Z Auth debug: payload raw decode: ok
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8096169Z Auth debug: signing-input (utf8): ***
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8097255Z Auth debug: signing-input (utf8): ***
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8098035Z Auth debug: header json: "{\"alg\":\"HS256\",\"typ\":\"JWT\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8098769Z Auth debug: header json: "{\"alg\":\"HS256\",\"kid\":\"k1\",\"typ\":\"JWT\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8100385Z Auth debug: signing-input (hex): 65794a68624763694f694a49557a49314e694973496e523563434936496b705856434a392e65794a7a645749694f694a6d62334e70624755694c434a6c654841694f6a45324d4441774d4441774d444239 len=81
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8102952Z Auth debug: signing-input (hex): 65794a68624763694f694a49557a49314e694973496e523563434936496b705856434a392e65794a7a645749694f694a305a584e3064584e6c63694973496d5634634349364d5463334e444d354f5441334d6e30 len=84
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8104554Z Auth debug: payload json: "{\"exp\":9999999999,\"sub\":\"u2\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8105265Z Auth debug: payload json: "{\"exp\":9999999999,\"sub\":\"intuser\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8106023Z Auth debug: token sig (base64url): invalidsig sig(hex): 8a7bda96276c8a
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8107331Z Auth debug: token sig (base64url): oOKIZvknPl148LHN5JzgVLD4c92GcqS9otcVuMHdMW8 sig(hex): a0e28866f9273e5d78f0b1cde49ce054b0f873dd8672a4bda2d715b8c1dd316f
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8109281Z Auth debug: signing-input (utf8): ***
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8110571Z Auth debug: signing-input (utf8): ***
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8112066Z Auth debug: computed sig (base64url): 85AKsKbTJAVx6MIa8q7rpbAEPkZfgNzppfJCWIZY_V0 sig(hex): f3900ab0a6d3240571e8c21af2aeeba5b0043e465f80dce9a5f242588658fd5d match=False
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8113244Z Auth debug: computed sig (base64url): 9wkW0TP8kfkoeC4Po_tvy0kAt2iaQs_savmbqF9mXsk sig(hex): f70916d133fc91f928782e0fa3fb6fcb4900b7689a42cfec6af99ba85f665ec9 match=False
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8116139Z Auth debug: signing-input (hex): 65794a68624763694f694a49557a49314e694973496d74705a434936496d73784969776964486c77496a6f69536c6455496e302e65794a6c654841694f6a6b354f546b354f546b354f546b73496e4e3159694936496d6c756448567a5a5849696651 len=98
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8120023Z Auth debug: parsed SignedJWT: JWS Base64Octets "{\"sub\":\"fosile\",\"exp\":1600000000}" Identity (Signature (Just "***") (JWSHeader {_jwsHeaderAlg = HeaderParam () HS256, _jwsHeaderJku = Nothing, _jwsHeaderJwk = Nothing, _jwsHeaderKid = Nothing, _jwsHeaderX5u = Nothing, _jwsHeaderX5c = Nothing, _jwsHeaderX5t = Nothing, _jwsHeaderX5tS256 = Nothing, _jwsHeaderTyp = Just (HeaderParam () "JWT"), _jwsHeaderCty = Nothing, _jwsHeaderCrit = Nothing}) (Base64Octets "\138{\218\150'l\138"))
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8123446Z Auth debug: parsed SignedJWT: JWS Base64Octets "{\"sub\":\"testuser\",\"exp\":1774399072}" Identity (Signature (Just "***") (JWSHeader {_jwsHeaderAlg = HeaderParam () HS256, _jwsHeaderJku = Nothing, _jwsHeaderJwk = Nothing, _jwsHeaderKid = Nothing, _jwsHeaderX5u = Nothing, _jwsHeaderX5c = Nothing, _jwsHeaderX5t = Nothing, _jwsHeaderX5tS256 = Nothing, _jwsHeaderTyp = Just (HeaderParam () "JWT"), _jwsHeaderCty = Nothing, _jwsHeaderCrit = Nothing}) (Base64Octets "\160\226\136f\249'>]x\240\177\205\228\156\224T\176\248s\221\134r\164\189\162\215\NAK\184\193\221\&1o"))
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8125715Z Auth debug: token sig (base64url): hDkNaplIsDFaamCBR51gRKwZluFzsra7vFMz5B6Mi4Y sig(hex): 84390d6a9948b0315a6a6081479d6044ac1996e173b2b6bbbc5333e41e8c8b86
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8126992Z Auth debug: computed sig (base64url): hDkNaplIsDFaamCBR51gRKwZluFzsra7vFMz5B6Mi4Y sig(hex): 84390d6a9948b0315a6a6081479d6044ac1996e173b2b6bbbc5333e41e8c8b86 match=True
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8130381Z Auth debug: parsed SignedJWT: JWS Base64Octets "{\"exp\":9999999999,\"sub\":\"intuser\"}" Identity (Signature (Just "***") (JWSHeader {_jwsHeaderAlg = HeaderParam () HS256, _jwsHeaderJku = Nothing, _jwsHeaderJwk = Nothing, _jwsHeaderKid = Just (HeaderParam () "k1"), _jwsHeaderX5u = Nothing, _jwsHeaderX5c = Nothing, _jwsHeaderX5t = Nothing, _jwsHeaderX5tS256 = Nothing, _jwsHeaderTyp = Just (HeaderParam () "JWT"), _jwsHeaderCty = Nothing, _jwsHeaderCrit = Nothing}) (Base64Octets "\132\&9\rj\153H\176\&1Zj`\129G\157`D\172\EM\150\225s\178\182\187\188S3\228\RS\140\139\134"))
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8132553Z Auth debug: primary verifyClaimsAt failed: JWSError JWSInvalidSignature
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8133527Z Auth debug: signing-input (hex): 65794a68624763694f694a49557a49314e694973496e523563434936496b705856434a392e65794a6c654841694f6a6b354f546b354f546b354f546b73496e4e3159694936496e5579496e30 len=76
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8134409Z Auth debug: primary verifyClaimsAt failed: JWSError JWSInvalidSignature
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8134944Z Auth debug: verifyJwtWithSecrets selected secret for kid=Just "kX" secretB64=b3RoZXI
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8135776Z Auth debug: primary jwk (json)="{\"alg\":\"HS256\",\"k\":\"_dOiWWNFLb6Oo47YRE5u6qQf3nT-ZkYwiiieeRg0TwM\",\"key_ops\":[\"verify\"],\"kty\":\"oct\",\"use\":\"sig\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8136621Z Auth debug: primary jwk secret(hex)=fdd3a25963452dbe8ea38ed8444e6eeaa41fde74fe6646308a289e7918344f03
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8137181Z Auth error: verification failed (local HMAC fallback removed)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8138314Z Auth debug: provided_secret_len=7 decoded_secret_len=5 hkdf_applied=True final_secret_sha256=e6baa185010822318325448514568ab4dceeae7093ba0dd2195d7cab032c9524
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8139515Z DEBUG: provided_secret_len=7 decoded_secret_len=5 hkdf_applied=True final_secret_sha256=e6baa185010822318325448514568ab4dceeae7093ba0dd2195d7cab032c9524
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8140734Z Auth debug: primary jwk (json)="{\"alg\":\"HS256\",\"k\":\"3Kj0Hpr4WucZRAM_bVlz7JtjslFsyQNF82vy0PgKJ1Q\",\"key_ops\":[\"verify\"],\"kty\":\"oct\",\"use\":\"sig\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8141750Z Auth debug: secret base64url(k)=kzMilgwEIMfULuL89mtwOdi9_Ou2kZbz6ElCfqY14Ak secret(hex)=933322960c0420c7d42ee2fcf66b7039d8bdfcebb69196f3e849427ea635e009
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8143121Z Auth debug: token sig (base64url): EbVrquezxB8TYKvJk6bL5Qrn44e7cyXLg_uj8mTtmw4 sig(hex): 11b56baae7b3c41f1360abc993a6cbe50ae7e387bb7325cb83fba3f264ed9b0e
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8144105Z Auth debug: primary jwk secret(hex)=dca8f41e9af85ae71944033f6d5973ec9b63b2516cc90345f36bf2d0f80a2754
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8145031Z Auth debug: final_secret_sha256=e6baa185010822318325448514568ab4dceeae7093ba0dd2195d7cab032c9524
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8145941Z Auth debug: computed sig (base64url): EbVrquezxB8TYKvJk6bL5Qrn44e7cyXLg_uj8mTtmw4 sig(hex): 11b56baae7b3c41f1360abc993a6cbe50ae7e387bb7325cb83fba3f264ed9b0e match=True
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8146847Z Auth error: verification failed (local HMAC fallback removed)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8147814Z Auth debug: using explicit jwk json: "{\"alg\":\"HS256\",\"k\":\"kzMilgwEIMfULuL89mtwOdi9_Ou2kZbz6ElCfqY14Ak\",\"key_ops\":[\"verify\"],\"kty\":\"oct\",\"use\":\"sig\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8150642Z Auth debug: parsed SignedJWT: JWS Base64Octets "{\"exp\":9999999999,\"sub\":\"u2\"}" Identity (Signature (Just "***") (JWSHeader {_jwsHeaderAlg = HeaderParam () HS256, _jwsHeaderJku = Nothing, _jwsHeaderJwk = Nothing, _jwsHeaderKid = Nothing, _jwsHeaderX5u = Nothing, _jwsHeaderX5c = Nothing, _jwsHeaderX5t = Nothing, _jwsHeaderX5tS256 = Nothing, _jwsHeaderTyp = Just (HeaderParam () "JWT"), _jwsHeaderCty = Nothing, _jwsHeaderCrit = Nothing}) (Base64Octets "\DC1\181k\170\231\179\196\US\DC3`\171\201\147\166\203\229\n\231\227\135\187s%\203\131\251\163\242d\237\155\SO"))
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8153762Z OKAuth debug: jwk (show)=JWK {_jwkMaterial = OctKeyMaterial (OctKeyParameters (Base64Octets "\147\&3\"\150\f\EOT \199\212.\226\252\246kp9\216\189\252\235\182\145\150\243\232IB~\166\&5\224\t")), _jwkUse = Just Sig, _jwkKeyOps = Just [Verify], _jwkAlg = Just (JWSAlg HS256), _jwkKid = Nothing, _jwkX5u = Nothing, _jwkX5cRaw = Nothing, _jwkX5t = Nothing, _jwkX5tS256 = Nothing}
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8155124Z 
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8155238Z Auth debug: header raw decode: ok
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8155657Z     malformed/invalid token fails:                              Auth debug: payload raw decode: ok
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8156195Z OKAuth debug: header json: "{\"alg\":\"HS256\",\"kid\":\"kX\",\"typ\":\"JWT\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8156556Z 
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8156708Z   Auth.verifyJwtFromEnv integration
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8157062Z Auth debug: payload json: "{\"exp\":9999999999,\"sub\":\"u3\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8158207Z Auth debug: signing-input (utf8): ***
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8159457Z     kid selects correct secret via JWT_SECRETS:                 Auth debug: signing-input (hex): 65794a68624763694f694a49557a49314e694973496d74705a434936496d74594969776964486c77496a6f69536c6455496e302e65794a6c654841694f6a6b354f546b354f546b354f546b73496e4e3159694936496e557a496e30 len=91
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8160646Z OK
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8161235Z Auth debug: token sig (base64url): HRie7JteaEvvi8Z0ccyjuyj_yHFw6ZHc5jAW_X4sIP8 sig(hex): 1d189eec9b5e684bef8bc67471cca3bb28ffc87170e991dce63016fd7e2c20ff
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8161962Z     no kid uses JWT_SECRET default:                             OK
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8162874Z     kid mismatch fails:                                         Auth debug: computed sig (base64url): VATCMHOh_Yop3f4Jy7RlC5xDdfMN9apFKV21CINHN2U sig(hex): 5404c23073a1fd8a29ddfe09cbb4650b9c4375f30df5aa45295db50883473765 match=False
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8165780Z Auth debug: parsed SignedJWT: JWS Base64Octets "{\"exp\":9999999999,\"sub\":\"u3\"}" Identity (Signature (Just "***") (JWSHeader {_jwsHeaderAlg = HeaderParam () HS256, _jwsHeaderJku = Nothing, _jwsHeaderJwk = Nothing, _jwsHeaderKid = Just (HeaderParam () "kX"), _jwsHeaderX5u = Nothing, _jwsHeaderX5c = Nothing, _jwsHeaderX5t = Nothing, _jwsHeaderX5tS256 = Nothing, _jwsHeaderTyp = Just (HeaderParam () "JWT"), _jwsHeaderCty = Nothing, _jwsHeaderCrit = Nothing}) (Base64Octets "\GS\CAN\158\236\155^hK\239\139\198tq\204\163\187(\255\200qp\233\145\220\230\&0\SYN\253~, \255"))
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8168409Z Auth debug: primary verifyClaimsAt failed: JWSError JWSInvalidSignature
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8169650Z Auth debug: primary jwk (json)="{\"alg\":\"HS256\",\"k\":\"kzMilgwEIMfULuL89mtwOdi9_Ou2kZbz6ElCfqY14Ak\",\"key_ops\":[\"verify\"],\"kty\":\"oct\",\"use\":\"sig\"}"
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8170620Z Auth debug: primary jwk secret(hex)=933322960c0420c7d42ee2fcf66b7039d8bdfcebb69196f3e849427ea635e009
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8171197Z Auth error: verification failed (local HMAC fallback removed)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8171538Z OK
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8171723Z   HKDF/Base64
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8172027Z     tryB64urlDecode decodes base64url unpadded:                 OK
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8172555Z     tryB64urlDecode rejects non-base64:                         OK
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8173083Z     tryB64urlDecode decodes base64url padded:                   OK
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8173625Z     hkdf expands *** secret to 32 bytes and is deterministic: OK
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8173892Z 
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8173992Z All 11 tests passed (0.01s)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8174172Z 
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8174185Z 
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8174189Z 
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8174347Z tetris-server> Test suite tetris-server-tests passed
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8398757Z Generating coverage report for tetris-server's test-suite tetris-server-tests.
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8676506Z Summary coverage report for tetris-server's test-suite tetris-server-tests:
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8677022Z  53% expressions used (598/1124)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8677865Z  36% boolean coverage (4/11)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8678157Z       50% guards (1/2), 1 always True
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8678489Z       33% 'if' conditions (3/9), 3 always True, 3 unevaluated
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8678834Z      100% qualifiers (0/0)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8679084Z  30% alternatives used (40/130)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8679352Z  68% local declarations used (59/86)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.8679640Z  66% top-level declarations used (10/15)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9112048Z The coverage report for tetris-server's test-suite tetris-server-tests is available at
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9113252Z /home/runner/work/browser_tetris/browser_tetris/haskell-server/.stack-work/install/x86_64-linux-tinfo6/942f8309e506b26d8e14d6c969428a82db00b5e987cabc2a07c1a94b6925528a/9.10.3/hpc/tetris-server/tetris-server-tests/hpc_index.html.
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9114780Z Completed 2 action(s).
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9150806Z Generating unified coverage report.
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9489694Z Summary unified coverage report:
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9490277Z  59% expressions used (945/1600)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9490733Z  28% boolean coverage (4/14)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9491201Z       25% guards (1/4), 1 always True, 2 unevaluated
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9491816Z       30% 'if' conditions (3/10), 4 always True, 3 unevaluated
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9492354Z      100% qualifiers (0/0)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9492757Z  34% alternatives used (55/161)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9493140Z  78% local declarations used (102/130)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:58.9493438Z  40% top-level declarations used (16/40)
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:59.0028643Z The unified coverage report is available at
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:59.0029882Z /home/runner/work/browser_tetris/browser_tetris/haskell-server/.stack-work/install/x86_64-linux-tinfo6/942f8309e506b26d8e14d6c969428a82db00b5e987cabc2a07c1a94b6925528a/9.10.3/hpc/combined/all/hpc_index.html.
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:59.0034578Z 
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:59.0034876Z An index of the generated HTML coverage reports is available at
+build	Build & test Haskell server (with coverage)	2026-03-31T09:53:59.0036102Z /home/runner/work/browser_tetris/browser_tetris/haskell-server/.stack-work/install/x86_64-linux-tinfo6/942f8309e506b26d8e14d6c969428a82db00b5e987cabc2a07c1a94b6925528a/9.10.3/hpc/index.html.
+build	Upload token artifact	﻿2026-03-31T09:53:59.0155569Z ##[group]Run actions/upload-artifact@v4
+build	Upload token artifact	2026-03-31T09:53:59.0155890Z with:
+build	Upload token artifact	2026-03-31T09:53:59.0156097Z   name: generated-token
+build	Upload token artifact	2026-03-31T09:53:59.0156425Z   path: /home/runner/work/browser_tetris/browser_tetris/token.txt
+build	Upload token artifact	2026-03-31T09:53:59.0156786Z   if-no-files-found: warn
+build	Upload token artifact	2026-03-31T09:53:59.0157034Z   compression-level: 6
+build	Upload token artifact	2026-03-31T09:53:59.0157268Z   overwrite: false
+build	Upload token artifact	2026-03-31T09:53:59.0157814Z   include-hidden-files: false
+build	Upload token artifact	2026-03-31T09:53:59.0158073Z env:
+build	Upload token artifact	2026-03-31T09:53:59.0158259Z   DEBUG_VERIFY: 1
+build	Upload token artifact	2026-03-31T09:53:59.0158511Z   JWT_SECRET: ***
+build	Upload token artifact	2026-03-31T09:53:59.0158795Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload token artifact	2026-03-31T09:53:59.0159266Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Upload token artifact	2026-03-31T09:53:59.0159691Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload token artifact	2026-03-31T09:53:59.0160078Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload token artifact	2026-03-31T09:53:59.0160452Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload token artifact	2026-03-31T09:53:59.0160859Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Upload token artifact	2026-03-31T09:53:59.0161185Z ##[endgroup]
+build	Upload token artifact	2026-03-31T09:53:59.2277976Z With the provided path, there will be 1 file uploaded
+build	Upload token artifact	2026-03-31T09:53:59.2283377Z Artifact name is valid!
+build	Upload token artifact	2026-03-31T09:53:59.2284750Z Root directory input is valid!
+build	Upload token artifact	2026-03-31T09:53:59.4782731Z Beginning upload of artifact content to blob storage
+build	Upload token artifact	2026-03-31T09:53:59.7566353Z Uploaded bytes 253
+build	Upload token artifact	2026-03-31T09:53:59.8310757Z Finished uploading artifact content to blob storage!
+build	Upload token artifact	2026-03-31T09:53:59.8314398Z SHA256 digest of uploaded artifact zip is 3168906135c6f0df9296d7e6fe13280810850e8533bea496cfd97049e4fa9a2e
+build	Upload token artifact	2026-03-31T09:53:59.8315952Z Finalizing artifact upload
+build	Upload token artifact	2026-03-31T09:53:59.9690924Z Artifact generated-token.zip successfully finalized. Artifact ID 6196663504
+build	Upload token artifact	2026-03-31T09:53:59.9692394Z Artifact generated-token has been successfully uploaded! Final size is 253 bytes. Artifact ID is 6196663504
+build	Upload token artifact	2026-03-31T09:53:59.9698963Z Artifact download URL: https://github.com/minamiyama-ryota/browser_tetris/actions/runs/23791312376/artifacts/6196663504
+build	Generate HPC HTML coverage	﻿2026-03-31T09:53:59.9790400Z ##[group]Run set -e
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9790684Z [36;1mset -e[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9791017Z [36;1mif [ -d "$GITHUB_WORKSPACE/elm-haskell/haskell-server" ]; then[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9791479Z [36;1m  HS_DIR="$GITHUB_WORKSPACE/elm-haskell/haskell-server"[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9791888Z [36;1melif [ -d "$GITHUB_WORKSPACE/haskell-server" ]; then[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9792268Z [36;1m  HS_DIR="$GITHUB_WORKSPACE/haskell-server"[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9792566Z [36;1melse[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9792899Z [36;1m  echo "haskell-server directory not found; skipping coverage markup"[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9793291Z [36;1m  exit 0[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9793496Z [36;1mfi[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9793696Z [36;1mcd "$HS_DIR"[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9794009Z [36;1mTIXFILES=$(find .stack-work -name "*.tix" || true)[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9794355Z [36;1mif [ -z "$TIXFILES" ]; then[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9794677Z [36;1m  echo "No .tix files found; skipping hpc markup"[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9795001Z [36;1m  exit 0[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9795227Z [36;1mfi[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9795439Z [36;1mmkdir -p coverage[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9795706Z [36;1mfor t in $TIXFILES; do[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9796058Z [36;1m  stack exec -- hpc markup "$t" --destdir=coverage || true[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9796405Z [36;1mdone[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9796627Z [36;1mls -la coverage || true[0m
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9822760Z shell: /usr/bin/bash -e {0}
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9823026Z env:
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9823229Z   DEBUG_VERIFY: 1
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9823580Z   JWT_SECRET: ***
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9823883Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9824326Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9824770Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9825178Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9825568Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9825962Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Generate HPC HTML coverage	2026-03-31T09:53:59.9826296Z ##[endgroup]
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.2244528Z /home/runner/work/browser_tetris/browser_tetris/haskell-server/package.yaml: Ignoring unrecognized field $.tests.tetris-server-tests.type
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.3048746Z hpc-ghc-9.10.3: can not find tetris-server-0.1.0.0-5hOeHDMyWoMIqXE5rBmCVz-tetris-server-tests/Main in ./.hpc
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.3049555Z CallStack (from HasCallStack):
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.3050084Z   error, called at libraries/hpc/Trace/Hpc/Mix.hs:110:15 in hpc-0.7.0.2-d73c:Trace.Hpc.Mix
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.3050630Z HasCallStack backtrace:
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.3051309Z   collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.3052483Z   toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:204:5 in ghc-internal:GHC.Internal.Exception
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.3053472Z   error, called at libraries/hpc/Trace/Hpc/Mix.hs:110:15 in hpc-0.7.0.2-d73c:Trace.Hpc.Mix
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.3053913Z 
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.3053919Z 
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.5280461Z /home/runner/work/browser_tetris/browser_tetris/haskell-server/package.yaml: Ignoring unrecognized field $.tests.tetris-server-tests.type
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6082498Z hpc-ghc-9.10.3: can not find tetris-server-0.1.0.0-Ly2s4AqfP8hACQOIqe8a4L/Auth in ./.hpc
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6083288Z CallStack (from HasCallStack):
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6083989Z   error, called at libraries/hpc/Trace/Hpc/Mix.hs:110:15 in hpc-0.7.0.2-d73c:Trace.Hpc.Mix
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6084725Z HasCallStack backtrace:
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6085668Z   collectBacktraces, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:169:13 in ghc-internal:GHC.Internal.Exception
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6087948Z   toExceptionWithBacktrace, called at libraries/ghc-internal/src/GHC/Internal/Exception.hs:204:5 in ghc-internal:GHC.Internal.Exception
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6089274Z   error, called at libraries/hpc/Trace/Hpc/Mix.hs:110:15 in hpc-0.7.0.2-d73c:Trace.Hpc.Mix
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6090134Z 
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6090143Z 
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6115299Z total 8
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6115743Z drwxr-xr-x 2 runner runner 4096 Mar 31 09:54 .
+build	Generate HPC HTML coverage	2026-03-31T09:54:00.6116298Z drwxr-xr-x 9 runner runner 4096 Mar 31 09:54 ..
+build	Upload coverage artifact	﻿2026-03-31T09:54:00.6174066Z ##[group]Run actions/upload-artifact@v4
+build	Upload coverage artifact	2026-03-31T09:54:00.6174612Z with:
+build	Upload coverage artifact	2026-03-31T09:54:00.6175026Z   name: hpc-coverage-html
+build	Upload coverage artifact	2026-03-31T09:54:00.6176246Z   path: /home/runner/work/browser_tetris/browser_tetris/elm-haskell/haskell-server/coverage
+build	Upload coverage artifact	/home/runner/work/browser_tetris/browser_tetris/haskell-server/coverage
+build	Upload coverage artifact	
+build	Upload coverage artifact	2026-03-31T09:54:00.6177863Z   if-no-files-found: warn
+build	Upload coverage artifact	2026-03-31T09:54:00.6178356Z   compression-level: 6
+build	Upload coverage artifact	2026-03-31T09:54:00.6178713Z   overwrite: false
+build	Upload coverage artifact	2026-03-31T09:54:00.6178959Z   include-hidden-files: false
+build	Upload coverage artifact	2026-03-31T09:54:00.6179227Z env:
+build	Upload coverage artifact	2026-03-31T09:54:00.6179427Z   DEBUG_VERIFY: 1
+build	Upload coverage artifact	2026-03-31T09:54:00.6179696Z   JWT_SECRET: ***
+build	Upload coverage artifact	2026-03-31T09:54:00.6180005Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload coverage artifact	2026-03-31T09:54:00.6180469Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+build	Upload coverage artifact	2026-03-31T09:54:00.6180924Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload coverage artifact	2026-03-31T09:54:00.6181326Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload coverage artifact	2026-03-31T09:54:00.6181763Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+build	Upload coverage artifact	2026-03-31T09:54:00.6182163Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+build	Upload coverage artifact	2026-03-31T09:54:00.6182501Z ##[endgroup]
+build	Upload coverage artifact	2026-03-31T09:54:00.8312548Z Multiple search paths detected. Calculating the least common ancestor of all paths
+build	Upload coverage artifact	2026-03-31T09:54:00.8316203Z The least common ancestor is /home/runner/work/browser_tetris/browser_tetris. This will be the root directory of the artifact
+build	Upload coverage artifact	2026-03-31T09:54:00.8320262Z ##[warning]No files were found with the provided path: /home/runner/work/browser_tetris/browser_tetris/elm-haskell/haskell-server/coverage
+build	Upload coverage artifact	/home/runner/work/browser_tetris/browser_tetris/haskell-server/coverage. No artifacts will be uploaded.
+build	Post Cache Stack and system deps	﻿2026-03-31T09:54:01.3870520Z Post job cleanup.
+build	Post Cache Stack and system deps	2026-03-31T09:54:01.5151491Z Cache hit occurred on the primary key Linux-stack-fab3d7c483da32b36e3ccad3de2435b2678aee54c0b46eef9c3ab5d1ac0a0791, not saving cache.
+build	Post Cache pip	﻿2026-03-31T09:54:02.1120956Z Post job cleanup.
+build	Post Cache pip	2026-03-31T09:54:02.2434599Z Cache hit occurred on the primary key Linux-pip-, not saving cache.
+build	Post Setup Python	﻿2026-03-31T09:54:02.2533563Z Post job cleanup.
+build	Post Run actions/checkout@v4	﻿2026-03-31T09:54:02.4180868Z Post job cleanup.
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5124296Z [command]/usr/bin/git version
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5161498Z git version 2.53.0
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5203913Z Temporarily overriding HOME='/home/runner/work/_temp/6ac0b965-393f-4c02-b1df-8659a734bef1' before making global git config changes
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5204984Z Adding repository directory to the temporary git global config as a safe directory
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5218290Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/browser_tetris/browser_tetris
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5252647Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5285036Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5503972Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5523433Z http.https://github.com/.extraheader
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5535131Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5565370Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5780918Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	Post Run actions/checkout@v4	2026-03-31T09:54:02.5811021Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	Complete job	﻿2026-03-31T09:54:02.6134295Z Cleaning up orphan processes
+build	Complete job	2026-03-31T09:54:02.6429448Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/cache@v4, actions/checkout@v4, actions/setup-python@v4, actions/upload-artifact@v4. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

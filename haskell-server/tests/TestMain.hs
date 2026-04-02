@@ -1,7 +1,6 @@
 module Main where
 
-import Test.Tasty (defaultMain, testGroup, localOption)
-import Test.Tasty.Runners (NumThreads(..))
+import Test.Tasty (defaultMain, testGroup)
 import TestIntegration (integrationTests)
 import TestHKDF (hkdfTests)
 import Test.Tasty.HUnit (testCase, (@?=), assertBool)

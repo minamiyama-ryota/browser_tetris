@@ -1,5 +1,0 @@
-DEBUG: provided_secret_len=10 hkdf_applied=True final_secret_sha256=f4f69161b51eb835b3a8e3f364f049959d848385e770c92673cd6d3e83803ef3
-header.payload = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTc3NDc5NTczMn0
-signature (from token) = -qwiXNz1CxXplVCBFdanWkJmRvn5oB9n6wi7t9CruT8
-computed signature = -qwiXNz1CxXplVCBFdanWkJmRvn5oB9n6wi7t9CruT8
-match = True

@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Auth (verifyJwt, verifyJwtFromEnv, verifyJwtWithSecrets, extractKid, computeHmacSig, loadSecrets,
+module Auth (verifyJwt, verifyJwtFromEnv, extractKid, computeHmacSig, loadSecrets,
              tryB64urlDecode, hkdfExtract, hkdfExpand) where
 
-import Crypto.JWT hiding (hash, Digest)
+import Crypto.JWT
 import Crypto.JOSE.JWK (fromOctets)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as TE
@@ -183,7 +183,7 @@ loadSecrets = do
                                                            Nothing -> acc) Map.empty m
               return decoded
             Nothing -> do
-              putStrLn $ "Auth warning: JWT_SECRETS present but failed to parse JSON: " ++ show j
+              putStrLn "Auth warning: JWT_SECRETS present but failed to parse JSON"
               return Map.empty
         Nothing -> do
           mSecret <- lookupEnv "JWT_SECRET"
@@ -300,9 +300,7 @@ selectSecret mp mKid = case mKid of
   Just k -> Map.lookup k mp
   Nothing -> case Map.lookup "default" mp of
     Just s -> Just s
-    Nothing -> case Map.toList mp of
-      [(_, v)] -> Just v
-      _ -> Nothing
+    Nothing -> if Map.size mp == 1 then Just (snd $ head (Map.toList mp)) else Nothing
 
 -- | Verify a token by automatically loading secrets from environment and
 -- selecting by `kid` if present in the token header.
@@ -312,8 +310,6 @@ verifyJwtFromEnv token = do
   let mKid = extractKid token
   case selectSecretWithOriginals secretsWithOriginals mKid of
     Just (sec, origText) -> do
-      -- Align HKDF behaviour with token generation: apply HKDF when the
-      -- decoded secret bytes are shorter than 32 bytes.
       let secB64 = (convertToBase Base64URLUnpadded sec :: BS.ByteString)
       let providedLen = BS.length (TE.encodeUtf8 origText)
       let decodedLen = BS.length sec
@@ -323,35 +319,7 @@ verifyJwtFromEnv token = do
       authDebug $ "Auth debug: verifyJwtFromEnv selected secret for kid=" ++ show mKid ++ " secretB64=" ++ T.unpack (TE.decodeUtf8 secB64)
       authDebug $ "Auth debug: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
       authDebug $ "DEBUG: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
-      verifyJwt finalSecret token
-    Nothing -> return $ Left "no matching secret for token kid"
-
-
--- | Verify using an explicit map of kid -> textual secret values (the same
--- format used in `JWT_SECRETS` JSON). This helper is intended for tests or
--- callers that want to avoid using process-global environment variables.
-verifyJwtWithSecrets :: Map T.Text T.Text -> T.Text -> IO (Either String Value)
-verifyJwtWithSecrets secretsText token = do
-  -- Decode entries where possible, but keep the original textual form for
-  -- diagnostics. Resulting map is kid -> (decodedBytes, originalText).
-  let decoded = Map.foldrWithKey (\rk rv acc -> case tryB64urlDecode rv of
-                                                  Just bs -> Map.insert rk (bs, rv) acc
-                                                  Nothing -> Map.insert rk (TE.encodeUtf8 rv, rv) acc)
-                                 Map.empty
-                                 secretsText
-  let mKid = extractKid token
-  case selectSecretWithOriginals decoded mKid of
-    Just (sec, origText) -> do
-      let secB64 = (convertToBase Base64URLUnpadded sec :: BS.ByteString)
-      let providedLen = BS.length (TE.encodeUtf8 origText)
-      let decodedLen = BS.length sec
-      let hkdfApplied = decodedLen < 32
-      let finalSecret = if hkdfApplied then hkdfExpand (hkdfExtract BS.empty sec) (TE.encodeUtf8 (T.pack "hs256-derivation")) 32 else sec
-      let finalSecretSha256 = TE.decodeUtf8 (convertToBase Base16 (BA.convert (CH.hash finalSecret :: CH.Digest CHA.SHA256) :: BS.ByteString))
-      authDebug $ "Auth debug: verifyJwtWithSecrets selected secret for kid=" ++ show mKid ++ " secretB64=" ++ T.unpack (TE.decodeUtf8 secB64)
-      authDebug $ "Auth debug: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
-      authDebug $ "DEBUG: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
-      verifyJwt finalSecret token
+      verifyJwt sec token
     Nothing -> return $ Left "no matching secret for token kid"
 
 -- | Extract `kid` from JWT header if present (does not verify signature)
@@ -410,30 +378,27 @@ infoWrapped = id
 -- re-encode (unpadded) and compare to original (unpadded) to avoid false positives.
 tryB64urlDecode :: T.Text -> Maybe ByteString
 tryB64urlDecode t =
-  let origUnpadded = T.dropWhileEnd (== '=') t
-      origUnpaddedBs = TE.encodeUtf8 origUnpadded
-      -- try unpadded decode first (canonical form)
-      tryUnpadded = case convertFromBase Base64URLUnpadded origUnpaddedBs of
-        Right raw ->
-          let reenc = convertToBase Base64URLUnpadded raw
-              reencT = TE.decodeUtf8 reenc
-          in if reencT == origUnpadded then Just raw else Nothing
+  let origBs = TE.encodeUtf8 t
+      tryDecode bs = case convertFromBase Base64URLUnpadded bs of
+        Right raw -> Just raw
         Left _ -> Nothing
-      -- fallback: try padded decode by adding '=' padding to unpadded bytes
-      padLen = (4 - (BS.length origUnpaddedBs `mod` 4)) `mod` 4
-      padded = origUnpaddedBs `BS.append` BS.replicate padLen 61 -- '=' == 61
-      tryPadded = case convertFromBase Base64URLUnpadded padded of
-        Right raw ->
-          let reenc = convertToBase Base64URLUnpadded raw
-              reencT = TE.decodeUtf8 reenc
-          in if reencT == origUnpadded then Just raw else Nothing
-        Left _ -> Nothing
-  in case tryUnpadded of
-       Just raw -> Just raw
-       Nothing -> tryPadded
+      padLen = (4 - (BS.length origBs `mod` 4)) `mod` 4
+      withPad = origBs `BS.append` TE.encodeUtf8 (T.replicate padLen "=")
+      origUnpadded = T.dropWhileEnd (== '=') t
+  in case tryDecode origBs of
+       Just raw ->
+         let reenc = convertToBase Base64URLUnpadded raw
+             reencT = TE.decodeUtf8 reenc
+         in if reencT == origUnpadded then Just raw else Nothing
+       Nothing -> case tryDecode withPad of
+         Just raw ->
+           let reenc = convertToBase Base64URLUnpadded raw
+               reencT = TE.decodeUtf8 reenc
+           in if reencT == origUnpadded then Just raw else Nothing
+         Nothing -> Nothing
 
 
--- | Conditional debug logging controlled by environment variables DEBUG_VERIFY or AUTH_DEBUG.
+-- | Conditional debug logging controlled by env vars `DEBUG_VERIFY` or `AUTH_DEBUG`.
 -- When either is set to a truthy value (1/true/yes/on) the message is printed.
 authDebug :: String -> IO ()
 authDebug msg = do
