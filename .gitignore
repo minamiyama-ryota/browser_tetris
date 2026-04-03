@@ -29,3 +29,6 @@ ci-artifacts/
 # Ignore CI debug archives
 debug-archive*
 
+# Local dev secret (do not commit)
+local_jwt_secret.txt
+
