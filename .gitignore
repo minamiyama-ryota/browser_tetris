@@ -32,3 +32,6 @@ debug-archive*
 # Local dev secret (do not commit)
 local_jwt_secret.txt
 
+# Ignore Elm build output
+elm-app/dist/
+
