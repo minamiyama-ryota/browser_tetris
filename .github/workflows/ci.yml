@@ -88,10 +88,28 @@ jobs:
           echo "--- verify_debug (first 200 lines) ---"
           head -n 200 "$VERIFY_DEBUG" || true
 
+      - name: Assert auth verification (fail on mismatch)
+        if: ${{ env.DEBUG_VERIFY == '1' }}
+        run: |
+          VERIFY_DEBUG="$GITHUB_WORKSPACE/verify_debug.txt"
+          if [ ! -f "$VERIFY_DEBUG" ]; then
+            echo "verify_debug.txt not found" >&2
+            exit 1
+          fi
+          if grep -q 'match = True' "$VERIFY_DEBUG"; then
+            echo "Verification matched ('match = True')"
+          else
+            echo "Verification mismatch: 'match = True' not found" >&2
+            echo "--- verify_debug (full) ---"
+            sed -n '1,400p' "$VERIFY_DEBUG" || true
+            exit 1
+          fi
+
       - name: Upload auth debug
         uses: actions/upload-artifact@v4
         with:
           name: auth-debug
+          retention-days: 7
           path: |
             ${{ github.workspace }}/token.txt
             ${{ github.workspace }}/gen_debug.txt
@@ -137,6 +155,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: generated-token
+          retention-days: 7
           path: ${{ github.workspace }}/token.txt
 
       - name: Generate HPC HTML coverage
@@ -166,6 +185,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: hpc-coverage-html
+          retention-days: 7
           path: |
             ${{ github.workspace }}/elm-haskell/haskell-server/coverage
             ${{ github.workspace }}/haskell-server/coverage
