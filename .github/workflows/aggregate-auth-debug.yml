@@ -93,13 +93,12 @@ jobs:
 
       # Optional: commit CSV back to repository and open PR if PUSH_GIT_TOKEN is configured
       - name: Commit CSV and create PR (optional)
+        if: ${{ secrets.PUSH_GIT_TOKEN != '' }}
+        continue-on-error: true
         env:
           PUSH_GIT_TOKEN: ${{ secrets.PUSH_GIT_TOKEN }}
         run: |
-          if [ -z "$PUSH_GIT_TOKEN" ]; then
-            echo "PUSH_GIT_TOKEN not set; skipping commit/PR"
-            exit 0
-          fi
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${PUSH_GIT_TOKEN}@github.com/${{ github.repository }}
@@ -107,5 +106,5 @@ jobs:
           git checkout -b "$BRANCH"
           git add downloads-aggregate/auth_debug_summary.csv || true
           git commit -m "chore(ci): update auth_debug_summary.csv" || echo "no changes to commit"
-          git push --set-upstream origin "$BRANCH"
+          git push --set-upstream origin "$BRANCH" || true
           gh pr create --title "chore(ci): update auth_debug_summary.csv" --body "Nightly aggregation updated the summary CSV." --head "$BRANCH" --base main || true
