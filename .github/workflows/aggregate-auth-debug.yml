@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LIMIT: 50
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
