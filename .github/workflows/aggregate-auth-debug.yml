@@ -61,6 +61,24 @@ jobs:
             exit 2
           fi
 
+      - name: Debug gh auth and run listing
+        run: |
+          echo "gh version:"
+          gh --version || true
+          echo "gh auth status (before login):"
+          gh auth status --hostname github.com || true
+          if [ -n "${GITHUB_TOKEN-}" ]; then
+            echo "Attempting gh auth login with GITHUB_TOKEN"
+            echo "${GITHUB_TOKEN}" | gh auth login --with-token -h github.com || true
+            echo "gh auth status (after login):"
+            gh auth status --hostname github.com || true
+          else
+            echo "GITHUB_TOKEN is empty"
+          fi
+          echo "gh run list (repo):"
+          gh run list --limit 10 --repo "${GITHUB_REPOSITORY}" || true
+          echo "gh run list exit code: $?"
+
       - name: Run aggregation
         run: |
           python tools/aggregate_auth_debug.py --limit ${{ env.LIMIT }} --out downloads-aggregate
