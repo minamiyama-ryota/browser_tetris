@@ -36,7 +36,11 @@ def run_cmd(cmd):
     log(f"CMD: {' '.join(cmd)}")
     try:
         env = os.environ.copy()
-        env.pop("GITHUB_TOKEN", None)
+        # Preserve GITHUB_TOKEN when running inside GitHub Actions so the
+        # `gh` CLI can authenticate. Remove local GITHUB_TOKEN only when not
+        # executing in Actions (to avoid picking up an invalid local token).
+        if not env.get('GITHUB_ACTIONS'):
+            env.pop("GITHUB_TOKEN", None)
         p = subprocess.run(cmd, capture_output=True, text=True, check=True, env=env)
         log(f"OUT: {p.stdout[:10000]}")
         log(f"ERR: {p.stderr[:10000]}")
