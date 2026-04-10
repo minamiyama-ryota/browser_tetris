@@ -30,6 +30,36 @@ jobs:
           python -m pip install --upgrade pip
           pip install PyJWT
 
+      - name: Verify repository and script presence
+        run: |
+          echo "Repository root: $(pwd)"
+          echo "Listing root files"
+          ls -la
+          echo "Listing tools directory (if exists)"
+          ls -la tools || true
+          echo "Git HEAD and branch info"
+          git rev-parse --abbrev-ref HEAD || true
+          git rev-parse HEAD || true
+          echo "Git status (including untracked)"
+          git status --porcelain --untracked-files=all || true
+          if [ ! -f tools/aggregate_auth_debug.py ]; then
+            echo "tools/aggregate_auth_debug.py not found in repository checkout; attempting to retrieve from known branches"
+            for b in origin/ci/create-aggregate-pr origin/gen-debug-history; do
+              echo "checking $b"
+              if git ls-tree -r "$b" --name-only | grep -q '^tools/aggregate_auth_debug.py$'; then
+                echo "found in $b; checking out file"
+                git checkout "$b" -- tools/aggregate_auth_debug.py || true
+                break
+              fi
+            done
+          fi
+
+          if [ ! -f tools/aggregate_auth_debug.py ]; then
+            echo "::error::tools/aggregate_auth_debug.py not found in repository checkout or known branches"
+            echo "Hint: commit the script to the default branch or ensure workflow fetches the correct ref"
+            exit 2
+          fi
+
       - name: Run aggregation
         run: |
           python tools/aggregate_auth_debug.py --limit ${{ env.LIMIT }} --out downloads-aggregate
