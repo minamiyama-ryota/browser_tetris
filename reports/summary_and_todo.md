@@ -1,65 +1,41 @@
-# 要約と To Do（auth-debug 集計）
+# 要約と ToDo（auth-debug 集計）
 
 ## 要約
 
-- 目的: Python で生成した HS256 トークンが Haskell CI で検証可能であることを保証するため、HS256 秘密の正規化（Base64URL 検出、HKDF-SHA256 導出）を統一し、デバッグアーティファクトの履歴削除・シークレットローテーション・CI 診断を追加しました。
-
+- 目的: Pythonで生成したHS256トークンがHaskell CIで検証可能であることを保証し、auth-debugアーティファクトを収集・集約・運用自動化すること。
 - 実施済み:
-  - Python (`gen_jwt_cli.py`, `verify_token.py`) と Haskell 側で秘密の正規化を実装。
-  - CI ワークフローに `auth-debug` アーティファクト収集を追加（`gen_debug.txt`, `verify_debug.txt`, `token.txt`）。`debug_verify` 入力で詳細検証をゲート。
-  - リポジトリ履歴のクリーンアップ（バックアップブランチ + `git-filter-repo`）と `.gitignore` 更新。
-  - `JWT_SECRET` のローテーションと gitleaks による定期スキャンの追加。
-  - `tools/aggregate_auth_debug.py` を作成し複数ランのアーティファクトを解析、`downloads-aggregate/auth_debug_summary.csv` を生成。
-  - PR #14 を作成・マージし、CI に `match` チェックを追加（`debug_verify=1` で失敗を検出）。
-  - 代表ラン（例: 24133893372, 24029780042, …, 24188991578）を再実行し、すべて `hkdf_applied=False`、`final_secret_sha256=a5f1ef4ad9347f4a735c51cc338be8525d285ec332428a264b2e8b063c9f3e66`、署名一致(`match=True`) を確認。
-  - Issue #15 を作成して run `24188991578` の解析結果を投稿済み。
+  - 調査: 集約ワークフローの失敗原因を特定（スクリプト不在、権限問題）。
+  - 修正: `.github/workflows/aggregate-auth-debug.yml` にデバッグ出力とスクリプト存在チェックを追加。
+  - 追加: `tools/aggregate_auth_debug.py` をブランチへ追加し、CSV生成とartifactアップロードを確認（run 24268319385）。
+  - 自動PRのpush/prは権限(403)で失敗したため、`PUSH_GIT_TOKEN` がある場合のみ実行かつ失敗してもジョブ継続に変更。
+- 現状: CSV生成とartifactアップロードは安定（手動PR運用を採用）。
 
-- 現状: 正規化ロジックと CI 検証は整合しており、代表的なランで署名検証は成功しています。残タスクは主に運用化（ポリシー・自動化）です。
+## 未完了 ToDo（優先度順）
 
-## To Do（現在のステータス）
+- [ ] `PUSH_GIT_TOKEN` の運用決定と Secrets 追加（自動PRを有効化する場合）。
+- [ ] CSV 差分検査を実装（前回CSVとの比較、差分発見時にアラート）。
+- [ ] `tools/aggregate_auth_debug.py` に軽量テスト追加と CI 検証を導入。
+- [ ] 運用ドキュメントの整備：トークン管理・手順・障害対応（`docs/auth_debug_policy.md` を拡張）。
+- [ ] 通知経路の整備（Slack/GitHub通知・ダッシュボード化）。
+- [ ] 長期: 集計結果の可視化とトレンド監視（ダッシュボード化）。
 
-- [x] バックアップブランチ作成
-- [x] デバッグアーカイブ削除と強制 push
-- [x] デバッグファイルと CI ログのリポジトリから削除
-- [x] JWT_SECRET のローテーション（リモート環境に反映済みの確認が必要）
-- [x] CI ワークフローでデバッグ出力を収集してアーティファクト化
-- [x] gitleaks の定期実行ワークフロー追加
-- [x] elm-app/dist/ とローカル秘密ファイルを .gitignore に追加
-- [x] ローカルで Haskell サーバと Elm UI を起動して検証
-- [x] トークン生成・検証スクリプトでの秘密鍵正規化を実装（Python）
-- [x] Haskell 側で Base64URL 検出と HKDF 導出を実装
-- [x] Issue #12 をクローズ（手動再認証後に実行可能）
-- [x] コラボレータへ再クローンを依頼して検証を完了してもらう
-- [x] 展開先環境で新しい JWT_SECRET が反映されていることを確認
-- [x] 監査ログ（コミット/Actions）の詳細レビュー
-- [x] コラボレータへ再通知（Issue #13）
-- [x] ポリシー/自動化提案を作成
-- [x] `debug_verify=1` で CI を再実行し `auth-debug` を取得
-- [x] 複数ランの auth-debug を一括ダウンロード・解析するスクリプト作成
-- [x] 複数ランの auth-debug 集計解析（不一致チェック）
-- [x] 代表ランを複数回再実行して追加データ収集
-- [x] CI に `match` チェックを追加する PR を作成
-- [x] PR #14 のモニタリングとマージ
-- [x] PR #14 に説明コメントを投稿
-- [x] マージ後の CI 実行を監視
-- [x] 集計 CSV を更新（最新ランを追加）
-- [x] Issue #15 を作成して run 24188991578 を記録
+## 直近実行
 
-## 参照
+- 成功 run: 24268319385 — CSV生成・artifact upload 成功（`downloads-aggregate/auth_debug_summary.csv`）。
+- 参考失敗 run: 24243694882 — スクリプト不在で失敗（対応済）。
 
-- 集計 CSV: `downloads-aggregate/auth_debug_summary.csv`
-- 該当ラン (24188991578): `downloads-postmerge/24188991578/auth-debug/` 以下に `gen_debug.txt`, `verify_debug.txt`, `token.txt`
-- Issue: https://github.com/minamiyama-ryota/browser_tetris/issues/15
+## 関連ファイル
 
----
-作成日時: 2026-04-09
-作成者: 自動エクスポート
+- `.github/workflows/aggregate-auth-debug.yml`
+- `tools/aggregate_auth_debug.py`
+- `reports/run_logs/`（保存済のログ）
+- `downloads-aggregate/auth_debug_summary.csv`
 
-## 監査ログレビュー: 完了 (2026-04-10)
+## 次アクション（提案）
 
-- 実施: GitHub Actions の `auth-debug` アーティファクトを列挙・ダウンロードし、`tools/aggregate_auth_debug.py` で集計しました。
-- 処理結果: 総ラン数: 15、`match = True` のラン: 6
-- 一致した `final_secret_sha256`: a5f1ef4ad9347f4a735c51cc338be8525d285ec332428a264b2e8b063c9f3e66
-- 集計ファイル: downloads-aggregate/auth_debug_summary.csv
-- 備考: 多数のランで `final_secret_sha256` が一致し、署名検証は概ね成功しています。残タスクはコラボレータ通知とポリシー文書化です。
- - PR: https://github.com/minamiyama-ryota/browser_tetris/pull/16 を作成・マージしました（2026-04-10）。
+1. 手動で `PUSH_GIT_TOKEN` を Secrets に追加するか決定してください（現在は手動PR運用）。
+2. 差分検査スクリプトを作成するなら私が作成します。実装希望なら着手しますか？
+
+更新: 2026-04-11
+作成者: 自動生成
+
