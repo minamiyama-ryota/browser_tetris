@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   aggregate:
@@ -14,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LIMIT: 50
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,9 +32,77 @@ jobs:
           python -m pip install --upgrade pip
           pip install PyJWT
 
+      - name: Verify repository and script presence
+        run: |
+          echo "Repository root: $(pwd)"
+          echo "Listing root files"
+          ls -la
+          echo "Listing tools directory (if exists)"
+          ls -la tools || true
+          echo "Git HEAD and branch info"
+          git rev-parse --abbrev-ref HEAD || true
+          git rev-parse HEAD || true
+          echo "Git status (including untracked)"
+          git status --porcelain --untracked-files=all || true
+          if [ ! -f tools/aggregate_auth_debug.py ]; then
+            echo "tools/aggregate_auth_debug.py not found in repository checkout; attempting to retrieve from known branches"
+            for b in origin/ci/create-aggregate-pr origin/gen-debug-history; do
+              echo "checking $b"
+              if git ls-tree -r "$b" --name-only | grep -q '^tools/aggregate_auth_debug.py$'; then
+                echo "found in $b; checking out file"
+                git checkout "$b" -- tools/aggregate_auth_debug.py || true
+                break
+              fi
+            done
+          fi
+
+          if [ ! -f tools/aggregate_auth_debug.py ]; then
+            echo "::error::tools/aggregate_auth_debug.py not found in repository checkout or known branches"
+            echo "Hint: commit the script to the default branch or ensure workflow fetches the correct ref"
+            exit 2
+          fi
+
+      - name: Debug gh auth and run listing
+        run: |
+          echo "gh version:"
+          gh --version || true
+          echo "gh auth status (before login):"
+          gh auth status --hostname github.com || true
+          if [ -n "${GITHUB_TOKEN-}" ]; then
+            echo "Attempting gh auth login with GITHUB_TOKEN"
+            echo "${GITHUB_TOKEN}" | gh auth login --with-token -h github.com || true
+            echo "gh auth status (after login):"
+            gh auth status --hostname github.com || true
+          else
+            echo "GITHUB_TOKEN is empty"
+          fi
+          echo "gh run list (repo):"
+          gh run list --limit 10 --repo "${GITHUB_REPOSITORY}" || true
+          echo "gh run list exit code: $?"
+
       - name: Run aggregation
         run: |
           python tools/aggregate_auth_debug.py --limit ${{ env.LIMIT }} --out downloads-aggregate
+
+      - name: Run CSV diff check
+        env:
+          AUTH_DEBUG_DIFF_FAIL: ${{ secrets.AUTH_DEBUG_DIFF_FAIL || '1' }}
+        run: |
+          set +e
+          python tools/check_csv_diff.py downloads-aggregate/auth_debug_summary.csv --prev downloads-aggregate/auth_debug_summary.prev.csv --verbose
+          CODE=$?
+          set -e
+          if [ "$CODE" -eq 2 ]; then
+            echo "::warning::auth_debug summary CSV differences detected (exit code 2)"
+            echo "AUTH_DEBUG_DIFF_FAIL is set to ${AUTH_DEBUG_DIFF_FAIL}; failing job due to diffs"
+            if [ "${AUTH_DEBUG_DIFF_FAIL}" = "1" ] || [ "${AUTH_DEBUG_DIFF_FAIL}" = "true" ] || [ "${AUTH_DEBUG_DIFF_FAIL}" = "yes" ]; then
+              echo "AUTH_DEBUG_DIFF_FAIL set; failing job"
+              exit 2
+            fi
+          elif [ "$CODE" -ne 0 ]; then
+            echo "::error::CSV diff checker returned non-zero code: $CODE"
+            exit $CODE
+          fi
 
       - name: Upload summary artifact
         uses: actions/upload-artifact@v4
@@ -43,13 +113,12 @@ jobs:
 
       # Optional: commit CSV back to repository and open PR if PUSH_GIT_TOKEN is configured
       - name: Commit CSV and create PR (optional)
+        if: ${{ secrets.PUSH_GIT_TOKEN != '' }}
+        continue-on-error: true
         env:
           PUSH_GIT_TOKEN: ${{ secrets.PUSH_GIT_TOKEN }}
         run: |
-          if [ -z "$PUSH_GIT_TOKEN" ]; then
-            echo "PUSH_GIT_TOKEN not set; skipping commit/PR"
-            exit 0
-          fi
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${PUSH_GIT_TOKEN}@github.com/${{ github.repository }}
@@ -57,5 +126,5 @@ jobs:
           git checkout -b "$BRANCH"
           git add downloads-aggregate/auth_debug_summary.csv || true
           git commit -m "chore(ci): update auth_debug_summary.csv" || echo "no changes to commit"
-          git push --set-upstream origin "$BRANCH"
+          git push --set-upstream origin "$BRANCH" || true
           gh pr create --title "chore(ci): update auth_debug_summary.csv" --body "Nightly aggregation updated the summary CSV." --head "$BRANCH" --base main || true
