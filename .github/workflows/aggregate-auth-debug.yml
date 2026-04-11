@@ -67,10 +67,9 @@ jobs:
                 mkdir -p tools
                 mv "$_fetch_tmp" tools/aggregate_auth_debug.py
               else
-                echo "::warning::git show origin/main:tools/aggregate_auth_debug.py failed: $(cat "$_err_tmp")"
-                rm -f "$_fetch_tmp"
+                echo "::warning::git show origin/main:tools/aggregate_auth_debug.py failed: $(head -c 500 "$_err_tmp")"
               fi
-              rm -f "$_err_tmp"
+              rm -f "$_fetch_tmp" "$_err_tmp"
             fi
           fi
 
