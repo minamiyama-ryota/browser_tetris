@@ -61,10 +61,13 @@ jobs:
             if git ls-tree -r origin/main --name-only | grep -q '^tools/aggregate_auth_debug.py$'; then
               git checkout origin/main -- tools/aggregate_auth_debug.py || echo "::warning::git checkout origin/main -- tools/aggregate_auth_debug.py failed"
             else
-              if ! git show origin/main:tools/aggregate_auth_debug.py > tools/aggregate_auth_debug.py 2>/tmp/git_show_err.txt; then
+              if git show origin/main:tools/aggregate_auth_debug.py > /tmp/aggregate_auth_debug_fetch.py 2>/tmp/git_show_err.txt; then
+                mv /tmp/aggregate_auth_debug_fetch.py tools/aggregate_auth_debug.py
+              else
                 echo "::warning::git show origin/main:tools/aggregate_auth_debug.py failed: $(cat /tmp/git_show_err.txt)"
-                rm -f tools/aggregate_auth_debug.py
+                rm -f /tmp/aggregate_auth_debug_fetch.py
               fi
+              rm -f /tmp/git_show_err.txt
             fi
           fi
 
