@@ -1,0 +1,71 @@
+name: Create PR for auth-debug summary
+
+on:
+  workflow_run:
+    workflows:
+      - Aggregate auth-debug
+    types:
+      - completed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install helpers
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq unzip
+
+      - name: Download artifact from finished run
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          RUN_ID=${{ github.event.workflow_run.id }}
+          echo "workflow run id: $RUN_ID"
+          API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/artifacts"
+          echo "querying $API_URL"
+          ART_JSON=$(curl -s -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github+json" "$API_URL")
+          echo "$ART_JSON" > artifacts.json
+          ART_ID=$(echo "$ART_JSON" | jq -r '.artifacts[] | select(.name=="auth-debug-summary") | .id')
+          if [ -z "$ART_ID" ] || [ "$ART_ID" = "null" ]; then
+            echo "auth-debug-summary artifact not found; exiting"
+            exit 0
+          fi
+          DOWNLOAD_URL=$(echo "$ART_JSON" | jq -r ".artifacts[] | select(.id==${ART_ID}) | .archive_download_url")
+          echo "download url: $DOWNLOAD_URL"
+          curl -L -H "Authorization: token $GITHUB_TOKEN" -o artifact.zip "$DOWNLOAD_URL"
+          unzip -o artifact.zip -d artifact || true
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Copy CSV into repo
+        run: |
+          set -e
+          mkdir -p downloads-aggregate
+          if [ -f artifact/auth_debug_summary.csv ]; then
+            cp artifact/auth_debug_summary.csv downloads-aggregate/auth_debug_summary.csv
+          elif [ -f artifact/downloads-aggregate/auth_debug_summary.csv ]; then
+            cp artifact/downloads-aggregate/auth_debug_summary.csv downloads-aggregate/auth_debug_summary.csv
+          else
+            echo "CSV not found inside artifact; nothing to do"; exit 0
+          fi
+
+      - name: Create Pull Request if CSV changed
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(ci): update auth_debug_summary.csv"
+          branch: "aggregate/auth-debug-summary-${{ github.run_id }}"
+          base: main
+          title: "chore(ci): update auth_debug_summary.csv"
+          body: |
+            Nightly aggregation updated the summary CSV from workflow run ${{ github.event.workflow_run.id }}.
