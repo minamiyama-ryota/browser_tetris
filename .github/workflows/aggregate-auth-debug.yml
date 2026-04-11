@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LIMIT: 50
+      # Set to '0' or 'false' via the AUTH_DEBUG_DIFF_FAIL repository secret to
+      # disable hard-failure on CSV diffs (e.g. during intentional bulk updates).
+      AUTH_DEBUG_DIFF_FAIL: ${{ secrets.AUTH_DEBUG_DIFF_FAIL || '1' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
