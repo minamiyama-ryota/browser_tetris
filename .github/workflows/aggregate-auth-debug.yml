@@ -57,6 +57,15 @@ jobs:
           fi
 
           if [ ! -f tools/aggregate_auth_debug.py ]; then
+            echo "Attempting to retrieve tools/aggregate_auth_debug.py from origin/main"
+            if git ls-tree -r origin/main --name-only | grep -q '^tools/aggregate_auth_debug.py$'; then
+              git checkout origin/main -- tools/aggregate_auth_debug.py || true
+            else
+              git show origin/main:tools/aggregate_auth_debug.py > tools/aggregate_auth_debug.py 2>/dev/null || true
+            fi
+          fi
+
+          if [ ! -f tools/aggregate_auth_debug.py ]; then
             echo "::error::tools/aggregate_auth_debug.py not found in repository checkout or known branches"
             echo "Hint: commit the script to the default branch or ensure workflow fetches the correct ref"
             exit 2
