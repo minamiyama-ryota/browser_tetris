@@ -84,6 +84,26 @@ jobs:
         run: |
           python tools/aggregate_auth_debug.py --limit ${{ env.LIMIT }} --out downloads-aggregate
 
+      - name: Run CSV diff check
+        env:
+          AUTH_DEBUG_DIFF_FAIL: ${{ secrets.AUTH_DEBUG_DIFF_FAIL }}
+        run: |
+          set +e
+          python tools/check_csv_diff.py downloads-aggregate/auth_debug_summary.csv --prev downloads-aggregate/auth_debug_summary.prev.csv --verbose
+          CODE=$?
+          set -e
+          if [ "$CODE" -eq 2 ]; then
+            echo "::warning::auth_debug summary CSV differences detected (exit code 2)"
+            echo "If you want to fail the job on diffs, set the secret AUTH_DEBUG_DIFF_FAIL=1"
+            if [ "${AUTH_DEBUG_DIFF_FAIL}" = "1" ] || [ "${AUTH_DEBUG_DIFF_FAIL}" = "true" ] || [ "${AUTH_DEBUG_DIFF_FAIL}" = "yes" ]; then
+              echo "AUTH_DEBUG_DIFF_FAIL set; failing job"
+              exit 2
+            fi
+          elif [ "$CODE" -ne 0 ]; then
+            echo "::error::CSV diff checker returned non-zero code: $CODE"
+            exit $CODE
+          fi
+
       - name: Upload summary artifact
         uses: actions/upload-artifact@v4
         with:

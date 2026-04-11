@@ -1,0 +1,312 @@
+Aggregate and upload auth-debug summary	UNKNOWN STEP	﻿2026-04-10T13:05:52.0123964Z Current runner version: '2.333.1'
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0159017Z ##[group]Runner Image Provisioner
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0160254Z Hosted Compute Agent
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0161206Z Version: 20260213.493
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0162239Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0163394Z Build Date: 2026-02-13T00:28:41Z
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0164519Z Worker ID: {dde63a08-2178-43d1-81b2-90367d174f37}
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0165914Z Azure Region: eastus
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0166826Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0169313Z ##[group]Operating System
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0170321Z Ubuntu
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0171045Z 24.04.4
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0171821Z LTS
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0172518Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0173327Z ##[group]Runner Image
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0174329Z Image: ubuntu-24.04
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0175186Z Version: 20260406.80.1
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0177379Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260406.80/images/ubuntu/Ubuntu2404-Readme.md
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0179851Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260406.80
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0181500Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0183289Z ##[group]GITHUB_TOKEN Permissions
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0186333Z Actions: read
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0187343Z Contents: read
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0188104Z Metadata: read
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0188846Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0191695Z Secret source: Actions
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0193239Z Prepare workflow directory
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0745097Z Prepare all required actions
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.0801135Z Getting action download info
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.4491092Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.5731667Z Download action repository 'actions/setup-python@v4' (SHA:7f4fc3e22c37d6ff65e88745f38bd3157c663f7c)
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.6558376Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.8635366Z Complete job name: Aggregate and upload auth-debug summary
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9374559Z ##[group]Run actions/checkout@v4
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9375452Z with:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9376105Z   fetch-depth: 0
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9376594Z   repository: minamiyama-ryota/browser_tetris
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9377347Z   token: ***
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9377767Z   ssh-strict: true
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9378185Z   ssh-user: git
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9378623Z   persist-credentials: true
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9379100Z   clean: true
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9379525Z   sparse-checkout-cone-mode: true
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9380034Z   fetch-tags: false
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9380458Z   show-progress: true
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9380887Z   lfs: false
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9381276Z   submodules: false
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9381702Z   set-safe-directory: true
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9382424Z env:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9382813Z   LIMIT: 50
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:52.9383194Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0509105Z Syncing repository: minamiyama-ryota/browser_tetris
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0512141Z ##[group]Getting Git version info
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0513713Z Working directory is '/home/runner/work/browser_tetris/browser_tetris'
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0516144Z [command]/usr/bin/git version
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0521259Z git version 2.53.0
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0548282Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0570853Z Temporarily overriding HOME='/home/runner/work/_temp/2bc67594-12d8-4127-a816-7fb46ad978bc' before making global git config changes
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0573734Z Adding repository directory to the temporary git global config as a safe directory
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0578859Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/browser_tetris/browser_tetris
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0617377Z Deleting the contents of '/home/runner/work/browser_tetris/browser_tetris'
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0634649Z ##[group]Initializing the repository
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0636748Z [command]/usr/bin/git init /home/runner/work/browser_tetris/browser_tetris
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0714855Z hint: Using 'master' as the name for the initial branch. This default branch name
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0717525Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0719456Z hint: to use in all of your new repositories, which will suppress this warning,
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0720973Z hint: call:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0721751Z hint:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0722757Z hint: 	git config --global init.defaultBranch <name>
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0723912Z hint:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0724946Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0727055Z hint: 'development'. The just-created branch can be renamed via this command:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0728569Z hint:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0729524Z hint: 	git branch -m <name>
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0730419Z hint:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0731604Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0733629Z Initialized empty Git repository in /home/runner/work/browser_tetris/browser_tetris/.git/
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0737109Z [command]/usr/bin/git remote add origin https://github.com/minamiyama-ryota/browser_tetris
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0762477Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0763861Z ##[group]Disabling automatic garbage collection
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0767916Z [command]/usr/bin/git config --local gc.auto 0
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0798442Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0800338Z ##[group]Setting up auth
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0805499Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.0834401Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.1116136Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.1149340Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.1379783Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.1411802Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.1633579Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.1667844Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.1668895Z ##[group]Fetching the repository
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.1676770Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4008233Z From https://github.com/minamiyama-ryota/browser_tetris
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4009530Z  * [new branch]      ci/create-aggregate-pr -> origin/ci/create-aggregate-pr
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4010723Z  * [new branch]      ci/fix-aggregate-retrieve-script -> origin/ci/fix-aggregate-retrieve-script
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4011769Z  * [new branch]      gen-debug-history      -> origin/gen-debug-history
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4012527Z  * [new branch]      main                   -> origin/main
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4013188Z  * [new tag]         v0.1.1                 -> v0.1.1
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4048134Z [command]/usr/bin/git branch --list --remote origin/ci/fix-aggregate-retrieve-script
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4070815Z   origin/ci/fix-aggregate-retrieve-script
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4079590Z [command]/usr/bin/git rev-parse refs/remotes/origin/ci/fix-aggregate-retrieve-script
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4099881Z 0fdfc1d489c0f0b2eaff0e81078f889d90520452
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4103877Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4104794Z ##[group]Determining the checkout info
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4105958Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4110025Z [command]/usr/bin/git sparse-checkout disable
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4144499Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4168582Z ##[group]Checking out the ref
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4175213Z [command]/usr/bin/git checkout --progress --force -B ci/fix-aggregate-retrieve-script refs/remotes/origin/ci/fix-aggregate-retrieve-script
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4255967Z Switched to a new branch 'ci/fix-aggregate-retrieve-script'
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4259157Z branch 'ci/fix-aggregate-retrieve-script' set up to track 'origin/ci/fix-aggregate-retrieve-script'.
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4264850Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4298659Z [command]/usr/bin/git log -1 --format=%H
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4320565Z 0fdfc1d489c0f0b2eaff0e81078f889d90520452
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4570667Z ##[group]Run actions/setup-python@v4
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4571255Z with:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4571612Z   python-version: 3.x
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4572024Z   check-latest: false
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4572578Z   token: ***
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4572961Z   update-environment: true
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4573416Z   allow-prereleases: false
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4573850Z env:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4574186Z   LIMIT: 50
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.4574527Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6231047Z ##[group]Installed versions
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6320322Z Successfully set up CPython (3.14.3)
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6321699Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6436145Z ##[group]Run python -m pip install --upgrade pip
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6436929Z [36;1mpython -m pip install --upgrade pip[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6437487Z [36;1mpip install PyJWT[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6471098Z shell: /usr/bin/bash -e {0}
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6471586Z env:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6471930Z   LIMIT: 50
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6472401Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6473161Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6473904Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6474570Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6475272Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6476216Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:53.6476811Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:54.2368112Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages (26.0.1)
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:54.8456443Z Collecting PyJWT
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:54.9015225Z   Downloading pyjwt-2.12.1-py3-none-any.whl.metadata (4.1 kB)
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:54.9107660Z Downloading pyjwt-2.12.1-py3-none-any.whl (29 kB)
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:54.9252670Z Installing collected packages: PyJWT
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:54.9563068Z Successfully installed PyJWT-2.12.1
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0126757Z ##[group]Run echo "Repository root: $(pwd)"
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0128237Z [36;1mecho "Repository root: $(pwd)"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0129531Z [36;1mecho "Listing root files"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0130724Z [36;1mls -la[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0131801Z [36;1mecho "Listing tools directory (if exists)"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0133184Z [36;1mls -la tools || true[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0134278Z [36;1mecho "Git HEAD and branch info"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0135738Z [36;1mgit rev-parse --abbrev-ref HEAD || true[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0137086Z [36;1mgit rev-parse HEAD || true[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0138326Z [36;1mecho "Git status (including untracked)"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0139883Z [36;1mgit status --porcelain --untracked-files=all || true[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0141482Z [36;1mif [ ! -f tools/aggregate_auth_debug.py ]; then[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0143968Z [36;1m  echo "tools/aggregate_auth_debug.py not found in repository checkout; attempting to retrieve from known branches"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0146794Z [36;1m  for b in origin/ci/create-aggregate-pr origin/gen-debug-history; do[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0148413Z [36;1m    echo "checking $b"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0150013Z [36;1m    if git ls-tree -r "$b" --name-only | grep -q '^tools/aggregate_auth_debug.py$'; then[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0152127Z [36;1m      echo "found in $b; checking out file"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0153710Z [36;1m      git checkout "$b" -- tools/aggregate_auth_debug.py || true[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0155185Z [36;1m      break[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0156175Z [36;1m    fi[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0157000Z [36;1m  done[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0157810Z [36;1mfi[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0158590Z [36;1m[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0159561Z [36;1mif [ ! -f tools/aggregate_auth_debug.py ]; then[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0161717Z [36;1m  echo "::error::tools/aggregate_auth_debug.py not found in repository checkout or known branches"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0164552Z [36;1m  echo "Hint: commit the script to the default branch or ensure workflow fetches the correct ref"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0166648Z [36;1m  exit 2[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0167488Z [36;1mfi[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0191341Z shell: /usr/bin/bash -e {0}
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0192348Z env:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0193102Z   LIMIT: 50
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0194171Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0196189Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0197995Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0199617Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0201260Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0202911Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0204336Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0268722Z Repository root: /home/runner/work/browser_tetris/browser_tetris
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0270882Z Listing root files
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0283510Z total 164
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0284942Z drwxr-xr-x 12 runner runner  4096 Apr 10 13:05 .
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0287152Z drwxr-xr-x  3 runner runner  4096 Apr 10 13:05 ..
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0288561Z drwxr-xr-x  7 runner runner  4096 Apr 10 13:05 .git
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0290005Z drwxr-xr-x  3 runner runner  4096 Apr 10 13:05 .github
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0291499Z -rw-r--r--  1 runner runner   483 Apr 10 13:05 .gitignore
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0293109Z -rw-r--r--  1 runner runner  2561 Apr 10 13:05 AUTHENTICATION.md
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0294779Z -rw-r--r--  1 runner runner   890 Apr 10 13:05 CHANGELOG.md
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0296546Z -rw-r--r--  1 runner runner  2061 Apr 10 13:05 PROTOCOL.md
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0298095Z -rw-r--r--  1 runner runner  1421 Apr 10 13:05 README.md
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0300594Z -rw-r--r--  1 runner runner  2572 Apr 10 13:05 SECURITY_INCIDENT.md
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0303135Z -rw-r--r--  1 runner runner  1933 Apr 10 13:05 SECURITY_REWRITE_NOTIFICATION.md
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0305269Z -rw-r--r--  1 runner runner  1170 Apr 10 13:05 SESSION_SUMMARY.md
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0307384Z -rw-r--r--  1 runner runner     0 Apr 10 13:05 TestIntegration_fix.patch
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0309142Z -rw-r--r--  1 runner runner  5244 Apr 10 13:05 WS_SECURITY.md
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0310619Z drwxr-xr-x  2 runner runner  4096 Apr 10 13:05 docs
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0312047Z drwxr-xr-x  3 runner runner  4096 Apr 10 13:05 elm-app
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0313744Z drwxr-xr-x  3 runner runner  4096 Apr 10 13:05 elm-haskell
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0316250Z drwxr-xr-x  2 runner runner  4096 Apr 10 13:05 examples
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0317974Z -rw-r--r--  1 runner runner 20947 Apr 10 13:05 game.js
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0319478Z -rw-r--r--  1 runner runner   682 Apr 10 13:05 gen_jwt.py
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0321021Z -rw-r--r--  1 runner runner  6224 Apr 10 13:05 gen_jwt_cli.py
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0322661Z drwxr-xr-x  7 runner runner  4096 Apr 10 13:05 haskell-server
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0324220Z -rw-r--r--  1 runner runner 11675 Apr 10 13:05 index.html
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0325936Z -rw-r--r--  1 runner runner   125 Apr 10 13:05 last_run.json
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0327841Z -rw-r--r--  1 runner runner   672 Apr 10 13:05 pr_body.txt
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0330476Z -rw-r--r--  1 runner runner  2416 Apr 10 13:05 pr_body_ci_unify_auth_debug.md
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0332323Z drwxr-xr-x  2 runner runner  4096 Apr 10 13:05 reports
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0334033Z -rw-r--r--  1 runner runner   181 Apr 10 13:05 runs_main.json
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0335798Z drwxr-xr-x  2 runner runner  4096 Apr 10 13:05 scripts
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0337300Z drwxr-xr-x  3 runner runner  4096 Apr 10 13:05 tools
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0338790Z -rw-r--r--  1 runner runner  2836 Apr 10 13:05 verify_token.py
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0340361Z -rw-r--r--  1 runner runner  3657 Apr 10 13:05 ws_schema.json
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0341869Z -rw-r--r--  1 runner runner   815 Apr 10 13:05 ws_test.py
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0343187Z Listing tools directory (if exists)
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0344235Z total 88
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0345085Z drwxr-xr-x  3 runner runner 4096 Apr 10 13:05 .
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0346641Z drwxr-xr-x 12 runner runner 4096 Apr 10 13:05 ..
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0348278Z -rw-r--r--  1 runner runner 7152 Apr 10 13:05 PUSH_GIT_TOKEN_INSTRUCTIONS.md
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0350201Z -rw-r--r--  1 runner runner 6693 Apr 10 13:05 aggregate_auth_debug.py
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0352120Z -rw-r--r--  1 runner runner 2187 Apr 10 13:05 append_aggregate_to_history.py
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0353897Z -rw-r--r--  1 runner runner 2414 Apr 10 13:05 check_hkdf.py
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0355416Z -rw-r--r--  1 runner runner  238 Apr 10 13:05 check_yaml.py
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0357224Z drwxr-xr-x  2 runner runner 4096 Apr 10 13:05 ci_artifacts
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0358846Z -rw-r--r--  1 runner runner  450 Apr 10 13:05 ci_extract_errors.ps1
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0360479Z -rw-r--r--  1 runner runner  666 Apr 10 13:05 ci_watch.ps1
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0362054Z -rw-r--r--  1 runner runner   60 Apr 10 13:05 gen_debug_report.json
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0363724Z -rw-r--r--  1 runner runner 2730 Apr 10 13:05 gen_debug_trend.py
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0365372Z -rw-r--r--  1 runner runner 7750 Apr 10 13:05 parse_gen_debug.py
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0367300Z -rw-r--r--  1 runner runner 2488 Apr 10 13:05 rerun_and_collect_ci.ps1
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0369516Z -rw-r--r--  1 runner runner 6272 Apr 10 13:05 rerun_ci_and_fetch.ps1
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0372817Z -rw-r--r--  1 runner runner 2329 Apr 10 13:05 scan_and_aggregate_gen_debugs.py
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0375265Z -rw-r--r--  1 runner runner  103 Apr 10 13:05 strip.cmd
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0377990Z -rw-r--r--  1 runner runner 2372 Apr 10 13:05 wait_and_fetch_ci.ps1
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0380351Z Git HEAD and branch info
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0382004Z ci/fix-aggregate-retrieve-script
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0383934Z 0fdfc1d489c0f0b2eaff0e81078f889d90520452
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0386138Z Git status (including untracked)
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0445409Z ##[group]Run echo "gh version:"
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0446749Z [36;1mecho "gh version:"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0447712Z [36;1mgh --version || true[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0448769Z [36;1mecho "gh auth status (before login):"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0450108Z [36;1mgh auth status --hostname github.com || true[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0451398Z [36;1mif [ -n "${GITHUB_TOKEN-}" ]; then[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0452742Z [36;1m  echo "Attempting gh auth login with GITHUB_TOKEN"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0454540Z [36;1m  echo "${GITHUB_TOKEN}" | gh auth login --with-token -h github.com || true[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0456408Z [36;1m  echo "gh auth status (after login):"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0457756Z [36;1m  gh auth status --hostname github.com || true[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0458965Z [36;1melse[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0459768Z [36;1m  echo "GITHUB_TOKEN is empty"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0460792Z [36;1mfi[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0461536Z [36;1mecho "gh run list (repo):"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0462900Z [36;1mgh run list --limit 10 --repo "${GITHUB_REPOSITORY}" || true[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0464318Z [36;1mecho "gh run list exit code: $?"[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0486965Z shell: /usr/bin/bash -e {0}
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0487845Z env:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0488499Z   LIMIT: 50
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0489432Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0491060Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0492828Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0494285Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0496011Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0497502Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0498751Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.0552928Z gh version:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1112997Z gh version 2.89.0 (2026-03-26)
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1117057Z https://github.com/cli/cli/releases/tag/v2.89.0
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1126320Z gh auth status (before login):
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1382549Z You are not logged into any GitHub hosts. To log in, run: gh auth login
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1396300Z GITHUB_TOKEN is empty
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1397985Z gh run list (repo):
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1661275Z gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable. Example:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1666775Z   env:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1667619Z     GH_TOKEN: ${{ github.token }}
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1674309Z gh run list exit code: 0
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1762821Z ##[group]Run python tools/aggregate_auth_debug.py --limit 50 --out downloads-aggregate
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1765095Z [36;1mpython tools/aggregate_auth_debug.py --limit 50 --out downloads-aggregate[0m
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1790636Z shell: /usr/bin/bash -e {0}
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1791525Z env:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1792187Z   LIMIT: 50
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1793135Z   pythonLocation: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1794761Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib/pkgconfig
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1796667Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1798132Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1799589Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.14.3/x64
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1801069Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.14.3/x64/lib
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.1802338Z ##[endgroup]
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.2644800Z No runs found or failed to list runs
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.2742842Z ##[error]Process completed with exit code 1.
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.2978292Z Post job cleanup.
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.3949056Z [command]/usr/bin/git version
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.3989267Z git version 2.53.0
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4036909Z Temporarily overriding HOME='/home/runner/work/_temp/1636b06a-0e1f-4c90-b1e9-a1f26debce21' before making global git config changes
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4041682Z Adding repository directory to the temporary git global config as a safe directory
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4046108Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/browser_tetris/browser_tetris
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4080904Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4116363Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4337210Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4358022Z http.https://github.com/.extraheader
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4372054Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4406300Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4624107Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4656730Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.4998661Z Cleaning up orphan processes
+Aggregate and upload auth-debug summary	UNKNOWN STEP	2026-04-10T13:05:55.5413702Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-python@v4. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

@@ -41,5 +41,29 @@
 - 集計ツール: `tools/aggregate_auth_debug.py`
 - 最新集計: `downloads-aggregate/auth_debug_summary.csv`
 
+### CSV 差分チェック運用
+
+- 目的: `auth_debug_summary.csv` の予期しない変化を早期検出し、誤動作や秘密漏洩の兆候を通知すること。
+- 実行方法: CI ワークフローにて `tools/check_csv_diff.py` を実行します。既定では差分検出時にワークフローは警告のみ出します。
+- 除外/失敗挙動: 差分でジョブを失敗させたい場合は、リポジトリの Secrets に `AUTH_DEBUG_DIFF_FAIL=1` を追加してください。値は `1`, `true`, `yes` が有効です（GitHub: Settings → Secrets and variables → Actions → New repository secret）。
+- 自動コミットについて: CSV を自動でコミットして PR を作る場合は `PUSH_GIT_TOKEN` を Secrets に設定してください（既存ワークフローが `PUSH_GIT_TOKEN` を参照します）。
+
+トラブルシュート手順（差分検出時）:
+
+1. CI の該当実行を開き、`auth-debug-summary` アーティファクトをダウンロードして `auth_debug_summary.csv` と `auth_debug_summary.prev.csv` を取得するか、リポジトリをチェックアウトして再実行します:
+
+```bash
+python tools/aggregate_auth_debug.py --limit 50 --out downloads-aggregate
+python tools/check_csv_diff.py downloads-aggregate/auth_debug_summary.csv --prev downloads-aggregate/auth_debug_summary.prev.csv --verbose
+```
+
+2. 差分のあった行（追加/削除）について、`downloads-aggregate/<run_id>/raw/` 以下の `gen_debug.txt` / `verify_debug.txt` / `token.txt` を確認し、`final_secret_sha256`、生成シグネチャ、検証ログを照合してください。
+
+3. 署名整合性に疑義がある場合は影響範囲（run_id、対象ブランチ、実行者）を記録し、インシデント対応手順に従って `JWT_SECRET` のローテーションと履歴洗浄を実施してください（上位の「インシデント対応手順」を参照）。
+
+4. 差分が期待される更新（例: 新しい実行ログの追加や意図した修正）であれば、ベースラインの更新（CSV のコミットまたは差分の許容）を行ってください。自動PRを使う場合は `PUSH_GIT_TOKEN` 設定を検討してください。
+
+備考: この差分チェックは早期警告に有効ですが、偽陽性があり得ます。最初は `AUTH_DEBUG_DIFF_FAIL` を設定せず運用して観察期間を設け、期待されるノイズのパターンを把握してから厳格化してください。
+
 ---
 作成者: 自動作成

@@ -19,6 +19,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+import shutil
 
 # simple file logger to help debugging in CI-less environments
 LOG_PATH = Path(__file__).with_suffix('.log')
@@ -182,8 +183,16 @@ def main():
         }
         rows.append(row)
 
-    # write CSV
+    # write CSV (保存前に既存のCSVをバックアップして差分検査に使う)
     csv_path = outdir / "auth_debug_summary.csv"
+    prev_path = outdir / "auth_debug_summary.prev.csv"
+    if csv_path.exists():
+        try:
+            shutil.copy2(csv_path, prev_path)
+            log(f"Saved previous summary to {prev_path}")
+        except Exception as e:
+            log(f"Could not copy previous summary: {e}")
+
     with csv_path.open("w", newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=[
             "run_id", "createdAt", "headBranch", "conclusion",
@@ -197,6 +206,25 @@ def main():
 
     print(f"Wrote summary: {csv_path}")
     print(f"Processed {len(rows)} completed runs (limit={args.limit})")
+
+    # run CSV差分検査スクリプトが存在すれば実行する（差分があってもデフォルトは失敗しない）
+    try:
+        check_script = Path(__file__).parent / "check_csv_diff.py"
+        if check_script.exists() and prev_path.exists():
+            cmd = [sys.executable, str(check_script), str(csv_path), "--prev", str(prev_path)]
+            p = subprocess.run(cmd, capture_output=True, text=True)
+            if p.stdout:
+                print(p.stdout)
+            if p.stderr:
+                print(p.stderr, file=sys.stderr)
+            # exit code 2 means differences found in our check script
+            if p.returncode == 2:
+                print("差分が検出されました（auth_debug_summary）。差分の詳細は上の出力を参照してください。")
+                if os.environ.get('AUTH_DEBUG_DIFF_FAIL', '').lower() in ('1', 'true', 'yes'):
+                    print("AUTH_DEBUG_DIFF_FAIL が設定されているため非ゼロ終了します。")
+                    sys.exit(2)
+    except Exception as e:
+        log(f"Error running diff checker: {e}")
 
 
 if __name__ == '__main__':
