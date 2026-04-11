@@ -59,9 +59,9 @@ jobs:
           if [ ! -f tools/aggregate_auth_debug.py ]; then
             echo "Attempting to retrieve tools/aggregate_auth_debug.py from origin/main"
             if git ls-tree -r origin/main --name-only | grep -q '^tools/aggregate_auth_debug.py$'; then
-              git checkout origin/main -- tools/aggregate_auth_debug.py || true
+              git checkout origin/main -- tools/aggregate_auth_debug.py || echo "::warning::git checkout origin/main -- tools/aggregate_auth_debug.py failed"
             else
-              git show origin/main:tools/aggregate_auth_debug.py > tools/aggregate_auth_debug.py 2>/dev/null || true
+              git show origin/main:tools/aggregate_auth_debug.py > tools/aggregate_auth_debug.py 2>&1 || echo "::warning::git show origin/main:tools/aggregate_auth_debug.py failed"
             fi
           fi
 
