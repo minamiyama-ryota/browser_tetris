@@ -11,6 +11,9 @@ on:
       debug_verify:
         description: 'Optional: set to "1" to enable DEBUG_VERIFY/AUTH_DEBUG for debugging'
         required: false
+      auth_debug_diff_fail:
+        description: 'Optional: set to "1" to fail CI when auth debug summary diff detected'
+        required: false
 
 jobs:
   build:
@@ -18,6 +21,7 @@ jobs:
     env:
       DEBUG_VERIFY: ${{ github.event.inputs.debug_verify || '0' }}
       AUTH_DEBUG: ${{ github.event.inputs.debug_verify || '0' }}
+      AUTH_DEBUG_DIFF_FAIL: ${{ github.event.inputs.auth_debug_diff_fail || secrets.AUTH_DEBUG_DIFF_FAIL || '0' }}
       JWT_SECRET: ${{ github.event.inputs.jwt_secret || secrets.JWT_SECRET }}
     steps:
       - uses: actions/checkout@v4
@@ -44,6 +48,15 @@ jobs:
 
       - name: Install deps
         run: pip install PyJWT
+
+      - name: Install Python test deps
+        run: pip install pytest
+
+      - name: Run Python tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          pytest -q tests/test_jwt_integration.py
 
       - name: Generate JWT
         run: |
