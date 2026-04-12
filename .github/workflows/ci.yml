@@ -45,6 +45,15 @@ jobs:
       - name: Install deps
         run: pip install PyJWT
 
+      - name: Install Python test deps
+        run: pip install pytest
+
+      - name: Run Python tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          pytest -q tests/test_jwt_integration.py
+
       - name: Generate JWT
         run: |
           GEN_DEBUG="$GITHUB_WORKSPACE/gen_debug.txt"
