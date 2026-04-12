@@ -1,35 +1,46 @@
 # 要約と ToDo（まとめ）
 
-**作成日**: 2026-04-11
-
-## 要約
-
-- CSV差分検査ツール `tools/check_csv_diff.py` を追加。差分があると exit code 2 を返す実装。
-- 集計スクリプト `tools/aggregate_auth_debug.py` を修正し、既存の `auth_debug_summary.csv` を `auth_debug_summary.prev.csv` としてバックアップしてから新しいCSVを書き、差分チェックを呼び出すようにした。
-- CI ワークフロー `.github/workflows/aggregate-auth-debug.yml` を更新し、集計後に `tools/check_csv_diff.py` を実行するステップを追加。シークレット `AUTH_DEBUG_DIFF_FAIL` により差分時のジョブ失敗を制御する。
-- ドキュメント `docs/auth_debug_policy.md` に「CSV 差分チェック運用」とトリアージ手順を追記。
-- ブランチ整理: 主要なリモート/ローカルブランチを `main` に統合し、`main` 以外のブランチを削除した。
-- 不要ファイル削除: `artifacts` / `ci-artifacts` / `downloads` をリポジトリから削除し、変更を `origin/main` に push した（コミット済み）。
-- 短い検証: `python -m py_compile` と `--help` 出力で `tools/check_csv_diff.py` と `tools/aggregate_auth_debug.py` の構文・ヘルプを確認。ローカルで Python 3.13.12 にて動作確認済み。
-
-## ToDo（現状）
-
-- [x] 短い検証実行 — 完了
-- [-] リモートCI検証 — 進行中
-- [ ] シークレット有効化 — 未開始 (`AUTH_DEBUG_DIFF_FAIL` 等)
-- [ ] 追加統合テスト実行 — 未開始
-- [x] ドキュメント反映確認 — 完了
-- [ ] 観察期間の監視 — 未開始
-- [x] 全ブランチをmainへ統合 — 完了
-- [x] main以外のブランチ削除 — 完了
-- [x] 不要なファイル削除 — 完了
-- [x] 要約/ToDo Markdown出力 — 完了
+- [x] シークレット有効化検討 — `AUTH_DEBUG_DIFF_FAIL` をリポジトリシークレットに設定済み
+- [x] 短い検証実行 — ローカルでのスクリプト動作確認を完了
+- [x] リモート CI 検証 — ワークフローの再実行と集計の確認を実施
+- [ ] シークレット有効化検討 — `AUTH_DEBUG_DIFF_FAIL` をリポジトリシークレットに設定するか検討
+- [x] 追加統合テスト作成 — `tests/test_jwt_integration.py` を追加しローカルで合格を確認
+- [x] ドキュメント反映確認 — `docs/auth_debug_policy.md` 等を更新
+- [ ] 観察期間の監視 — ナイトリー実行等で差分頻度を監視（未完）
+ 4. `tools/aggregate_auth_debug.py` と `tools/check_csv_diff.py` をデフォルトブランチへ配置済み（`tools/README.md` を追加）。
+- [x] main 以外のブランチ削除 — 完了（origin 側の整理）
+- [x] 不要なファイル削除 — 完了（該当ファイルを削除）
+- [x] 要約/ToDo Markdown 出力 — 本ファイルに出力済み
+- [x] ワークフロー修正 PR（既存） — 作成・反映済み（PR #20 等）
+- [x] CI に pytest 実行追加 — コミット・PR 作成済み（PR #22）
+- [ ] リモート CI 認証設定 — 必要に応じて GH CLI 認証方法を整備
+- [x] Elm ビルドとローカル配信確認 — `elm-app/dist/main.js` を生成し配信済み
 
 ## 次の優先アクション（推奨）
 
-1. リモートで CI ワークフローを実行して実運用ログを確認する（差分発生時の挙動確認）。
-2. 必要なら `AUTH_DEBUG_DIFF_FAIL` をリポジトリのシークレットとして設定して差分時にジョブを失敗させる。
-3. 観察期間中に差分が頻繁に出るか確認し、false positive の原因があれば修正する（キー指定や生成ロジックの見直し）。
+1. `AUTH_DEBUG_DIFF_FAIL` をリポジトリシークレットに設定するか決定し、必要なら設定する（差分時に CI を失敗させるオプション）。
+2. 数日〜1週間の観察期間を設けて差分の頻度を確認し、false positive が多ければ差分判定キーや生成ロジックを調整する。
+3. PR https://github.com/smtsgth/browser_tetris/pull/22 （CI: run pytest integration tests）をレビューしてマージし、CI 上で tests が確実に実行されることを確認する。
+4. `tools/aggregate_auth_debug.py` と `tools/check_csv_diff.py` を default branch に移すか、ワークフローで確実にチェックアウトされる配置に改善する。
+5. 必要なら追加の統合テスト（トークンライフサイクル、複数アルゴリズム等）を CI に組み込む。
+
+## 関連ファイル
+
+- [tools/aggregate_auth_debug.py](tools/aggregate_auth_debug.py)
+- [tools/check_csv_diff.py](tools/check_csv_diff.py)
+- [tools/remote_rerun_and_wait.ps1](tools/remote_rerun_and_wait.ps1)
+- [tools/run_jwt_integration.py](tools/run_jwt_integration.py)
+- [tests/test_jwt_integration.py](tests/test_jwt_integration.py)
+- [.github/workflows/ci.yml](.github/workflows/ci.yml)
+- [elm-app/index.html](elm-app/index.html)
+- [elm-app/dist/main.js](elm-app/dist/main.js)
+- [downloads-aggregate/auth_debug_summary.csv](downloads-aggregate/auth_debug_summary.csv)
+
+## 参照 PR
+
+- ワークフロー修正 PR（旧）: https://github.com/minamiyama-ryota/browser_tetris/pull/20
+- 不要ファイル削除 PR（旧）: https://github.com/minamiyama-ryota/browser_tetris/pull/21
+- CI に pytest 追加（本リポジトリ）: https://github.com/smtsgth/browser_tetris/pull/22
 
 ---
 
