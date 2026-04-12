@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Auth (verifyJwt, verifyJwtFromEnv, extractKid, computeHmacSig, loadSecrets,
+module Auth (verifyJwt, verifyJwtFromEnv, verifyJwtWithSecrets, extractKid, computeHmacSig, loadSecrets,
              tryB64urlDecode, hkdfExtract, hkdfExpand) where
 
 import Crypto.JWT
@@ -320,6 +320,24 @@ verifyJwtFromEnv token = do
       authDebug $ "Auth debug: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
       authDebug $ "DEBUG: provided_secret_len=" ++ show providedLen ++ " decoded_secret_len=" ++ show decodedLen ++ " hkdf_applied=" ++ show hkdfApplied ++ " final_secret_sha256=" ++ T.unpack finalSecretSha256
       verifyJwt sec token
+    Nothing -> return $ Left "no matching secret for token kid"
+
+
+-- | Verify using an explicit map of `kid -> secretText` where each secret
+-- value may be either a base64url-encoded secret or a raw secret string.
+-- This mirrors the behavior of `verifyJwtFromEnv` but accepts the secrets
+-- map directly (used by tests).
+verifyJwtWithSecrets :: Map T.Text T.Text -> T.Text -> IO (Either String Value)
+verifyJwtWithSecrets secretsMap token = do
+  -- decode values where possible, otherwise treat as raw bytes
+  let decoded = Map.foldrWithKey
+                 (\k v acc -> case tryB64urlDecode v of
+                                 Just bs -> Map.insert k bs acc
+                                 Nothing -> Map.insert k (TE.encodeUtf8 v) acc)
+                 Map.empty secretsMap
+  let mKid = extractKid token
+  case selectSecret decoded mKid of
+    Just sec -> verifyJwt sec token
     Nothing -> return $ Left "no matching secret for token kid"
 
 -- | Extract `kid` from JWT header if present (does not verify signature)
