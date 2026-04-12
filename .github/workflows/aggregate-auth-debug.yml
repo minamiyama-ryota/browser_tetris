@@ -94,6 +94,7 @@ jobs:
           python tools/aggregate_auth_debug.py --limit ${{ env.LIMIT }} --out downloads-aggregate
 
       - name: Run CSV diff check
+        id: csv_diff_check
         env:
           AUTH_DEBUG_DIFF_FAIL: ${{ secrets.AUTH_DEBUG_DIFF_FAIL }}
         run: |
@@ -111,6 +112,25 @@ jobs:
           elif [ "$CODE" -ne 0 ]; then
             echo "::error::CSV diff checker returned non-zero code: $CODE"
             exit $CODE
+          fi
+          echo "diff_code=$CODE" >> $GITHUB_OUTPUT
+
+      - name: Notify on CSV diff
+        if: steps.csv_diff_check.outputs.diff_code == '2'
+        run: |
+          echo "Notifying about CSV diff..."
+          # Ensure gh is available and authenticated; try to login with GITHUB_TOKEN if present
+          gh --version || true
+          if [ -n "${GITHUB_TOKEN-}" ]; then
+            echo "Attempting gh auth login with GITHUB_TOKEN"
+            echo "${GITHUB_TOKEN}" | gh auth login --with-token -h github.com || true
+          fi
+          # Look for an existing open issue with the fixed title
+          ISSUE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --json number,title --jq '.[] | select(.title=="auth_debug summary differences") | .number' || true)
+          if [ -n "$ISSUE" ]; then
+            gh issue comment "$ISSUE" --repo "$GITHUB_REPOSITORY" --body "auth_debug summary CSV differences detected in run https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}. Please review the artifact 'auth-debug-summary' on the workflow run."
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "auth_debug summary differences" --body "auth_debug summary CSV differences detected in run https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}. Please review the artifact 'auth-debug-summary' on the workflow run."
           fi
 
       - name: Upload summary artifact
