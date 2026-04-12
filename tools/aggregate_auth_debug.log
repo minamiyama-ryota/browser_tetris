@@ -26,3 +26,38 @@ ERR:
 CMD: gh run download 24187647527 --name auth-debug --dir downloads-aggregate\24187647527\raw
 OUT: 
 ERR: 
+CMD: gh run list --workflow ci.yml --limit 10 --json databaseId,conclusion,createdAt,headBranch,status,url
+OUT: [{"conclusion":"failure","createdAt":"2026-04-11T07:20:35Z","databaseId":24277524404,"headBranch":"ci/fix-aggregate-fetch-script-20260411","status":"completed","url":"https://github.com/smtsgth/browser_tetris/actions/runs/24277524404"},{"conclusion":"failure","createdAt":"2026-04-11T07:20:34Z","databaseId":24277524179,"headBranch":"ci/fix-aggregate-fetch-script-20260411","status":"completed","url":"https://github.com/smtsgth/browser_tetris/actions/runs/24277524179"},{"conclusion":"failure","createdAt":"2026-04-11T06:29:02Z","databaseId":24276673151,"headBranch":"main","status":"completed","url":"https://github.com/smtsgth/browser_tetris/actions/runs/24276673151"},{"conclusion":"failure","createdAt":"2026-04-11T06:27:42Z","databaseId":24276650345,"headBranch":"main","status":"completed","url":"https://github.com/smtsgth/browser_tetris/actions/runs/24276650345"},{"conclusion":"failure","createdAt":"2026-04-11T06:18:00Z","databaseId":24276487719,"headBranch":"main","status":"completed","url":"https://github.com/smtsgth/browser_tetris/actions/runs/24276487719"},{"conclusion":"failure","createdAt":"2026-04-11T05:55:47Z","databaseId":24276132299,"headBranch":"main","status":"completed","url":"https://github.com/smtsgth/browser_tetris/actions/runs/24276132299"},{"conclusion":"failure","createdAt":"2026-04-11T05:48:57Z","databaseId":24276019577,"headBranch":"main","status":"completed","url":"https://github.com/smtsgth/browser_tetris/actions/runs/24276019577"},{"conclusion":"failure","createdAt":"2026-04-11T05:46:46Z","databaseId":24275986101,"headBranch":"main","status":"completed","url":"https://github.com/smtsgth/browser_tetris/actions/runs/24275986101"},{"conclusion":"failure","createdAt":"2026-04-11T05:19:47Z","databaseId":24275536659,"headBranch":"main","status":"completed","url":"https://github.com/smtsgth/browser_tetris/actions/runs/24275536659"},{"conclusion":"failure","createdAt":"2026-04-11T05:14:32Z","databaseId":24275451382,"headBranch":"pr/remove-unnecessary-files","status":"completed","url":"https://github.com/smtsgth/browser_tetris/actions/runs/24275451382"}]
+
+ERR: 
+CMD: gh run download 24277524404 --name auth-debug --dir downloads-aggregate\24277524404\raw
+OUT: 
+ERR: 
+CMD: gh run download 24277524179 --name auth-debug --dir downloads-aggregate\24277524179\raw
+OUT: 
+ERR: 
+CMD: gh run download 24276673151 --name auth-debug --dir downloads-aggregate\24276673151\raw
+OUT: 
+ERR: 
+CMD: gh run download 24276650345 --name auth-debug --dir downloads-aggregate\24276650345\raw
+OUT: 
+ERR: 
+CMD: gh run download 24276487719 --name auth-debug --dir downloads-aggregate\24276487719\raw
+OUT: 
+ERR: 
+CMD: gh run download 24276132299 --name auth-debug --dir downloads-aggregate\24276132299\raw
+OUT: 
+ERR: 
+CMD: gh run download 24276019577 --name auth-debug --dir downloads-aggregate\24276019577\raw
+OUT: 
+ERR: 
+CMD: gh run download 24275986101 --name auth-debug --dir downloads-aggregate\24275986101\raw
+OUT: 
+ERR: 
+CMD: gh run download 24275536659 --name auth-debug --dir downloads-aggregate\24275536659\raw
+OUT: 
+ERR: 
+CMD: gh run download 24275451382 --name auth-debug --dir downloads-aggregate\24275451382\raw
+OUT: 
+ERR: 
+Saved previous summary to downloads-aggregate\auth_debug_summary.prev.csv
